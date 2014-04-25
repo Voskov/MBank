@@ -5,6 +5,7 @@
 .settings
 MBank.iml
 MBank.pdf
+src/classes/mess_around
 
 #IDEA
 .idea/
