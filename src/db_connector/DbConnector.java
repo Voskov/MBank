@@ -2,15 +2,18 @@ package db_connector;
 
 import config.ImportDbSettings;
 
+import javax.swing.plaf.nimbus.State;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 import java.util.logging.Logger;
 
 
 public class DbConnector {
     protected static Connection con;
+    protected static Statement stmt;
     protected static Logger LOGGER = Logger.getLogger(DbConnector.class.getName());
 
     protected static Properties prop = ImportDbSettings.loadDbProperties();   // load DB properties from the config file
@@ -21,7 +24,7 @@ public class DbConnector {
 //            Connection con = DriverManager.getConnection(db_url);           // connect to the DB
             con = DriverManager.getConnection(db_url);           // connect to the DB
             System.out.println("Connected successfully to " + prop.getProperty("DB_NAME"));
-
+            stmt = con.createStatement();
         } catch (SQLException e) {
             e.printStackTrace();
         }
