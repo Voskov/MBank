@@ -15,7 +15,7 @@ public class AcitivityDbConnector extends DbConnector {
 
     public void addActivity(Activity act) {
         try {
-            Statement stmt = con.createStatement();
+
             String statement = "INSERT INTO Activity VALUES(" + act.getId() + ", " + act.getClient_id() + ", " + act.getAmount() + ", '" + act.getActivity_date() + "', " + act.getCommission() + ", '" + act.getDescription() + "')";
             System.out.println(statement);
             stmt.executeUpdate(statement);
@@ -33,7 +33,7 @@ public class AcitivityDbConnector extends DbConnector {
 
     public void addActivity(long id, long client_id, double amount, String date, double commission, String description) {
         try {
-            Statement stmt = con.createStatement();
+
             String statement = "INSERT INTO Activity VALUES(" + id + ", " + client_id + ", " + amount + ", '" + date + "', " + commission + ", '" + description + "')";
             System.out.println(statement);
             stmt.executeUpdate(statement);

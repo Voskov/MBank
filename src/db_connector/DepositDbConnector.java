@@ -18,7 +18,7 @@ public class DepositDbConnector extends DbConnector {
 
     public void addDeposit(Deposit dep) {
         try {
-            Statement stmt = con.createStatement();
+
             String sqlStatement = "INSERT INTO Deposits VALUES(" + dep.getDeposit_id() + ", " + dep.getClient_id() + ", " + dep.getBalance() + ", '" + dep.getType() + "', " + dep.getEstimated_balance() + ", '" + dep.getOpening_date() + "', '" + dep.getClosing_date() + "')";
             stmt.executeUpdate(sqlStatement);
             String msg = "Deposit " + dep.getDeposit_id() + " was created on DB";
@@ -34,7 +34,7 @@ public class DepositDbConnector extends DbConnector {
 
     public void addClient(long client_id, String client_name, String password, String type, String address, String email, String phone, String comment) {
         try {
-            Statement stmt = con.createStatement();
+
             String smstStr = "INSERT INTO Clients VALUES(" + client_id + ", '" + client_name + "', '" + password + "', '" + type + "', '" + address + "', '" + email + "', '" + phone + "', '" + comment + "')";
             stmt.executeUpdate(smstStr);
             String msg = "Client " + client_name + " was created on DB";

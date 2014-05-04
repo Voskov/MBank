@@ -7,9 +7,9 @@ import db_connector.ClientDbConnector;
 public class TestClient {
 
     public static void main(String[] args) {
-//        clientAdd();
+        clientAdd();
 //        clientDelete();
-        clientUpdatePhone();
+//        clientUpdatePhone();
     }
     public static void clientAdd() {
         Client cl = new Client(123456, "Voskov", "qwerty", AccountType.GOLD, "Daniel Frish 6", "Ariel@Voskov.com", "054-1234567", "Awesome dude");
