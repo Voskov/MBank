@@ -17,9 +17,7 @@ public class AccountDbConnector extends DbConnector implements AccountManager {
         try {
 
             String sqlStatement = "INSERT INTO Accounts VALUES(" + acc.getAccount_id() + ", " + acc.getClient_id() + ", " + acc.getBalance() + ", " + acc.getCredit_limit() + ", '" + acc.getComment() + "')";
-            System.out.println(sqlStatement);
             stmt.executeUpdate(sqlStatement);
-            System.out.println("Account added");
             String msg = "Account " + acc.getAccount_id() + " was created on DB";
             LOGGER.log(Level.INFO, msg);
         } catch (SQLIntegrityConstraintViolationException e) {
