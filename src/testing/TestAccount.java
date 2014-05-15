@@ -8,10 +8,10 @@ public class TestAccount {
     public static void main(String[] args) {
 //        ctrateAccounttest();
 //        deleteAccount();
-        depositToAccount();
+//        depositToAccount();
 //        withdraw();
-        withdrawTooMuch();
-//        checkBalanceTest();
+//        withdrawTooMuch();
+        checkBalanceTest();
 
         AC.disconnect();
     }

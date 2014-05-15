@@ -12,7 +12,7 @@ public class TestClient {
 //        clientUpdatePhone();
     }
     public static void clientAdd() {
-        Client cl = new Client(123456, "Voskov", "qwerty", AccountType.GOLD, "Daniel Frish 6", "Ariel@Voskov.com", "054-1234567", "Awesome dude");
+//        Client cl = new Client(123456, "Voskov", "qwerty", AccountType.GOLD, "Daniel Frish 6", "Ariel@Voskov.com", "054-1234567", "Awesome dude");
         ClientDbConnector clientConnector = new ClientDbConnector();
 
 //        clientConnector.addClient(cl);
