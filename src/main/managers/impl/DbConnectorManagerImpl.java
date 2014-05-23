@@ -31,7 +31,7 @@ public class DbConnectorManagerImpl{
         }
     }
 
-    public static void disconnect() {
+    public void disconnect() {
         try {
             con.close();                                                    // always remember to close the connection at the end
             System.out.println("Connection closed");

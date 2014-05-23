@@ -155,7 +155,7 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
     public void deleteAllAccounts(){
         sqlStr = "DELETE FROM Accounts";
         String log_message = "All accounts were deleted";
-        executeStatement(sqlStatement, log_message);
+        executeStatement(sqlStr, log_message);
     }
 
 }

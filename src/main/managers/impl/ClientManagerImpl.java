@@ -1,4 +1,5 @@
 package main.managers.impl;
+import main.AccountType;
 import main.managers.ClientManager;
 import main.model.Client;
 
@@ -173,12 +174,13 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
                 long id = res.getLong(1);
                 String name = res.getString(2);
                 String password = res.getString(3);
-                String TYPE = res.getString(4);
+                String typeString = res.getString(4);
+                AccountType accountType = AccountType.valueOf(typeString);
                 String address = res.getString(5);
                 String email = res.getString(6);
                 String phone = res.getString(7);
                 String comment = res.getString(8);
-                return new Client(id, name, password, TYPE, address, email, phone, comment);
+                return new Client(id, name, password, accountType, address, email, phone, comment);
             }
         } catch (SQLException e) {
             e.printStackTrace();
