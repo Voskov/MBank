@@ -1,9 +1,9 @@
-package testing;
+package test;
 
-import db_connector.AccountDbConnector;
+import main.managers.impl.AccountManagerImpl;
 
 public class TestAccount {
-    private static AccountDbConnector AC = new AccountDbConnector();
+    private static AccountManagerImpl AC = new AccountManagerImpl();
 
     public static void main(String[] args) {
 //        ctrateAccounttest();

@@ -1,16 +1,16 @@
-package db_connector;
+package main.managers.impl;
 
-import Managers.AccountManager;
-import classes.Account;
+import main.managers.AccountManager;
+import main.model.Account;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.logging.Level;
 
-public class AccountDbConnector extends DbConnector implements AccountManager {
+public class AccountManagerImpl extends DbConnector implements AccountManager {
     private String sqlStatement;
-    public AccountDbConnector() {
+    public AccountManagerImpl() {
         connectToDb();
     }
 
@@ -67,7 +67,6 @@ public class AccountDbConnector extends DbConnector implements AccountManager {
 
     }
 
-    @Override
     public void depositToAccount(Account account, double amount) {
         try {
             sqlStatement = "DELETE FROM Accounts WHERE account_id=" + account.getAccount_id();
@@ -130,6 +129,7 @@ public class AccountDbConnector extends DbConnector implements AccountManager {
         }
     }
 
+    @Override
     public void depositToAccount(long account_id, double deposit_amount) {
         sqlStatement = "SELECT balance FROM Accounts";
         try {

@@ -13,8 +13,6 @@ public class DropTables {
         try {
             Connection connection = DriverManager.getConnection(db_address);
             try {
-
-
                 System.out.println("Connection established successfully");
 
                 Statement statement = connection.createStatement();

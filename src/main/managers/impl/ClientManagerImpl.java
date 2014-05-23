@@ -1,15 +1,14 @@
-package db_connector;
-
-import Managers.ClientManager;
-import classes.Client;
+package main.managers.impl;
+import main.managers.ClientManager;
+import main.model.Client;
 
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.logging.Level;
 
-public class ClientDbConnector extends DbConnector implements ClientManager {
+public class ClientManagerImpl extends DbConnector implements ClientManager {
 
-    public ClientDbConnector() {
+    public ClientManagerImpl() {
         connectToDb();
     }
 
@@ -29,7 +28,7 @@ public class ClientDbConnector extends DbConnector implements ClientManager {
         }
     }
 
-    public void createClient(Client client) {
+    public long createClient(Client client) {
         try {
             String sqlStatement = "INSERT INTO Clients VALUES(" + client.getClient_id() + ", '" + client.getClient_name() + "', '" + client.getPassword() + "', '" + client.getAccountType().toString() + "', '" + client.getAddress() + "', '" + client.getEmail() + "', '" + client.getPhone() + "', '" + client.getComment() + "')";
             stmt.executeUpdate(sqlStatement);
@@ -43,6 +42,8 @@ public class ClientDbConnector extends DbConnector implements ClientManager {
             LOGGER.log(Level.WARNING, e.getMessage());
             e.printStackTrace();
         }
+
+        return client.getClient_id();
     }
 
     @Override
@@ -136,6 +137,19 @@ public class ClientDbConnector extends DbConnector implements ClientManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public Client findById(long id) {
+        String sqlStr = "SELECT * FROM Clients WHERE client_id=" + id;
+        try {
+            stmt.executeQuery(sqlStr);
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        //TODO
+        return null;
     }
 
     public void deleteClient(long client_id) {

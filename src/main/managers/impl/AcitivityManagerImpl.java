@@ -1,15 +1,14 @@
-package db_connector;
+package main.managers.impl;
 
-import classes.Activity;
+import main.model.Activity;
 
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.sql.Statement;
 import java.util.logging.Level;
 
-public class AcitivityDbConnector extends DbConnector {
+public class AcitivityManagerImpl extends DbConnector {
 
-    public AcitivityDbConnector() {
+    public AcitivityManagerImpl() {
         connectToDb();
     }
 
