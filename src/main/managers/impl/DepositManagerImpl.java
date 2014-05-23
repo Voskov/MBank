@@ -12,7 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 
-public class DepositManagerImpl extends DbConnector implements DepositManager {
+public class DepositManagerImpl extends DbConnectorManagerImpl implements DepositManager {
 
     public DepositManagerImpl() {
         connectToDb();

@@ -7,13 +7,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class DbConnector {
+public class DbConnectorManagerImpl{
     protected static Connection con;
     protected static Statement stmt;
-    protected static Logger LOGGER = Logger.getLogger(DbConnector.class.getName());
+    protected static Logger LOGGER = Logger.getLogger(DbConnectorManagerImpl.class.getName());
 
     protected static Properties prop = ImportDbSettings.loadDbProperties();   // load DB properties from the config file
 
@@ -37,4 +38,14 @@ public class DbConnector {
             e.printStackTrace();
         }
     }
+
+    public static void executeStatement(String statement, String logMessage){
+        try {
+            stmt.executeUpdate(statement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        LOGGER.log(Level.INFO, logMessage);
+    }
+
 }

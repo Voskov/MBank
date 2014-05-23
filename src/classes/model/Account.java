@@ -1,4 +1,4 @@
-package classes;
+package classes.model;
 
 public class Account {
     private long account_id;

@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.logging.Level;
 
-public class AcitivityManagerImpl extends DbConnector {
+public class AcitivityManagerImpl extends DbConnectorManagerImpl {
 
     public AcitivityManagerImpl() {
         connectToDb();

@@ -1,4 +1,7 @@
-package classes;
+package classes.model;
+
+
+import main.AccountType;
 
 public class Client {
     private long client_id;

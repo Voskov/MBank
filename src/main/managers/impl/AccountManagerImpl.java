@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.logging.Level;
 
-public class AccountManagerImpl extends DbConnector implements AccountManager {
+public class AccountManagerImpl extends DbConnectorManagerImpl implements AccountManager {
     private String sqlStatement;
     public AccountManagerImpl() {
         connectToDb();

@@ -2,11 +2,12 @@ package main.managers.impl;
 import main.managers.ClientManager;
 import main.model.Client;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.logging.Level;
 
-public class ClientManagerImpl extends DbConnector implements ClientManager {
+public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientManager {
 
     public ClientManagerImpl() {
         connectToDb();
@@ -139,19 +140,6 @@ public class ClientManagerImpl extends DbConnector implements ClientManager {
         }
     }
 
-    @Override
-    public Client findById(long id) {
-        String sqlStr = "SELECT * FROM Clients WHERE client_id=" + id;
-        try {
-            stmt.executeQuery(sqlStr);
-            
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        //TODO
-        return null;
-    }
-
     public void deleteClient(long client_id) {
         try {
             String sqlStatement = "DELETE FROM Clients WHERE client_id=" + client_id;
@@ -176,5 +164,33 @@ public class ClientManagerImpl extends DbConnector implements ClientManager {
 
     }
 
+    @Override
+    public Client findById(long client_id) {
+        String sqlStr = "SELECT * FROM Clients WHERE client_id=" + client_id;
+        try {
+            ResultSet res = stmt.executeQuery(sqlStr);
+            if (res.next()){
+                long id = res.getLong(1);
+                String name = res.getString(2);
+                String password = res.getString(3);
+                String TYPE = res.getString(4);
+                String address = res.getString(5);
+                String email = res.getString(6);
+                String phone = res.getString(7);
+                String comment = res.getString(8);
+                return new Client(id, name, password, TYPE, address, email, phone, comment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public void deleteAllClients(){
+        String sqlStr = "DELETE FROM Clients";
+        String logMessage = "All clients were deleted";
+        DbConnectorManagerImpl.executeStatement(sqlStr, logMessage);
+    }
 }
 
