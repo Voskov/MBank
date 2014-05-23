@@ -12,11 +12,11 @@ public class Client {
     private String phone;
     private String comment;
 
-    public Client(long client_id, String client_name, String password, String accountType, String address, String email, String phone, String comment) {
+    public Client(long client_id, String client_name, String password, AccountType accountType, String address, String email, String phone, String comment) {
         this.client_id = client_id;
         this.client_name = client_name;
         this.password = password;
-        this.accountType = AccountType.GOLD.valueOf(accountType);
+        this.accountType = accountType;
         this.address = address;
         this.email = email;
         this.phone = phone;
