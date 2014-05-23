@@ -6,8 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DropTables {
-    public static void main(String[] args) {
 
+    public static void dropAllTables(){
         String db_address = "jdbc:derby://localhost:1527/MBank;create=true";
 
         try {
@@ -39,5 +39,10 @@ public class DropTables {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public static void main(String[] args) {
+        dropAllTables();
     }
 }

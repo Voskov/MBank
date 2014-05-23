@@ -6,8 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class InitiateDB {
-    public static void main(String[] args) {
-
+    public static void createDb(){
         String db_address = "jdbc:derby://localhost:1527/MBank;create=true";
 
         Connection connection = null;
@@ -41,6 +40,11 @@ public class InitiateDB {
                 e.printStackTrace();
             }
         }
+
+    }
+
+    public static void main(String[] args) {
+        createDb();
     }
 
     private static void createPropertiesTable(Statement statement) throws SQLException {
