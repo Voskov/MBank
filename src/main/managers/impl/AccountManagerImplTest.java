@@ -1,6 +1,6 @@
 package main.managers.impl;
 
-import classes.model.Account;
+import main.model.Account;
 import main.model.Client;
 import org.testng.annotations.Test;
 
