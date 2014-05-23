@@ -14,15 +14,14 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
         connectToDb();
     }
 
-    public void createAccount(Account acc) {
+    public void createAccount(Account account) {
         try {
-
-            sqlStatement = "INSERT INTO Accounts VALUES(" + acc.getAccount_id() + ", " + acc.getClient_id() + ", " + acc.getBalance() + ", " + acc.getCredit_limit() + ", '" + acc.getComment() + "')";
+            sqlStatement = "INSERT INTO Accounts VALUES(" + account.getAccount_id() + ", " + account.getClient_id() + ", " + account.getBalance() + ", " + account.getCredit_limit() + ", '" + account.getComment() + "')";
             stmt.executeUpdate(sqlStatement);
-            String msg = "Account " + acc.getAccount_id() + " was created on DB";
+            String msg = "Account " + account.getAccount_id() + " was created on DB";
             LOGGER.log(Level.INFO, msg);
         } catch (SQLIntegrityConstraintViolationException e) {
-            String msg = "Account" + acc.getAccount_id() + " already exists on DB. Client wasn't added";
+            String msg = "Account" + account.getAccount_id() + " already exists on DB. Client wasn't added";
             LOGGER.log(Level.WARNING, msg);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -31,14 +30,9 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
 
     @Override
     public void deleteAccount(Account account) {
-        try {
-            sqlStatement = "DELETE FROM Accounts WHERE account_id=" + account.getAccount_id();
-            stmt.executeUpdate(sqlStatement);
-            String msg = "Account " + account.getAccount_id() + " was deleted from DB";
-            LOGGER.log(Level.INFO, msg);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        sqlStr = "DELETE FROM Accounts WHERE account_id=" + account.getAccount_id();
+        String logMessage = "Account " + account.getAccount_id() + " was deleted from DB";
+        executeStatement(sqlStr, logMessage);
     }
 
     @Override
@@ -67,18 +61,6 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
 
     }
 
-    public void depositToAccount(Account account, double amount) {
-        try {
-            sqlStatement = "DELETE FROM Accounts WHERE account_id=" + account.getAccount_id();
-            stmt.executeUpdate(sqlStatement);
-            String msg = "Account " + account.getAccount_id() + " was deleted from DB";
-            LOGGER.log(Level.INFO, msg);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-
     public void createAccount(long id, long client_id, double balance, double credit_limit, String comment) {
         try {
             sqlStatement = "INSERT INTO Accounts VALUES(" + id + ", " + client_id + ", " + balance + ", " + credit_limit + ", '" + comment + "')";
@@ -95,14 +77,9 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
     }
 
     public void deleteAccount(long id) {
-        try {
-            sqlStatement = "DELETE FROM Accounts WHERE account_id=" + id;
-            stmt.executeUpdate(sqlStatement);
-            String msg = "Account " + id + " was deleted from DB";
-            LOGGER.log(Level.INFO, msg);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        sqlStr = "DELETE FROM Accounts WHERE account_id=" + id;
+        String logMsg = "Account " + id + " was deleted from DB";
+        executeStatement(sqlStr, logMsg);
     }
 
     public void withdrawFromAccount(long account_id, double withdraw_amount) {
@@ -174,4 +151,11 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
             e.printStackTrace();
         }
     }
+
+    public void deleteAllAccounts(){
+        sqlStr = "DELETE FROM Accounts";
+        String log_message = "All accounts were deleted";
+        executeStatement(sqlStatement, log_message);
+    }
+
 }

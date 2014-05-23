@@ -33,14 +33,11 @@ public class ClientManagetImplTest {
         clientManager.deleteAllClients();
     }
 
-
    @Test
     public void testSameClient(){
        Client client = populateClient();
        ClientManagerImpl clientManager = new ClientManagerImpl();
        clientManager.createClient(client);
        clientManager.createClient(client);
-
-
    }
 }

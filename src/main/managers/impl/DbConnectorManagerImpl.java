@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 
 public class DbConnectorManagerImpl{
+    protected String sqlStr;
     protected static Connection con;
     protected static Statement stmt;
     protected static Logger LOGGER = Logger.getLogger(DbConnectorManagerImpl.class.getName());
