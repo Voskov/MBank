@@ -11,8 +11,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class DbConnectorManagerImpl{
+public class DbConnectorManagerImpl {
     protected String sqlStr;
+    protected StringBuilder sqlStrBldr = new StringBuilder();
     protected static Connection con;
     protected static Statement stmt;
     protected static Logger LOGGER = Logger.getLogger(DbConnectorManagerImpl.class.getName());
@@ -40,7 +41,7 @@ public class DbConnectorManagerImpl{
         }
     }
 
-    public static void executeStatement(String statement, String logMessage){
+    public static void executeStatement(String statement, String logMessage) {
         try {
             stmt.executeUpdate(statement);
         } catch (SQLException e) {

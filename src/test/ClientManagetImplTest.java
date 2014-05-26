@@ -3,9 +3,17 @@ package test;
 import junit.framework.Assert;
 import main.managers.impl.ClientManagerImpl;
 import main.model.Client;
+import org.junit.After;
 import org.testng.annotations.Test;
 
 public class ClientManagetImplTest {
+
+    @After
+    public void after(){
+        ClientManagerImpl clientManager = new ClientManagerImpl();
+        cleanClientTable();
+        clientManager.disconnect();
+    }
 
     @Test
     public void testCreateNewUser(){
@@ -18,6 +26,7 @@ public class ClientManagetImplTest {
         Assert.assertEquals(client.getEmail(), new_client.getEmail());
 
         cleanClientTable();
+        clientManager.disconnect();
     }
 
     private Client populateClient() {
@@ -31,6 +40,7 @@ public class ClientManagetImplTest {
     private void cleanClientTable(){
         ClientManagerImpl clientManager = new ClientManagerImpl();
         clientManager.deleteAllClients();
+        clientManager.disconnect();
     }
 
    @Test
@@ -39,5 +49,6 @@ public class ClientManagetImplTest {
        ClientManagerImpl clientManager = new ClientManagerImpl();
        clientManager.createClient(client);
        clientManager.createClient(client);
+       clientManager.disconnect();
    }
 }
