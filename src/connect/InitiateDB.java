@@ -6,7 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class InitiateDB {
-    public static void createDb(){
+    public static void main(String[] args) {
+
         String db_address = "jdbc:derby://localhost:1527/MBank;create=true";
 
         Connection connection = null;
@@ -40,7 +41,6 @@ public class InitiateDB {
                 e.printStackTrace();
             }
         }
-
     }
 
     public static void main(String[] args) {
@@ -68,7 +68,27 @@ public class InitiateDB {
     }
 
     private static void createClientsTable(Statement statement) throws SQLException {
-        statement.executeUpdate("create table Clients(client_id BIGINT NOT NULL, client_name VARCHAR(20), password VARCHAR(20), type VARCHAR(9), address VARCHAR(50), email VARCHAR(20), phone VARCHAR(15), comment VARCHAR(50), PRIMARY KEY (client_id))");
-//        System.out.println("Clients was created");
+        statement.executeUpdate("create table Clients(client_id BIGINT NOT NULL, client_name VARCHAR(20), password VARCHAR(20), type INT, address VARCHAR(50), email VARCHAR(20), phone VARCHAR(15), comment VARCHAR(50), PRIMARY KEY (client_id))");
+        System.out.println("Clients was created");
+    }
+
+    private static void fillProperyTable(Statement statement) throws SQLException {
+        statement.executeUpdate("INSERT INTO Properties VALUES ('regular_deposit_rate', '10000')");
+        statement.executeUpdate("INSERT INTO Properties VALUES ('_deposit_rate', '100000')");
+        statement.executeUpdate("INSERT INTO Properties VALUES ('platinum_deposit_rate', '1000000')");
+        statement.executeUpdate("INSERT INTO Properties VALUES ('regular_deposit_commission', '0.015')");
+        statement.executeUpdate("INSERT INTO Properties VALUES ('gold_deposit_commission', '0.01')");
+        statement.executeUpdate("INSERT INTO Properties VALUES ('platinum_deposit_commission', '0.005')");
+        statement.executeUpdate("INSERT INTO Properties VALUES ('regular_deposit_credit', '100000')");
+        statement.executeUpdate("INSERT INTO Properties VALUES ('gold_deposit_credit', '1000000')");
+        statement.executeUpdate("INSERT INTO Properties VALUES ('platinum_deposit_credit', '99999999999999999999')"); //TODO - Do something better
+        statement.executeUpdate("INSERT INTO Properties VALUES ('commission_rate', '0.5')");
+        statement.executeUpdate("INSERT INTO Properties VALUES ('regular_daily_interest', '5.0/365')");
+        statement.executeUpdate("INSERT INTO Properties VALUES ('gold_daily_interest', '7.0/365')");
+        statement.executeUpdate("INSERT INTO Properties VALUES ('platinum_daily_interest', '8.0/365')");
+        statement.executeUpdate("INSERT INTO Properties VALUES ('pre_open_fee', '0.01')");
+        statement.executeUpdate("INSERT INTO Properties VALUES ('admin_username', 'system')");
+        statement.executeUpdate("INSERT INTO Properties VALUES ('admin_password', 'admin')");
+        System.out.println("properties was filled");
     }
 }
