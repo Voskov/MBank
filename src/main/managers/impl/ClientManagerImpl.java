@@ -1,6 +1,8 @@
 package main.managers.impl;
 import main.AccountType;
+import main.managers.AccountManager;
 import main.managers.ClientManager;
+import main.model.Account;
 import main.model.Client;
 
 import java.sql.ResultSet;
@@ -30,13 +32,22 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
         }
     }
 
-    public long createClient(Client client) {
+    @Override
+    public long createClient(Client client, Account account) {
+        AccountType accountType;
+        if (account.getBalance() > 100000){
+            accountType = AccountType.GOLD;
+        }else if (account.getBalance() > 1000000)
+            accountType = AccountType.PLATINUM;
+        else
+            accountType = AccountType.REGULAR;
         try {
-            String sqlStatement = "INSERT INTO Clients VALUES(" + client.getClient_id() + ", '" + client.getClient_name() + "', '" + client.getPassword() + "', '" + client.getAccountType().toString() + "', '" + client.getAddress() + "', '" + client.getEmail() + "', '" + client.getPhone() + "', '" + client.getComment() + "')";
+            String sqlStatement = "INSERT INTO Clients VALUES(" + client.getClient_id() + ", '" + client.getClient_name() + "', '" + client.getPassword() + "', '" + accountType.toString() + "', '" + client.getAddress() + "', '" + client.getEmail() + "', '" + client.getPhone() + "', '" + client.getComment() + "')";
             stmt.executeUpdate(sqlStatement);
             String msg = "Client " + client.getClient_name() + " was created on DB";
             LOGGER.log(Level.INFO, msg);
-
+            AccountManager accountManager = new AccountManagerImpl(stmt);
+            accountManager.createAccount(account);
         } catch (SQLIntegrityConstraintViolationException e) {
             String msg = "Client " + client.getClient_id() + " already exists on DB. Client wasn't added";
             LOGGER.log(Level.WARNING, msg);

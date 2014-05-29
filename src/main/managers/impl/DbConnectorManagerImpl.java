@@ -22,7 +22,6 @@ public class DbConnectorManagerImpl{
     public static void connectToDb() {
         String db_url = prop.getProperty("DB_ADDRESS") + "/" + prop.getProperty("DB_NAME");
         try {
-//            Connection con = DriverManager.getConnection(db_url);           // connect to the DB
             con = DriverManager.getConnection(db_url);           // connect to the DB
             System.out.println("Connected successfully to " + prop.getProperty("DB_NAME"));
             stmt = con.createStatement();

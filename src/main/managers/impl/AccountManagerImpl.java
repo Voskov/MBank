@@ -6,12 +6,17 @@ import main.model.Account;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.sql.Statement;
 import java.util.logging.Level;
 
 public class AccountManagerImpl extends DbConnectorManagerImpl implements AccountManager {
     private String sqlStatement;
     public AccountManagerImpl() {
         connectToDb();
+    }
+
+    public AccountManagerImpl(Statement stmt) {
+        DbConnectorManagerImpl.stmt = stmt;
     }
 
     public void createAccount(Account account) {

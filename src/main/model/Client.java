@@ -86,4 +86,37 @@ public class Client {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "client_id=" + client_id +
+                ", client_name='" + client_name + '\'' +
+                ", password='" + password + '\'' +
+                ", accountType=" + accountType +
+                ", address='" + address + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", comment='" + comment + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Client client = (Client) o;
+
+        if (client_id != client.client_id) return false;
+        if (accountType != client.accountType) return false;
+        if (address != null ? !address.equals(client.address) : client.address != null) return false;
+        if (client_name != null ? !client_name.equals(client.client_name) : client.client_name != null) return false;
+        if (comment != null ? !comment.equals(client.comment) : client.comment != null) return false;
+        if (email != null ? !email.equals(client.email) : client.email != null) return false;
+        if (password != null ? !password.equals(client.password) : client.password != null) return false;
+        if (phone != null ? !phone.equals(client.phone) : client.phone != null) return false;
+
+        return true;
+    }
 }
