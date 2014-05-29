@@ -12,11 +12,11 @@ public class Client {
     private String phone;
     private String comment;
 
-    public Client(long client_id, String client_name, String password, String accountType, String address, String email, String phone, String comment) {
+    public Client(long client_id, String client_name, String password, AccountType accountType, String address, String email, String phone, String comment) {
         this.client_id = client_id;
         this.client_name = client_name;
         this.password = password;
-        this.accountType = AccountType.GOLD.valueOf(accountType);
+        this.accountType = accountType;
         this.address = address;
         this.email = email;
         this.phone = phone;
@@ -85,5 +85,38 @@ public class Client {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "client_id=" + client_id +
+                ", client_name='" + client_name + '\'' +
+                ", password='" + password + '\'' +
+                ", accountType=" + accountType +
+                ", address='" + address + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", comment='" + comment + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Client client = (Client) o;
+
+        if (client_id != client.client_id) return false;
+        if (accountType != client.accountType) return false;
+        if (address != null ? !address.equals(client.address) : client.address != null) return false;
+        if (client_name != null ? !client_name.equals(client.client_name) : client.client_name != null) return false;
+        if (comment != null ? !comment.equals(client.comment) : client.comment != null) return false;
+        if (email != null ? !email.equals(client.email) : client.email != null) return false;
+        if (password != null ? !password.equals(client.password) : client.password != null) return false;
+        if (phone != null ? !phone.equals(client.phone) : client.phone != null) return false;
+
+        return true;
     }
 }

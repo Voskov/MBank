@@ -6,6 +6,7 @@ import main.model.Account;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.sql.Statement;
 import java.util.logging.Level;
 
 public class AccountManagerImpl extends DbConnectorManagerImpl implements AccountManager {
@@ -13,6 +14,10 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
 
     public AccountManagerImpl() {
         connectToDb();
+    }
+
+    public AccountManagerImpl(Statement stmt) {
+        DbConnectorManagerImpl.stmt = stmt;
     }
 
     public void createAccount(Account account) {
@@ -156,7 +161,7 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
     public void deleteAllAccounts() {
         sqlStr = "DELETE FROM Accounts";
         String log_message = "All accounts were deleted";
-        executeStatement(sqlStatement, log_message);
+        executeStatement(sqlStr, log_message);
     }
 
     @Override
