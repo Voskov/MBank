@@ -1,6 +1,6 @@
 package main.managers;
 
-public interface ProperyManager {
+public interface PropertyManager {
     String getProperty(String property);
     void setProperty(String property, String value);
 }

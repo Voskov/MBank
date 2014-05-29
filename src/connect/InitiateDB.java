@@ -71,7 +71,7 @@ public class InitiateDB {
 
     private static void fillProperyTable(Statement statement) throws SQLException {
         statement.executeUpdate("INSERT INTO Properties VALUES ('regular_deposit_rate', '10000')");
-        statement.executeUpdate("INSERT INTO Properties VALUES ('_deposit_rate', '100000')");
+        statement.executeUpdate("INSERT INTO Properties VALUES ('gold_deposit_rate', '100000')");
         statement.executeUpdate("INSERT INTO Properties VALUES ('platinum_deposit_rate', '1000000')");
         statement.executeUpdate("INSERT INTO Properties VALUES ('regular_deposit_commission', '0.015')");
         statement.executeUpdate("INSERT INTO Properties VALUES ('gold_deposit_commission', '0.01')");

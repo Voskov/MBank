@@ -1,6 +1,7 @@
 package test;
 
 import main.managers.impl.AccountManagerImpl;
+import main.model.Account;
 
 public class TestAccount {
     private static AccountManagerImpl AC = new AccountManagerImpl();
@@ -11,7 +12,8 @@ public class TestAccount {
 //        depositToAccount();
 //        withdraw();
 //        withdrawTooMuch();
-        checkBalanceTest();
+//        checkBalanceTest();
+        getAccountTest();
 
         AC.disconnect();
     }
@@ -41,5 +43,10 @@ public class TestAccount {
 
     static void checkBalanceTest() {
         AC.checkBalance(123456);
+    }
+
+    static void getAccountTest(){
+        Account ac = AC.getAccount(123456);
+        ac.toString();
     }
 }

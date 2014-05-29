@@ -1,11 +1,16 @@
 package main.managers.impl;
 
-import main.managers.ProperyManager;
+import main.managers.PropertyManager;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class PropertyManagerImpl extends DbConnectorManagerImpl implements ProperyManager{
+public class PropertyManagerImpl extends DbConnectorManagerImpl implements PropertyManager {
+
+
+    public PropertyManagerImpl() {
+        this.connectToDb();
+    }
 
     // This method receives the property name as a string
     // And returns the corresponding value as a string
@@ -30,6 +35,14 @@ public class PropertyManagerImpl extends DbConnectorManagerImpl implements Prope
     // And the new value as a string, ans sets the value to the property
     @Override
     public void setProperty(String property, String value) {
+        sqlStrBldr.append("UPDATE properties SET prop_value=");
+        sqlStrBldr.append(value);
+        sqlStrBldr.append("WHERE prop_key=");
+        sqlStrBldr.append(property);
+    }
 
+    public static void main(String[] args) {
+        PropertyManagerImpl pm = new PropertyManagerImpl();
+        System.out.println(pm.getProperty("regular_deposit_rate"));
     }
 }

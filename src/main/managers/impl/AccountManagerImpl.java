@@ -10,6 +10,7 @@ import java.util.logging.Level;
 
 public class AccountManagerImpl extends DbConnectorManagerImpl implements AccountManager {
     private String sqlStatement;
+
     public AccountManagerImpl() {
         connectToDb();
     }
@@ -152,10 +153,26 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
         }
     }
 
-    public void deleteAllAccounts(){
+    public void deleteAllAccounts() {
         sqlStr = "DELETE FROM Accounts";
         String log_message = "All accounts were deleted";
         executeStatement(sqlStatement, log_message);
+    }
+
+    @Override
+    public Account getAccount(long account_id) {
+        sqlStrBldr.append("SELECT * FROM accounts WHERE account_id=").append(account_id);
+        Account account = null;
+        try {
+            ResultSet resultSet = stmt.executeQuery(sqlStrBldr.toString());
+            if (resultSet.next()) {
+                account = new Account(resultSet.getLong(1), resultSet.getLong(2), resultSet.getDouble(3), resultSet.getDouble(4), resultSet.getString(5));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return account;
     }
 
 }
