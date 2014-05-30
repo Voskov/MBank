@@ -24,7 +24,9 @@ public interface ClientManager {
     void updateClientEmail(Client client, String email);
     void updateClientPhone(Client client, String phone);
 
-    Client findById(long id);
+    Client findClientById(long id);
+
+    Client findClientByClientName(String username);
 
     void deleteAllClients();
 }

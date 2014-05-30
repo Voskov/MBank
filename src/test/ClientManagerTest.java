@@ -13,7 +13,6 @@ public class ClientManagerTest {
 
     @BeforeClass
     public static void beforeClass() {
-        clientManager = new ClientManagerImpl();
         client = new Client(1234567, "Test Name", "pasword", AccountType.GOLD, "address 6", "test@email.com", "054-1234567", "comment");
 
     }
@@ -26,6 +25,7 @@ public class ClientManagerTest {
     @Before
     public void before() {
         DropTables.dropAllTables();
+        clientManager = new ClientManagerImpl();
         InitiateDB.createDb();
     }
 
@@ -36,38 +36,36 @@ public class ClientManagerTest {
     }
 
     @Test
-    public void testCreateNewUser() {
+    public void testCreateNewClient() {
         clientManager.createClient(client);
     }
 
     @Test
     public void testUpdateClient() {
         clientManager.createClient(client);
-        client.setPassword("newPassword");
+        String newPassword = "newPassword";
+        client.setPassword(newPassword);
         clientManager.updateClient(client);
-
+        Client dbClient = clientManager.findClientById(client.getClient_id());
+        Assert.assertEquals(newPassword, dbClient.getPassword());
     }
 
-    @Ignore
-    private Client populateClient() {
-        cleanClientTable();
-        ClientManagerImpl clientManager = new ClientManagerImpl();
-
+    @Test
+    public void testFindById(){
         clientManager.createClient(client);
-        return client;
+        Client dbClient = clientManager.findClientById(client.getClient_id());
+        Assert.assertTrue(dbClient.equals(client));
+        Assert.assertEquals(dbClient, client);
     }
 
-    @Ignore
-    private void cleanClientTable() {
-        ClientManagerImpl clientManager = new ClientManagerImpl();
-        clientManager.deleteAllClients();
+    @Test
+    public void testFindByUsername(){
+        clientManager.createClient(client);
+        Client dbClient = clientManager.findClientByClientName(client.getClient_name());
+        Assert.assertTrue(dbClient.equals(client));
+        Assert.assertEquals(dbClient, client);
+
     }
 
-    @Ignore
-    public void testSameClient() {
-        Client client = populateClient();
-        ClientManagerImpl clientManager = new ClientManagerImpl();
-        clientManager.createClient(client);
-        clientManager.createClient(client);
-    }
+
 }

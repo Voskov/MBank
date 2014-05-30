@@ -11,7 +11,7 @@ public class LoginLogoutServiceImpl implements LoginLogoutService {
     @Override
     public void logClientIn(String username, String password) throws Exception {
        ClientManager cm =  new ClientManagerImpl();
-        Client client = cm.findByUserName(username);
+        Client client = cm.findClientByClientName(username);
 
         if (client== null){
             throw new Exception("Client with this username does not exists");

@@ -13,7 +13,7 @@ public class ClientManagetImplTest {
         Client client = populateClient();
 
         ClientManagerImpl clientManager = new ClientManagerImpl();
-        Client new_client = clientManager.findById(client.getClient_id());
+        Client new_client = clientManager.findClientById(client.getClient_id());
         Assert.assertNotNull(new_client);
         Assert.assertEquals(client.getClient_name(), new_client.getClient_name());
         Assert.assertEquals(client.getEmail(), new_client.getEmail());
