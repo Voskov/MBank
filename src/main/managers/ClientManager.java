@@ -10,22 +10,21 @@ public interface ClientManager {
     void createClient(Client client);
 
     void updateClient(long client_id, String param, String value);
-    void deleteClient(long client_id);
-
     void updateClient(Client client);
 
     void updateClientAddress(long client_id, String address);
+
     void updateClientEmail(long client_id, String email);
     void updateClientPhone(long client_id, String phone);
-
-    void updateClient(Client client, String param, String value);
-    void deleteClient(Client client);
     void updateClientAddress(Client client, String address);
     void updateClientEmail(Client client, String email);
+    void updateClient(Client client, String param, String value);
     void updateClientPhone(Client client, String phone);
 
-    Client findClientById(long id);
+    void deleteClient(Client client);
+    void deleteClient(long client_id);
 
+    Client findClientById(long id);
     Client findClientByClientName(String username);
 
     void deleteAllClients();

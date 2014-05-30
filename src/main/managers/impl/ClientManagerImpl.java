@@ -151,15 +151,9 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
         }
     }
 
+    @Override
     public void updateClientAddress(Client client, String new_address) {
-        try {
-            String sqlStatement = "UPDATE Clients SET address=" + new_address + " WHERE client_id=" + client.getClient_id();
-            stmt.executeUpdate(sqlStatement);
-            String msg = "Client " + client.getClient_id() + " was updated";
-            LOGGER.log(Level.INFO, msg);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        updateClientAddress(client.getClient_id(), new_address);
     }
 
     @Override
@@ -174,15 +168,9 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
         }
     }
 
+    @Override
     public void updateClientEmail(Client client, String new_email) {
-        try {
-            String sqlStatement = "UPDATE Clients SET email=" + new_email + " WHERE client_id=" + client.getClient_id();
-            stmt.executeUpdate(sqlStatement);
-            String msg = "Client " + client.getClient_id() + " was updated";
-            LOGGER.log(Level.INFO, msg);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        updateClientEmail(client.getClient_id(), new_email);
     }
 
     @Override
@@ -198,14 +186,7 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
     }
 
     public void updateClientPhone(Client client, String new_phone) {
-        try {
-            String sqlStatement = "UPDATE Clients SET phone='" + new_phone + "' WHERE client_id=" + client.getClient_id();
-            stmt.executeUpdate(sqlStatement);
-            String msg = "Client " + client.getClient_id() + " was updated";
-            LOGGER.log(Level.INFO, msg);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        updateClientPhone(client.getClient_id(), new_phone);
     }
 
     public void deleteClient(long client_id) {
@@ -221,18 +202,9 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
     }
 
     public void deleteClient(Client client) {
-        try {
-            String sqlStatement = "DELETE FROM Clients WHERE client_id=" + client.getClient_id();
-            stmt.executeUpdate(sqlStatement);
-            String msg = "Client " + client.getClient_id() + " was deleted from DB";
-            LOGGER.log(Level.INFO, msg);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
+        deleteClient(client.getClient_id());
     }
 
-    //    public Client creteClientFromSqlResult(ResultSet res){
     public Client creteClientFromSqlResult(String sqlQuery) {
         try {
             ResultSet res = stmt.executeQuery(sqlQuery);
