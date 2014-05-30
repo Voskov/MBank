@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class InitiateDB {
-    public static void main(String[] args) {
+    public static void createDb() {
 
         String db_address = "jdbc:derby://localhost:1527/MBank;create=true";
 
@@ -68,7 +68,7 @@ public class InitiateDB {
     }
 
     private static void createClientsTable(Statement statement) throws SQLException {
-        statement.executeUpdate("create table Clients(client_id BIGINT NOT NULL, client_name VARCHAR(20), password VARCHAR(20), type INT, address VARCHAR(50), email VARCHAR(20), phone VARCHAR(15), comment VARCHAR(50), PRIMARY KEY (client_id))");
+        statement.executeUpdate("create table Clients(client_id BIGINT NOT NULL, client_name VARCHAR(20), password VARCHAR(20), type VARCHAR(10), address VARCHAR(50), email VARCHAR(20), phone VARCHAR(15), comment VARCHAR(50), PRIMARY KEY (client_id))");
         System.out.println("Clients was created");
     }
 

@@ -1,6 +1,7 @@
 package main.managers.impl;
 
-import classes.model.Account;
+import main.AccountType;
+import main.model.Account;
 import main.model.Client;
 import org.testng.annotations.Test;
 
@@ -10,16 +11,30 @@ public class AccountManagerImplTest {
 
     @Test
     public void testCreateAccount() throws Exception {
-        Client client = new Client(12345678, "Test Client", "testPassword", "GOLD", "Test address 9", "Euyfr@ufhvl.com", "054-76543", "Test Comment");
-        Account account = new Account(23456789, 12345678, 1000, 100000, "Comment");
+
+        populateAccountManager();
+
+        Client client = new Client(12345678, "Test Client", "testPassword", AccountType.GOLD, "Test address 9", "Euyfr@ufhvl.com", "054-76543", "Test Comment");
+       //   TODO change the undeRscore
         ClientManagerImpl clientManager = new ClientManagerImpl() ;
+        clientManager.createClient(client);
+
+        Account account = new Account(23456789, client.getClient_id(), 1000, 100000, "Comment");
         AccountManagerImpl accountManager = new AccountManagerImpl() ;
-        accountManager.deleteAllAccounts();
-        clientManager.createClient(client);
-        clientManager.createClient(client);
         accountManager.createAccount(account);
+
+
+        closeAllConnections(clientManager, accountManager);
+    }
+
+    private void closeAllConnections(ClientManagerImpl clientManager, AccountManagerImpl accountManager) {
         clientManager.disconnect();
         accountManager.disconnect();
+    }
+
+    private void populateAccountManager() {
+        AccountManagerImpl accountManager = new AccountManagerImpl() ;
+        accountManager.deleteAllAccounts();
     }
 
     @Test

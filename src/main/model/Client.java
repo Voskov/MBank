@@ -23,6 +23,10 @@ public class Client {
         this.comment = comment;
     }
 
+    public Client(){
+
+    }
+
     public void setClient_id(long client_id) {
         this.client_id = client_id;
     }

@@ -1,6 +1,7 @@
 package test;
 
 import junit.framework.Assert;
+import main.AccountType;
 import main.managers.impl.ClientManagerImpl;
 import main.model.Client;
 import org.testng.annotations.Test;
@@ -23,7 +24,7 @@ public class ClientManagetImplTest {
     private Client populateClient() {
         cleanClientTable();
         ClientManagerImpl clientManager = new ClientManagerImpl();
-        Client client = new Client(1234567, "Test Name", "pasword", "GOLD", "address 6", "test@email.com", "054-1234567", "comment");
+        Client client = new Client(1234567, "Test Name", "pasword", AccountType.GOLD, "address 6", "test@email.com", "054-1234567", "comment");
         clientManager.createClient(client);
         return client;
     }
