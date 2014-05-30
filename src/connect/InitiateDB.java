@@ -23,6 +23,7 @@ public class InitiateDB {
                 createDepositsTable(statement);
                 createActivitiesTable(statement);
                 createPropertiesTable(statement);
+                fillProperyTable(statement);
 
 
             } catch (SQLException e) {
@@ -48,7 +49,7 @@ public class InitiateDB {
     }
 
     private static void createPropertiesTable(Statement statement) throws SQLException {
-        statement.executeUpdate("create table Properties(prop_key VARCHAR(20), prop_value VARCHAR(20), PRIMARY KEY (prop_key))");
+        statement.executeUpdate("create table Properties(prop_key VARCHAR(40), prop_value VARCHAR(40), PRIMARY KEY (prop_key))");
 //        System.out.println("Properties was created");
     }
 
@@ -69,7 +70,7 @@ public class InitiateDB {
 
     private static void createClientsTable(Statement statement) throws SQLException {
         statement.executeUpdate("create table Clients(client_id BIGINT NOT NULL, client_name VARCHAR(20), password VARCHAR(20), type VARCHAR(10), address VARCHAR(50), email VARCHAR(20), phone VARCHAR(15), comment VARCHAR(50), PRIMARY KEY (client_id))");
-        System.out.println("Clients was created");
+//        System.out.println("Clients was created");
     }
 
     private static void fillProperyTable(Statement statement) throws SQLException {
@@ -89,6 +90,6 @@ public class InitiateDB {
         statement.executeUpdate("INSERT INTO Properties VALUES ('pre_open_fee', '0.01')");
         statement.executeUpdate("INSERT INTO Properties VALUES ('admin_username', 'system')");
         statement.executeUpdate("INSERT INTO Properties VALUES ('admin_password', 'admin')");
-        System.out.println("properties was filled");
+//        System.out.println("properties was filled");
     }
 }
