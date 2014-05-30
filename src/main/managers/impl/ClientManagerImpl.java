@@ -1,4 +1,5 @@
 package main.managers.impl;
+
 import main.AccountType;
 import main.managers.AccountManager;
 import main.managers.ClientManager;
@@ -16,15 +17,23 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
         connectToDb();
     }
 
-    public void createClient(long client_id, String client_name, String password, String type, String address, String email, String phone, String comment) {
+    public void createClient(long clientId, String clientName, String password, String type, String address, String email, String phone, String comment) {
         try {
-            String sqlStatement = "INSERT INTO Clients VALUES(" + client_id + ", '" + client_name + "', '" + password + "', '" + type + "', '" + address + "', '" + email + "', '" + phone + "', '" + comment + "')";
-            stmt.executeUpdate(sqlStatement);
-            String msg = "Client " + client_name + " was created on DB";
+            sqlStrBldr = new StringBuilder("INSERT INTO Clients VALUES(");
+            sqlStrBldr.append(clientId).append(", '");
+            sqlStrBldr.append(clientName).append(", '");
+            sqlStrBldr.append(password).append(", '");
+            sqlStrBldr.append(type).append(", '");
+            sqlStrBldr.append(address).append(", '");
+            sqlStrBldr.append(email).append(", '");
+            sqlStrBldr.append(phone).append(", '");
+            sqlStrBldr.append(comment).append(", '");
+            stmt.executeUpdate(sqlStrBldr.toString());
+            String msg = "Client " + clientName + " was created on DB";
             LOGGER.log(Level.INFO, msg);
 
         } catch (SQLIntegrityConstraintViolationException e) {
-            String msg = "Client " + client_id + " already exists on DB. Client wasn't added";
+            String msg = "Client " + clientId + " already exists on DB. Client wasn't added";
             LOGGER.log(Level.WARNING, msg);
         } catch (SQLException e) {
             LOGGER.log(Level.WARNING, e.getMessage());
@@ -35,9 +44,9 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
     @Override
     public long createClient(Client client, Account account) {
         AccountType accountType;
-        if (account.getBalance() > 100000){
+        if (account.getBalance() > 100000) {
             accountType = AccountType.GOLD;
-        }else if (account.getBalance() > 1000000)
+        } else if (account.getBalance() > 1000000)
             accountType = AccountType.PLATINUM;
         else
             accountType = AccountType.REGULAR;
@@ -59,7 +68,7 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
         return client.getClient_id();
     }
 
-    public void createClient(Client client){
+    public void createClient(Client client) {
         sqlStrBldr.append("INSERT INTO Clients VALUES(");
         sqlStrBldr.append(client.getClient_id()).append(", '");
         sqlStrBldr.append(client.getClient_name()).append("', '");
@@ -109,7 +118,7 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
     }
 
     @Override
-    public void updateClient(Client client){
+    public void updateClient(Client client) {
         sqlStrBldr = new StringBuilder("UPDATE clients SET");
         sqlStrBldr.append(" client_name='").append(client.getClient_name());
         sqlStrBldr.append("', password='").append(client.getPassword());
@@ -223,12 +232,11 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
 
     }
 
-    @Override
-    public Client findById(long client_id) {
-        String sqlStr = "SELECT * FROM Clients WHERE client_id=" + client_id;
+    //    public Client creteClientFromSqlResult(ResultSet res){
+    public Client creteClientFromSqlResult(String sqlQuery) {
         try {
-            ResultSet res = stmt.executeQuery(sqlStr);
-            if (res.next()){
+            ResultSet res = stmt.executeQuery(sqlQuery);
+            if (res.next()) {
                 long id = res.getLong(1);
                 String name = res.getString(2);
                 String password = res.getString(3);
@@ -241,13 +249,27 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
                 return new Client(id, name, password, accountType, address, email, phone, comment);
             }
         } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Could not create Client");
             e.printStackTrace();
         }
         return null;
     }
 
+
     @Override
-    public void deleteAllClients(){
+    public Client findClientById(long clientId) {
+        sqlStrBldr = new StringBuilder("SELECT * FROM Clients WHERE client_id=").append(clientId);
+        return creteClientFromSqlResult(sqlStrBldr.toString());
+    }
+
+    @Override
+    public Client findClientByClientName(String clientName) {
+        sqlStrBldr = new StringBuilder("SELECT * FROM Clients WHERE client_name='").append(clientName).append("'");
+        return creteClientFromSqlResult(sqlStrBldr.toString());
+    }
+
+    @Override
+    public void deleteAllClients() {
         String sqlStr = "DELETE FROM Clients";
         String logMessage = "All clients were deleted";
         DbConnectorManagerImpl.executeStatement(sqlStr, logMessage);
