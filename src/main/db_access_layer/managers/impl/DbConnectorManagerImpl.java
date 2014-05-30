@@ -1,4 +1,4 @@
-package main.managers.impl;
+package main.db_access_layer.managers.impl;
 
 import config.ImportDbSettings;
 

@@ -1,6 +1,6 @@
-package main.managers.impl;
+package main.db_access_layer.managers.impl;
 
-import main.managers.PropertyManager;
+import main.db_access_layer.managers.PropertyManager;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

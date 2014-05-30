@@ -2,7 +2,7 @@ package test;
 
 import junit.framework.Assert;
 import main.AccountType;
-import main.managers.impl.ClientManagerImpl;
+import main.db_access_layer.managers.impl.ClientManagerImpl;
 import main.model.Client;
 import org.testng.annotations.Test;
 

@@ -1,6 +1,6 @@
-package main.managers.impl;
+package main.db_access_layer.managers.impl;
 
-import main.managers.AccountManager;
+import main.db_access_layer.managers.AccountManager;
 import main.model.Account;
 
 import java.sql.ResultSet;

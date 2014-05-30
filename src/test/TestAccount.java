@@ -1,6 +1,6 @@
 package test;
 
-import main.managers.impl.AccountManagerImpl;
+import main.db_access_layer.managers.impl.AccountManagerImpl;
 import main.model.Account;
 
 public class TestAccount {

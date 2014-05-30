@@ -1,4 +1,4 @@
-package main.managers;
+package main.db_access_layer.managers;
 
 import main.model.Account;
 import main.model.Client;

@@ -1,8 +1,8 @@
 package test;
 
 import main.AccountType;
-import main.managers.impl.AccountManagerImpl;
-import main.managers.impl.ClientManagerImpl;
+import main.db_access_layer.managers.impl.AccountManagerImpl;
+import main.db_access_layer.managers.impl.ClientManagerImpl;
 import main.model.Account;
 import main.model.Client;
 import org.junit.*;

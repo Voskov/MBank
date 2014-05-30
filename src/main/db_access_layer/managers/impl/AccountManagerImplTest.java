@@ -1,4 +1,4 @@
-package main.managers.impl;
+package main.db_access_layer.managers.impl;
 
 import connect.DropTables;
 import connect.InitiateDB;
@@ -9,8 +9,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.testng.annotations.Test;
-
-import static org.testng.Assert.*;
 
 public class AccountManagerImplTest {
     AccountManagerImpl accountManager = null;

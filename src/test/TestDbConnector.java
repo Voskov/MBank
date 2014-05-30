@@ -1,7 +1,7 @@
 package test;
 
-import main.managers.impl.AccountManagerImpl;
-import main.managers.impl.AcitivityManagerImpl;
+import main.db_access_layer.managers.impl.AccountManagerImpl;
+import main.db_access_layer.managers.impl.AcitivityManagerImpl;
 import main.model.Account;
 import main.model.Activity;
 

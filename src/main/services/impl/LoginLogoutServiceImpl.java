@@ -1,8 +1,8 @@
 package main.services.impl;
 
 import main.MBank;
-import main.managers.ClientManager;
-import main.managers.impl.ClientManagerImpl;
+import main.db_access_layer.managers.ClientManager;
+import main.db_access_layer.managers.impl.ClientManagerImpl;
 import main.model.Client;
 import main.services.LoginLogoutService;
 
