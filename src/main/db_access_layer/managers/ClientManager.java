@@ -24,8 +24,9 @@ public interface ClientManager {
     void deleteClient(Client client);
     void deleteClient(long client_id);
 
-    Client findClientById(long id);
-    Client findClientByClientName(String username);
+    Client findClient(long id);
+    Client findClient(String username);
+    Client findClient(Client client);
 
     void deleteAllClients();
 }

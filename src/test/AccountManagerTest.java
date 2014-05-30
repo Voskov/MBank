@@ -1,5 +1,7 @@
 package test;
 
+import connect.DropTables;
+import connect.InitiateDB;
 import main.AccountType;
 import main.db_access_layer.managers.impl.AccountManagerImpl;
 import main.db_access_layer.managers.impl.ClientManagerImpl;
@@ -8,47 +10,49 @@ import main.model.Client;
 import org.junit.*;
 
 
-public class AccountManagerTest extends AbstractTest{
-    ClientManagerImpl clientManager = null;
-    AccountManagerImpl accountManager = null;
-    Client client = null;
-    Account account = null;
+public class AccountManagerTest{
+    private static ClientManagerImpl clientManager = null;
+    private static AccountManagerImpl accountManager = null;
+    private static Client testClient = null;
+    private static Account testAccount = null;
 
     @BeforeClass
-    public void beforeClass(){
-        client = new Client(12345678, "Test Client", "testPassword", AccountType.GOLD, "Test address 9", "Euyfr@ufhvl.com", "054-76543", "Test Comment");
-        account = new Account(23456789, 12345678, 1000, 100000, "Comment");
+    public static void beforeClass(){
+        testClient = new Client(12345678, "Test Client", "testPassword", AccountType.GOLD, "Test address 9", "Euyfr@ufhvl.com", "054-76543", "Test Comment");
+        testAccount = new Account(23456789, 12345678, 1000, 100000, "Comment");
 
         clientManager = new ClientManagerImpl() ;
         accountManager = new AccountManagerImpl() ;
     }
 
+    @AfterClass
+    public static void afterClass(){
+        clientManager.disconnect();
+        accountManager.disconnect();
+    }
+
     @Before
     public void before(){
-        System.out.println("Before");
-        dropTables();
-        createTables();
+        DropTables.dropAllTables();
+        InitiateDB.createDb();
 
-        clientManager.createClient(client);
-        accountManager.createAccount(account);
+        clientManager.createClient(testClient);
+        accountManager.createAccount(testAccount);
 
     }
 
     @After
     public void after(){
-        System.out.println("After");
-//        dropTables();
-//        createTables();
     }
 
 
     @Test
     public void testDeleteAccountById() throws Exception {
-        accountManager.deleteAccount(account.getAccount_id());
+        accountManager.deleteAccount(testAccount.getAccount_id());
     }
 
     @Test void deleteAccountByAccount(){
-        accountManager.deleteAccount(account);
+        accountManager.deleteAccount(testAccount);
     }
 
     @Ignore

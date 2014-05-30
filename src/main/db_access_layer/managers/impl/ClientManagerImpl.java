@@ -229,15 +229,20 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
 
 
     @Override
-    public Client findClientById(long clientId) {
+    public Client findClient(long clientId) {
         sqlStrBldr = new StringBuilder("SELECT * FROM Clients WHERE client_id=").append(clientId);
         return creteClientFromSqlResult(sqlStrBldr.toString());
     }
 
     @Override
-    public Client findClientByClientName(String clientName) {
+    public Client findClient(String clientName) {
         sqlStrBldr = new StringBuilder("SELECT * FROM Clients WHERE client_name='").append(clientName).append("'");
         return creteClientFromSqlResult(sqlStrBldr.toString());
+    }
+
+    @Override
+    public Client findClient(Client client){
+        return findClient(client.getClient_id());
     }
 
     @Override

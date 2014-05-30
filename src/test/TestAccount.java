@@ -3,6 +3,7 @@ package test;
 import main.db_access_layer.managers.impl.AccountManagerImpl;
 import main.model.Account;
 
+@Deprecated
 public class TestAccount {
     private static AccountManagerImpl AC = new AccountManagerImpl();
 
@@ -46,7 +47,7 @@ public class TestAccount {
     }
 
     static void getAccountTest(){
-        Account ac = AC.getAccount(123456);
+        Account ac = AC.findAccount(123456);
         ac.toString();
     }
 }

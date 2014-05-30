@@ -12,5 +12,9 @@ public interface AccountManager {
     void withdrawFromAccount(Account account, double withdraw_amount);
     void depositToAccount(long account_id, double deposit_amount);
 
-    Account getAccount(long account_id);
+    void deleteAllAccounts();
+
+
+    Account findAccount(long account_id);
+    Account findAccount(Account account);
 }
