@@ -1,19 +1,39 @@
 package main.managers.impl;
 
+import connect.DropTables;
+import connect.InitiateDB;
 import main.AccountType;
 import main.model.Account;
 import main.model.Client;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.*;
 
 public class AccountManagerImplTest {
+    AccountManagerImpl accountManager = null;
+
+    @BeforeClass
+    public void beforeClass(){
+        AccountManagerImpl accountManager = new AccountManagerImpl() ;
+    }
+
+    @AfterClass
+    public void afterClass(){
+        accountManager.disconnect();
+    }
+
+    @Before
+    public void before(){
+        DropTables.dropAllTables();
+        InitiateDB.createDb();
+    }
+
 
     @Test
     public void testCreateAccount() throws Exception {
-
-        populateAccountManager();
-
         Client client = new Client(12345678, "Test Client", "testPassword", AccountType.GOLD, "Test address 9", "Euyfr@ufhvl.com", "054-76543", "Test Comment");
        //   TODO change the undeRscore
         ClientManagerImpl clientManager = new ClientManagerImpl() ;
@@ -30,11 +50,6 @@ public class AccountManagerImplTest {
     private void closeAllConnections(ClientManagerImpl clientManager, AccountManagerImpl accountManager) {
         clientManager.disconnect();
         accountManager.disconnect();
-    }
-
-    private void populateAccountManager() {
-        AccountManagerImpl accountManager = new AccountManagerImpl() ;
-        accountManager.deleteAllAccounts();
     }
 
     @Test
