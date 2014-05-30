@@ -1,4 +1,4 @@
-package Managers;
+package main.managers;
 
 
 import main.DepositType;
