@@ -1,6 +1,6 @@
-package main.managers.impl;
+package main.db_access_layer.managers.impl;
 
-import main.managers.DepositManager;
+import main.db_access_layer.managers.DepositManager;
 import main.model.Deposit;
 
 import java.sql.ResultSet;

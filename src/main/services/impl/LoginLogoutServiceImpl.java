@@ -1,8 +1,8 @@
 package main.services.impl;
 
 import main.MBank;
-import main.managers.ClientManager;
-import main.managers.impl.ClientManagerImpl;
+import main.db_access_layer.managers.ClientManager;
+import main.db_access_layer.managers.impl.ClientManagerImpl;
 import main.model.Client;
 import main.services.LoginLogoutService;
 
@@ -11,7 +11,7 @@ public class LoginLogoutServiceImpl implements LoginLogoutService {
     @Override
     public void logClientIn(String username, String password) throws Exception {
        ClientManager cm =  new ClientManagerImpl();
-        Client client = cm.findClientByClientName(username);
+        Client client = cm.findClient(username);
 
         if (client== null){
             throw new Exception("Client with this username does not exists");

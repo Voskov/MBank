@@ -1,4 +1,4 @@
-package main.managers;
+package main.db_access_layer.managers;
 
 public interface PropertyManager {
     String getProperty(String property);

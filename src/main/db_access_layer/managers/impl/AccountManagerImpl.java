@@ -1,6 +1,6 @@
-package main.managers.impl;
+package main.db_access_layer.managers.impl;
 
-import main.managers.AccountManager;
+import main.db_access_layer.managers.AccountManager;
 import main.model.Account;
 
 import java.sql.ResultSet;
@@ -42,40 +42,50 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
     }
 
     @Override
-    public void withdrawFromAccount(Account account, double withdraw_amount) {
-        sqlStatement = "Select balance, credit_limit FROM Accounts WHERE account_id=" + account.getAccount_id();
-        try {
-            ResultSet res = stmt.executeQuery(sqlStatement);
-            double balance, cred_lim = 0, new_balance = 0;
-            if (res.next()) {
-                balance = res.getDouble(1);
-                cred_lim = res.getDouble(2);
-                new_balance = balance - withdraw_amount;
-            }
-            if (new_balance >= cred_lim) {
-                sqlStatement = "UPDATE Accounts SET balance=" + new_balance;
-                stmt.executeUpdate(sqlStatement);
-                String msg = withdraw_amount + " was withdrawn from account " + account.getAccount_id() + ". The new balance is " + new_balance;
-                LOGGER.log(Level.INFO, msg);
-            } else {
-                String msg = "Your credit limit isn't large enough to withdraw " + withdraw_amount;
-                LOGGER.log(Level.INFO, msg);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public void withdrawFromAccount(Account account, double withdraw_amount){
+        Account dbAccount = findAccount(account);
 
     }
 
-    public void createAccount(long id, long client_id, double balance, double credit_limit, String comment) {
+//    public void withdrawFromAccount(Account account, double withdraw_amount) {
+//        sqlStrBldr = new StringBuilder("Select balance, credit_limit FROM Accounts WHERE account_id=").append(account.getAccount_id());
+//        try {
+//            ResultSet res = stmt.executeQuery(sqlStrBldr.toString());
+//            double balance, cred_lim = 0, new_balance = 0;
+//            if (res.next()) {
+//                balance = res.getDouble(1);
+//                cred_lim = res.getDouble(2);
+//                new_balance = balance - withdraw_amount;
+//            }
+//            if (new_balance >= cred_lim) {
+//                sqlStatement = "UPDATE Accounts SET balance=" + new_balance;
+//                stmt.executeUpdate(sqlStatement);
+//                String msg = withdraw_amount + " was withdrawn from account " + account.getAccount_id() + ". The new balance is " + new_balance;
+//                LOGGER.log(Level.INFO, msg);
+//            } else {
+//                String msg = "Your credit limit isn't large enough to withdraw " + withdraw_amount;
+//                LOGGER.log(Level.INFO, msg);
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
+
+    public void createAccount(long accountId, long clientId, double balance, double creditLimit, String comment) {
         try {
-            sqlStatement = "INSERT INTO Accounts VALUES(" + id + ", " + client_id + ", " + balance + ", " + credit_limit + ", '" + comment + "')";
-            stmt.executeUpdate(sqlStatement);
-            String msg = "Account " + id + " was created on DB";
+            sqlStrBldr = new StringBuilder("INSERT INTO Accounts VALUES(");
+            sqlStrBldr.append(accountId).append(", ");
+            sqlStrBldr.append(clientId).append(", ");
+            sqlStrBldr.append(balance).append(", ");
+            sqlStrBldr.append(creditLimit).append(", '");
+            sqlStrBldr.append(comment).append("')");
+            stmt.executeUpdate(sqlStrBldr.toString());
+            String msg = "Account " + accountId + " was created on DB";
             LOGGER.log(Level.INFO, msg);
 
         } catch (SQLIntegrityConstraintViolationException e) {
-            String msg = "Account" + id + " already exists on DB. Client wasn't added";
+            String msg = "Account" + accountId + " already exists on DB. Client wasn't added";
             LOGGER.log(Level.WARNING, msg);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -158,6 +168,7 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
         }
     }
 
+    @Override
     public void deleteAllAccounts() {
         sqlStr = "DELETE FROM Accounts";
         String log_message = "All accounts were deleted";
@@ -165,7 +176,7 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
     }
 
     @Override
-    public Account getAccount(long account_id) {
+    public Account findAccount(long account_id) {
         sqlStrBldr.append("SELECT * FROM accounts WHERE account_id=").append(account_id);
         Account account = null;
         try {
@@ -176,8 +187,17 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return account;
     }
 
+    public Account findAccount(Account account) {
+        return findAccount(account.getAccount_id());
+    }
+
+    public void updateAccount(Account account) {
+        sqlStrBldr = new StringBuilder("UPDATE Accounts SET ") ;
+        sqlStrBldr.append("balance=").append(account.getBalance());
+        sqlStrBldr.append(", credit_limit=").append(account.getCredit_limit());
+        sqlStrBldr.append(", comment='").append(account.getComment()).append("')");
+    }
 }

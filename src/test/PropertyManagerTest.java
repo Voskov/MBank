@@ -1,11 +1,7 @@
 package test;
 
-import main.managers.PropertyManager;
-import main.managers.impl.PropertyManagerImpl;
-import org.junit.Before;
+import main.db_access_layer.managers.impl.PropertyManagerImpl;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class PropertyManagerTest {
 
