@@ -1,13 +1,15 @@
 package test;
 
-import connect.DropTables;
-import connect.InitiateDB;
+import init.DropTables;
+import init.InitiateDB;
 import main.AccountType;
 import main.db_access_layer.managers.impl.AccountManagerImpl;
 import main.db_access_layer.managers.impl.ClientManagerImpl;
 import main.model.Account;
 import main.model.Client;
 import org.junit.*;
+import org.junit.Assert;
+import org.junit.Test;
 
 
 public class AccountManagerTest {
@@ -48,11 +50,27 @@ public class AccountManagerTest {
     @Test
     public void testDeleteAccountById() throws Exception {
         accountManager.deleteAccount(testAccount.getAccount_id());
+        Assert.assertEquals(0, accountManager.countAllAccounts());
     }
 
     @Test
-    public void deleteAccountByAccount() {
+    public void testdeleteAccountByAccount() {
         accountManager.deleteAccount(testAccount);
+        Assert.assertEquals(0, accountManager.countAllAccounts());
     }
 
+    @Test
+    public void testFindAccount(){
+        Account dbAccount = accountManager.findAccount(testAccount);
+        Assert.assertEquals(testAccount, dbAccount);
+    }
+
+    @Test
+    public void testUpdateAccount(){
+        double newBalance = 7263;
+        testAccount.setBalance(newBalance);
+        accountManager.updateAccount(testAccount);
+        Account dbAccount = accountManager.findAccount(testAccount);
+        Assert.assertEquals(testAccount, dbAccount);
+    }
 }

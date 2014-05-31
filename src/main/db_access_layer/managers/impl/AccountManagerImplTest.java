@@ -1,7 +1,7 @@
 package main.db_access_layer.managers.impl;
 
-import connect.DropTables;
-import connect.InitiateDB;
+import init.DropTables;
+import init.InitiateDB;
 import main.AccountType;
 import main.model.Account;
 import main.model.Client;

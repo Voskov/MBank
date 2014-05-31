@@ -1,7 +1,7 @@
 package test;
 
-import connect.DropTables;
-import connect.InitiateDB;
+import init.DropTables;
+import init.InitiateDB;
 
 public class AbstractTest {
     public void dropTables(){

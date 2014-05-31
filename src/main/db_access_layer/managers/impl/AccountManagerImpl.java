@@ -200,4 +200,17 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
         sqlStrBldr.append(", credit_limit=").append(account.getCredit_limit());
         sqlStrBldr.append(", comment='").append(account.getComment()).append("')");
     }
+
+    public long countAllAccounts(){
+        sqlStrBldr = new StringBuilder("SELECT cuont(*) FROM Accounts");
+        try {
+            ResultSet res = stmt.executeQuery(sqlStrBldr.toString());
+            if (res.next()){
+                return res.getLong(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }
