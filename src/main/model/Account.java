@@ -68,4 +68,20 @@ public class Account {
                 ", comment='" + comment + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Account account = (Account) o;
+
+        if (account_id != account.account_id) return false;
+        if (Double.compare(account.balance, balance) != 0) return false;
+        if (client_id != account.client_id) return false;
+        if (Double.compare(account.credit_limit, credit_limit) != 0) return false;
+        if (comment != null ? !comment.equals(account.comment) : account.comment != null) return false;
+
+        return true;
+    }
 }

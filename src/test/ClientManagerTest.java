@@ -70,4 +70,11 @@ public class ClientManagerTest {
         Client dbClient = clientManager.findClient(client);
         Assert.assertEquals(dbClient, client);
     }
+
+    @Test
+    public void testGenerateId(){
+        clientManager.createClient(client);
+        long id = clientManager.generateId();
+        System.out.println(id);
+    }
 }

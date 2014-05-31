@@ -29,4 +29,6 @@ public interface ClientManager {
     Client findClient(Client client);
 
     void deleteAllClients();
+
+    long generateId();
 }

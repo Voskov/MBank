@@ -1,8 +1,6 @@
 package test;
 
-import junit.framework.Assert;
-import main.MBank;
-import main.model.Client;
+import main.services.MBank;
 import org.junit.Test;
 
 /**

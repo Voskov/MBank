@@ -177,7 +177,7 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
 
     @Override
     public Account findAccount(long account_id) {
-        sqlStrBldr.append("SELECT * FROM accounts WHERE account_id=").append(account_id);
+        sqlStrBldr = new StringBuilder("SELECT * FROM accounts WHERE account_id=").append(account_id);
         Account account = null;
         try {
             ResultSet resultSet = stmt.executeQuery(sqlStrBldr.toString());
@@ -198,11 +198,20 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
         sqlStrBldr = new StringBuilder("UPDATE Accounts SET ") ;
         sqlStrBldr.append("balance=").append(account.getBalance());
         sqlStrBldr.append(", credit_limit=").append(account.getCredit_limit());
-        sqlStrBldr.append(", comment='").append(account.getComment()).append("')");
+        sqlStrBldr.append(", comment='").append(account.getComment()).append("'");
+        try {
+            stmt.executeUpdate(sqlStrBldr.toString());
+            String msg = "Account " + account.getAccount_id() + " was updated.";
+            LOGGER.log(Level.INFO, msg);
+        } catch (SQLException e) {
+            String msg = "Account " + account.getAccount_id() + " could not be updated.";
+            LOGGER.log(Level.WARNING, msg);
+            e.printStackTrace();
+        }
     }
 
     public long countAllAccounts(){
-        sqlStrBldr = new StringBuilder("SELECT cuont(*) FROM Accounts");
+        sqlStrBldr = new StringBuilder("SELECT count(*) FROM Accounts");
         try {
             ResultSet res = stmt.executeQuery(sqlStrBldr.toString());
             if (res.next()){

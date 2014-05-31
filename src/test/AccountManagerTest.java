@@ -13,7 +13,6 @@ import org.junit.Test;
 
 
 public class AccountManagerTest {
-    private static ClientManagerImpl clientManager = null;
     private static AccountManagerImpl accountManager = null;
     private static Client testClient = null;
     private static Account testAccount = null;
@@ -22,13 +21,10 @@ public class AccountManagerTest {
     public static void beforeClass() {
         testClient = new Client(12345678, "Test Client", "testPassword", AccountType.GOLD, "Test address 9", "Euyfr@ufhvl.com", "054-76543", "Test Comment");
         testAccount = new Account(23456789, 12345678, 1000, 100000, "Comment");
-
-
     }
 
     @AfterClass
     public static void afterClass() {
-        clientManager.disconnect();
         accountManager.disconnect();
     }
 
@@ -36,9 +32,7 @@ public class AccountManagerTest {
     public void before() {
         DropTables.dropAllTables();
         InitiateDB.createDb();
-        clientManager = new ClientManagerImpl();
         accountManager = new AccountManagerImpl();
-        clientManager.createClient(testClient);
         accountManager.createAccount(testAccount);
     }
 
@@ -62,7 +56,7 @@ public class AccountManagerTest {
     @Test
     public void testFindAccount(){
         Account dbAccount = accountManager.findAccount(testAccount);
-        Assert.assertEquals(testAccount, dbAccount);
+        Assert.assertTrue(testAccount.equals(dbAccount));
     }
 
     @Test
@@ -71,6 +65,6 @@ public class AccountManagerTest {
         testAccount.setBalance(newBalance);
         accountManager.updateAccount(testAccount);
         Account dbAccount = accountManager.findAccount(testAccount);
-        Assert.assertEquals(testAccount, dbAccount);
+        Assert.assertTrue(testAccount.equals(dbAccount));
     }
 }

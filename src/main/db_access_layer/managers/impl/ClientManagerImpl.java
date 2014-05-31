@@ -241,7 +241,7 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
     }
 
     @Override
-    public Client findClient(Client client){
+    public Client findClient(Client client) {
         return findClient(client.getClient_id());
     }
 
@@ -250,6 +250,19 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
         String sqlStr = "DELETE FROM Clients";
         String logMessage = "All clients were deleted";
         DbConnectorManagerImpl.executeStatement(sqlStr, logMessage);
+    }
+
+    @Override
+    public long generateId() {
+        sqlStrBldr = new StringBuilder("SELECT MAX(client_id) FROM Clients");
+        try {
+            ResultSet res = stmt.executeQuery(sqlStrBldr.toString());
+            if (res.next())
+                return res.getLong(1) + 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }
 

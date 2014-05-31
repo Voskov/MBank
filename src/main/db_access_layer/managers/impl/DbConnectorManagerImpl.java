@@ -48,5 +48,4 @@ public class DbConnectorManagerImpl {
         }
         LOGGER.log(Level.INFO, logMessage);
     }
-
 }
