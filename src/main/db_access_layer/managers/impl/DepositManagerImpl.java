@@ -18,8 +18,6 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
         connectToDb();
     }
 
-
-
     @Override
     public long createNewDeposit(Deposit deposit) {
         try {
@@ -36,7 +34,6 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
         }
         return 0L;
     }
-
 
     //TODO should be part of  an interface
     @Override
@@ -64,7 +61,7 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
                 if (today.compareTo(closing_date) < 0) {
                     //TODO - implement the whole interest
                     //TODO  implement with string builder
-                    StringBuilder sb  = new StringBuilder();
+                    StringBuilder sb = new StringBuilder();
 
                     msg = "The closing date of deposit " + deposit_id + " is " + closing_date_string +
                             ". Therefore a commission was charged.";
@@ -82,4 +79,38 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
         }
     }
 
+    @Override
+    public Deposit findDeposit(long depositId){
+        sqlStrBldr = new StringBuilder("SELECT * FROM Deposits WHERE deposit_id=").append(depositId);
+        try{
+            ResultSet res = stmt.executeQuery(sqlStrBldr.toString());
+        } catch (SQLException e) {
+            String msg = "Could not find the requested deposit";
+            LOGGER.log(Level.WARNING, msg);
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Deposit findDeposit(Deposit deposit){
+        return findDeposit(deposit.getDeposit_id());
+    }
+
+    public void updateDeposit(Deposit deposit){
+        sqlStrBldr = new StringBuilder("UPDATE Deposits SET ");
+        sqlStrBldr.append("balance=").append(deposit.getBalance());
+        sqlStrBldr.append(", type='").append(deposit.getType());
+        sqlStrBldr.append("', estimate_balance=").append(deposit.getBalance());
+        sqlStrBldr.append(", closing_date=").append(deposit.getClosing_date());
+        try {
+            stmt.executeUpdate(sqlStrBldr.toString());
+            String msg = "Deposit " + deposit.getDeposit_id() + " was updated";
+            LOGGER.log(Level.INFO, msg);
+        } catch (SQLException e) {
+            String msg = "Deposit " + deposit.getDeposit_id() + " could not be updated";
+            LOGGER.log(Level.WARNING, msg);
+            e.printStackTrace();
+        }
+    }
 }
