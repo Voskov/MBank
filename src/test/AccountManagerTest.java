@@ -8,8 +8,6 @@ import main.db_access_layer.managers.impl.ClientManagerImpl;
 import main.model.Account;
 import main.model.Client;
 import org.junit.*;
-import org.junit.Assert;
-import org.junit.Test;
 
 
 public class AccountManagerTest {

@@ -7,6 +7,7 @@ import main.db_access_layer.managers.impl.ClientManagerImpl;
 import main.model.Client;
 import org.junit.*;
 
+
 public class ClientManagerTest {
     private static Client client = null;
     private static ClientManagerImpl clientManager = null;
@@ -66,14 +67,8 @@ public class ClientManagerTest {
     @Test
     public void testFindByClient(){
         clientManager.createClient(client);
+        client.setClient_id(1);
         Client dbClient = clientManager.findClient(client);
         Assert.assertEquals(dbClient, client);
-    }
-
-    @Test
-    public void testGenerateId(){
-        clientManager.createClient(client);
-        long id = clientManager.generateId();
-        System.out.println(id);
     }
 }
