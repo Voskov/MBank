@@ -4,9 +4,6 @@ import main.model.Account;
 import main.model.Client;
 import main.services.AdminAction;
 
-/**
- * Created by Einstine on 04/06/2014.
- */
 public class AdminActionImpl implements AdminAction {
     @Override
     public Client addNewClient() {
