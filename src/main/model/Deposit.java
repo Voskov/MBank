@@ -16,7 +16,7 @@ public class Deposit {
     private Date opening_date;
     private Date closing_date;
 
-    public long getDeposit_id() {
+    public long getDepositId() {
         return deposit_id;
     }
 
@@ -56,7 +56,7 @@ public class Deposit {
         this.estimated_balance = estimated_balance;
     }
 
-    public Date getOpening_date() {
+    public Date getOpeningDate() {
         return opening_date;    //TODO
     }
 
@@ -64,7 +64,7 @@ public class Deposit {
         this.opening_date = opening_date;
     }
 
-    public Date getClosing_date() {
+    public Date getClosingDate() {
         return closing_date;    //TODO
     }
 
