@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class DropTables {
+public class DropDb {
 
     public static void dropAllTables(){
         String db_address = "jdbc:derby://localhost:1527/MBank;create=true";

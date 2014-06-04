@@ -11,7 +11,7 @@ public class InitiateDB {
     }
 
     public static void restartDb(){
-        DropTables.dropAllTables();
+        DropDb.dropAllTables();
         createDb();
     }
 

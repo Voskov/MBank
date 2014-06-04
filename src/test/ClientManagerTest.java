@@ -1,6 +1,6 @@
 package test;
 
-import init.DropTables;
+import init.DropDb;
 import init.InitiateDB;
 import main.AccountType;
 import main.db_access_layer.managers.impl.ClientManagerImpl;
@@ -24,14 +24,14 @@ public class ClientManagerTest {
 
     @Before
     public void before() {
-        DropTables.dropAllTables();
+        DropDb.dropAllTables();
         clientManager = new ClientManagerImpl();
         InitiateDB.createDb();
     }
 
 //    @After
     public void after() {
-        DropTables.dropAllTables();
+        DropDb.dropAllTables();
         InitiateDB.createDb();
     }
 

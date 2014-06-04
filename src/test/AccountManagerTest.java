@@ -1,10 +1,9 @@
 package test;
 
-import init.DropTables;
+import init.DropDb;
 import init.InitiateDB;
 import main.db_access_layer.managers.AccountManager;
 import main.db_access_layer.managers.impl.AccountManagerImpl;
-import main.db_access_layer.managers.impl.DbConnectorManagerImpl;
 import main.model.Account;
 import org.junit.*;
 
@@ -16,7 +15,7 @@ public class AccountManagerTest extends AbstractTest {
     @Before
     public void before() {
         accountManager = new AccountManagerImpl();
-        DropTables.dropAllTables();
+        DropDb.dropAllTables();
         InitiateDB.createDb();
     }
 

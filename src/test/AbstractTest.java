@@ -1,8 +1,7 @@
 package test;
 
-import init.DropTables;
+import init.DropDb;
 import init.InitiateDB;
-import main.db_access_layer.managers.impl.AccountManagerImpl;
 import main.db_access_layer.managers.impl.DbConnectorManagerImpl;
 import org.junit.After;
 import org.junit.Before;
@@ -11,7 +10,7 @@ public class AbstractTest {
 
     @Before
     public void before() {
-        DropTables.dropAllTables();
+        DropDb.dropAllTables();
         InitiateDB.createDb();
     }
 
