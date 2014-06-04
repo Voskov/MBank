@@ -32,8 +32,8 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
             sqlStrBldr.append(deposit.getBalance()).append(", '");
             sqlStrBldr.append(deposit.getType().toString()).append("', ");
             sqlStrBldr.append(deposit.getEstimated_balance()).append(", '");
-            sqlStrBldr.append(df.format(deposit.getOpening_date())).append("', '");
-            sqlStrBldr.append(df.format(deposit.getClosing_date())).append("')");
+            sqlStrBldr.append(df.format(deposit.getOpeningDate())).append("', '");
+            sqlStrBldr.append(df.format(deposit.getClosingDate())).append("')");
             stmt.executeUpdate(sqlStrBldr.toString());
             String msg = "Deposit" + deposit.getDepositId() + " with " + deposit.getBalance() + " balance was created on DB";
             LOGGER.log(Level.INFO, msg);
@@ -49,45 +49,6 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
     //TODO should be part of  an interface
     @Override
     public void drawDeposit(long deposit_id) {
-        try {
-            double deposit_amount;
-            long client_id = 0;
-            Date today = Calendar.getInstance().getTime();
-            Date closing_date;
-            String msg, client_type;
-            String sqlStr = "SELECT d.balance, d.closing_date, d.client_id , c.type, a.account_id" +
-                    "FROM Deposits d JOIN Clients c on d.client_id = c.client_id JOIN Accounts a on c.client_id = a.client_id" +
-                    "WHERE deposit_id = " + deposit_id;
-            ResultSet res = stmt.executeQuery(sqlStr);
-            if (res.next()) {
-                deposit_amount = res.getDouble(1);
-                String closing_date_string = res.getString(2);
-                client_id = res.getLong(3);
-                closing_date = new SimpleDateFormat("yy-MM-dd").parse(closing_date_string);
-                client_type = res.getString(4);
-                long account_id = res.getLong(5);
-
-                AccountManagerImpl accountDbConnector = new AccountManagerImpl();
-                accountDbConnector.depositToAccount(account_id, deposit_amount);
-                if (today.compareTo(closing_date) < 0) {
-                    //TODO - implement the whole interest
-                    //TODO  implement with string builder
-                    StringBuilder sb = new StringBuilder();
-
-                    msg = "The closing date of deposit " + deposit_id + " is " + closing_date_string +
-                            ". Therefore a commission was charged.";
-                    LOGGER.log(Level.INFO, msg);
-                }
-
-
-                msg = "deposit " + deposit_id + "was closed. " + deposit_amount + " was added to the account";
-                LOGGER.log(Level.INFO, msg);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
