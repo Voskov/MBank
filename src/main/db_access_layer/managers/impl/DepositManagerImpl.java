@@ -6,6 +6,7 @@ import main.model.Deposit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -13,6 +14,8 @@ import java.util.Date;
 import java.util.logging.Level;
 
 public class DepositManagerImpl extends DbConnectorManagerImpl implements DepositManager {
+    private static DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+
 
     public DepositManagerImpl() {
         connectToDb();
@@ -29,8 +32,8 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
             sqlStrBldr.append(deposit.getBalance()).append(", '");
             sqlStrBldr.append(deposit.getType().toString()).append("', ");
             sqlStrBldr.append(deposit.getEstimated_balance()).append(", '");
-            sqlStrBldr.append(deposit.getOpening_date()).append("', '");
-            sqlStrBldr.append(deposit.getClosing_date()).append("')");
+            sqlStrBldr.append(df.format(deposit.getOpening_date())).append("', '");
+            sqlStrBldr.append(df.format(deposit.getClosing_date())).append("')");
             stmt.executeUpdate(sqlStrBldr.toString());
             String msg = "Deposit" + deposit.getDeposit_id() + " with " + deposit.getBalance() + " balance was created on DB";
             LOGGER.log(Level.INFO, msg);

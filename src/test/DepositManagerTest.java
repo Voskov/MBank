@@ -26,7 +26,7 @@ public class DepositManagerTest extends AbstractTest {
 
     @Test
     public void testCreateDeposit() {
-        Deposit testDeposit = new Deposit(1, 12345, 1000.0, DepositType.SHORT, 1010, new Date(1401896199000L), new Date(1401906199000L));
+        Deposit testDeposit = new Deposit(1, 12345, 1000.0, DepositType.SHORT, 1010, new Date(1401896199000L), new Date(1402906199000L));
         depositManager.createNewDeposit(testDeposit);
     }
 
