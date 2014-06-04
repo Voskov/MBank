@@ -13,8 +13,7 @@ public class ClientManagerTest {
 
     @BeforeClass
     public static void beforeClass() {
-        client = new Client(1234567, "Test Name", "pasword", AccountType.GOLD, "address 6", "test@email.com", "054-1234567", "comment");
-
+        client = new Client("Test Name", "pasword", AccountType.GOLD, "address 6", "test@email.com", "054-1234567", "comment");
     }
 
     @AfterClass

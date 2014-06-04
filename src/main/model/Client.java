@@ -23,6 +23,16 @@ public class Client {
         this.comment = comment;
     }
 
+    public Client(String client_name, String password, AccountType accountType, String address, String email, String phone, String comment) {
+        this.client_name = client_name;
+        this.password = password;
+        this.accountType = accountType;
+        this.address = address;
+        this.email = email;
+        this.phone = phone;
+        this.comment = comment;
+    }
+
     public Client(){
 
     }

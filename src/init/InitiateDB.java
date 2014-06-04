@@ -6,6 +6,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class InitiateDB {
+    public static void main(String[] args) {
+        createDb();
+    }
+
+    public static void restartDb(){
+        DropTables.dropAllTables();
+        createDb();
+    }
+
     public static void createDb() {
 
         String db_address = "jdbc:derby://localhost:1527/MBank;create=true";
@@ -44,10 +53,6 @@ public class InitiateDB {
         }
     }
 
-    public static void main(String[] args) {
-        createDb();
-    }
-
     private static void createPropertiesTable(Statement statement) throws SQLException {
         statement.executeUpdate("create table Properties(prop_key VARCHAR(40), prop_value VARCHAR(40), PRIMARY KEY (prop_key))");
 //        System.out.println("Properties was created");
@@ -69,7 +74,7 @@ public class InitiateDB {
     }
 
     private static void createClientsTable(Statement statement) throws SQLException {
-        statement.executeUpdate("create table Clients(client_id BIGINT NOT NULL, client_name VARCHAR(20), password VARCHAR(20), type VARCHAR(10), address VARCHAR(50), email VARCHAR(20), phone VARCHAR(15), comment VARCHAR(50), PRIMARY KEY (client_id))");
+        statement.executeUpdate("create table Clients(client_id BIGINT NOT NULL primary key GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), client_name VARCHAR(20), password VARCHAR(20), type VARCHAR(10), address VARCHAR(50), email VARCHAR(20), phone VARCHAR(15), comment VARCHAR(50))");
 //        System.out.println("Clients was created");
     }
 

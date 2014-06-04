@@ -69,8 +69,9 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
     }
 
     public void createClient(Client client) {
-        sqlStrBldr.append("INSERT INTO Clients VALUES(");
-        sqlStrBldr.append(client.getClient_id()).append(", '");
+        sqlStrBldr.append("INSERT INTO Clients ");
+        sqlStrBldr.append("(client_name, password, type, address, email, phone, comment)");
+        sqlStrBldr.append(" VALUES('");
         sqlStrBldr.append(client.getClient_name()).append("', '");
         sqlStrBldr.append(client.getPassword()).append("', '");
         sqlStrBldr.append(client.getAccountType().toString()).append("', '");
