@@ -24,7 +24,6 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
     @Override
     public void createNewDeposit(Deposit deposit) {
         try {
-//            String smstStr = "INSERT INTO Clients VALUES(" + deposit.getDepositId() + ", " + deposit.getClientId() + ", " + deposit.getBalance() + ", '" + deposit.getType().toString() + "', " + deposit.getEstimatedBalance() + ", '" + deposit.getOpeningDate() + "', '" + deposit.getClosingDate() + "')";
             sqlStrBldr = new StringBuilder("INSERT INTO Deposits ");
             sqlStrBldr.append("(client_id, balance, type, estimated_balance, opening_date, closing_date) ");
             sqlStrBldr.append("VALUES (");
