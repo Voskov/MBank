@@ -13,7 +13,7 @@ public class DropTables {
         try {
             Connection connection = DriverManager.getConnection(db_address);
             try {
-                System.out.println("Connection established successfully");
+//                System.out.println("Connection established successfully");
 
                 Statement statement = connection.createStatement();
                 statement.executeUpdate("DROP TABLE Clients");
@@ -31,6 +31,7 @@ public class DropTables {
                 statement.executeUpdate("DROP TABLE Properties");
 //                System.out.println("Properties was dropped");
 
+                System.out.println("Tables dropped");
                 connection.close();
             } catch (SQLException e) {
                 connection.close();

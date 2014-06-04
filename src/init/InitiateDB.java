@@ -23,7 +23,7 @@ public class InitiateDB {
         try {
             connection = DriverManager.getConnection(db_address);
             try {
-                System.out.println("Connection established successfully");
+//                System.out.println("Connection established successfully");
 
                 Statement statement = connection.createStatement();
 
@@ -35,6 +35,7 @@ public class InitiateDB {
                 fillProperyTable(statement);
 
 
+                System.out.println("DB created");
             } catch (SQLException e) {
                 connection.close();
                 e.printStackTrace();
@@ -59,17 +60,17 @@ public class InitiateDB {
     }
 
     private static void createActivitiesTable(Statement statement) throws SQLException {
-        statement.executeUpdate("create table Activity(id  BIGINT NOT NULL, client_id  BIGINT NOT NULL, amount DOUBLE, activity_date DATE, commision DOUBLE, description VARCHAR(50), PRIMARY KEY (id))");
+        statement.executeUpdate("create table Activity(id  BIGINT NOT NULL primary key GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),client_id  BIGINT NOT NULL, amount DOUBLE, activity_date DATE, commision DOUBLE, description VARCHAR(50))");
 //        System.out.println("Activities was created");
     }
 
     private static void createDepositsTable(Statement statement) throws SQLException {
-        statement.executeUpdate("create table Deposits(deposit_id  BIGINT NOT NULL, client_id  BIGINT NOT NULL, balance DOUBLE, type VARCHAR(6), estimated_balance BIGINT, opening_date DATE, closing_date DATE, PRIMARY KEY (deposit_id))");
+        statement.executeUpdate("create table Deposits(deposit_id  BIGINT NOT NULL primary key GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),client_id  BIGINT NOT NULL, balance DOUBLE, type VARCHAR(6), estimated_balance BIGINT, opening_date DATE, closing_date DATE)");
 //        System.out.println("Accounts was created");
     }
 
     private static void createAccountsTable(Statement statement) throws SQLException {
-        statement.executeUpdate("create table Accounts(account_id  BIGINT NOT NULL, client_id  BIGINT NOT NULL, balance DOUBLE, credit_limit DOUBLE, comment VARCHAR(50), PRIMARY KEY (account_id))");
+        statement.executeUpdate("create table Accounts(account_id BIGINT NOT NULL primary key GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),client_id  BIGINT NOT NULL, balance DOUBLE, credit_limit DOUBLE, comment VARCHAR(50))");
 //        System.out.println("Accounts was created");
     }
 
