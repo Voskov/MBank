@@ -22,8 +22,15 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
 
     public void createAccount(Account account) {
         try {
-            sqlStatement = "INSERT INTO Accounts VALUES(" + account.getAccount_id() + ", " + account.getClient_id() + ", " + account.getBalance() + ", " + account.getCredit_limit() + ", '" + account.getComment() + "')";
-            stmt.executeUpdate(sqlStatement);
+//            sqlStatement = "INSERT INTO Accounts VALUES(" + account.getAccount_id() + ", " + account.getClient_id() + ", " + account.getBalance() + ", " + account.getCredit_limit() + ", '" + account.getComment() + "')";
+            sqlStrBldr = new StringBuilder("INSERT INTO Accounts ");
+            sqlStrBldr.append(" (client_id, balance, credit_limit, comment) ");
+            sqlStrBldr.append("VALUES(");
+            sqlStrBldr.append(account.getClient_id()).append(", ");
+            sqlStrBldr.append(account.getBalance()).append(", ");
+            sqlStrBldr.append(account.getCredit_limit()).append(", '");
+            sqlStrBldr.append(account.getComment()).append("')");
+            stmt.executeUpdate(sqlStrBldr.toString());
             String msg = "Account " + account.getAccount_id() + " was created on DB";
             LOGGER.log(Level.INFO, msg);
         } catch (SQLIntegrityConstraintViolationException e) {
@@ -194,6 +201,7 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
         return findAccount(account.getAccount_id());
     }
 
+    @Override
     public void updateAccount(Account account) {
         sqlStrBldr = new StringBuilder("UPDATE Accounts SET ") ;
         sqlStrBldr.append("balance=").append(account.getBalance());
@@ -210,6 +218,7 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
         }
     }
 
+    @Override
     public long countAllAccounts(){
         sqlStrBldr = new StringBuilder("SELECT count(*) FROM Accounts");
         try {

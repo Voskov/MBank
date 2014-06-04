@@ -17,4 +17,9 @@ public interface AccountManager {
 
     Account findAccount(long account_id);
     Account findAccount(Account account);
+
+    void updateAccount(Account account);
+
+    long countAllAccounts();
+
 }

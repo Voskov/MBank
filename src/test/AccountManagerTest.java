@@ -2,63 +2,57 @@ package test;
 
 import init.DropTables;
 import init.InitiateDB;
-import main.AccountType;
+import main.db_access_layer.managers.AccountManager;
 import main.db_access_layer.managers.impl.AccountManagerImpl;
-import main.db_access_layer.managers.impl.ClientManagerImpl;
+import main.db_access_layer.managers.impl.DbConnectorManagerImpl;
 import main.model.Account;
-import main.model.Client;
 import org.junit.*;
 
+public class AccountManagerTest extends AbstractTest {
 
-public class AccountManagerTest {
-    private static AccountManagerImpl accountManager = null;
-    private static Client testClient = null;
-    private static Account testAccount = null;
+    public static AccountManager accountManager = null;
 
-    @BeforeClass
-    public static void beforeClass() {
-        testClient = new Client(12345678, "Test Client", "testPassword", AccountType.GOLD, "Test address 9", "Euyfr@ufhvl.com", "054-76543", "Test Comment");
-        testAccount = new Account(23456789, 12345678, 1000, 100000, "Comment");
-    }
-
-    @AfterClass
-    public static void afterClass() {
-        accountManager.disconnect();
-    }
 
     @Before
     public void before() {
+        accountManager = new AccountManagerImpl();
         DropTables.dropAllTables();
         InitiateDB.createDb();
-        accountManager = new AccountManagerImpl();
-        accountManager.createAccount(testAccount);
-    }
-
-    @After
-    public void after() {
     }
 
 
     @Test
     public void testDeleteAccountById() throws Exception {
+        Account testAccount = new Account(1, 12345678, 1000, 100000, "Comment");
+        accountManager.createAccount(testAccount);
+
         accountManager.deleteAccount(testAccount.getAccount_id());
         Assert.assertEquals(0, accountManager.countAllAccounts());
     }
 
     @Test
-    public void testdeleteAccountByAccount() {
+    public void testDeleteAccount() {
+        Account testAccount = new Account(1, 12345678, 1000, 100000, "Comment");
+        accountManager.createAccount(testAccount);
+
         accountManager.deleteAccount(testAccount);
         Assert.assertEquals(0, accountManager.countAllAccounts());
     }
 
     @Test
-    public void testFindAccount(){
+    public void testFindAccount() {
+        Account testAccount = new Account(1, 12345678, 1000, 100000, "Comment");
+        accountManager.createAccount(testAccount);
+
         Account dbAccount = accountManager.findAccount(testAccount);
         Assert.assertTrue(testAccount.equals(dbAccount));
     }
 
     @Test
-    public void testUpdateAccount(){
+    public void testUpdateAccount() {
+        Account testAccount = new Account(1, 12345678, 1000, 100000, "Comment");
+        accountManager.createAccount(testAccount);
+
         double newBalance = 7263;
         testAccount.setBalance(newBalance);
         accountManager.updateAccount(testAccount);

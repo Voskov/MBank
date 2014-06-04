@@ -58,6 +58,13 @@ public class Account {
         this.comment = comment;
     }
 
+    public Account(long client_id, double balance, double credit_limit, String comment) {
+        this.client_id = client_id;
+        this.balance = balance;
+        this.credit_limit = credit_limit;
+        this.comment = comment;
+    }
+
     @Override
     public String toString() {
         return "Account{" +

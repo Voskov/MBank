@@ -2,13 +2,26 @@ package test;
 
 import init.DropTables;
 import init.InitiateDB;
+import main.db_access_layer.managers.impl.AccountManagerImpl;
+import main.db_access_layer.managers.impl.DbConnectorManagerImpl;
+import org.junit.After;
+import org.junit.Before;
 
 public class AbstractTest {
-    public void dropTables(){
-        DropTables.dropAllTables();
-    }
 
-    public void createTables(){
+    @Before
+    public void before() {
+        DropTables.dropAllTables();
         InitiateDB.createDb();
     }
+
+
+
+    @After
+    public void after() {
+//        DropTables.dropAllTables();
+        DbConnectorManagerImpl.disconnect();
+    }
+
+
 }

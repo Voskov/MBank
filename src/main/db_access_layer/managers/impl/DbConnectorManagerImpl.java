@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class DbConnectorManagerImpl {
+public class DbConnectorManagerImpl   {
     protected String sqlStr;
     protected StringBuilder sqlStrBldr = new StringBuilder();
     protected static Connection con;
@@ -31,7 +31,8 @@ public class DbConnectorManagerImpl {
         }
     }
 
-    public void disconnect() {
+
+    public static void disconnect() {
         try {
             con.close();                                                    // always remember to close the connection at the end
             System.out.println("Connection closed");
