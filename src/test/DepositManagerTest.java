@@ -1,19 +1,34 @@
 package test;
 
-import org.junit.After;
-import org.junit.Before;
+import init.DropDb;
+import init.InitiateDB;
+import main.DepositType;
+import main.db_access_layer.managers.DepositManager;
+import main.db_access_layer.managers.impl.DepositManagerImpl;
+import main.model.Deposit;
+import org.junit.*;
 
-import static org.junit.Assert.*;
+import java.util.Date;
 
-public class DepositManagerTest {
+public class DepositManagerTest extends AbstractTest {
+    static DepositManagerImpl depositManager = null;
 
+    @BeforeClass
+    public static void beforeClass(){
+        depositManager = new DepositManagerImpl();
+    }
     @Before
-    public void setUp() throws Exception {
-
+    public void setUp() {
+        depositManager = new DepositManagerImpl();
+        DropDb.dropAllTables();
+        InitiateDB.createDb();
     }
 
-    @After
-    public void tearDown() throws Exception {
-
+    @Test
+    public void testCreateDeposit() {
+        Deposit testDeposit = new Deposit(1, 12345, 1000.0, DepositType.SHORT, 1010, new Date(1401896199000L), new Date(1401906199000L));
+        depositManager.createNewDeposit(testDeposit);
     }
+
+
 }

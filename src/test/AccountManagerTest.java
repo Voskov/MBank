@@ -13,7 +13,7 @@ public class AccountManagerTest extends AbstractTest {
 
 
     @Before
-    public void before() {
+    public void setUp() {
         accountManager = new AccountManagerImpl();
         DropDb.dropAllTables();
         InitiateDB.createDb();

@@ -13,24 +13,24 @@ public class ClientManagerTest {
     private static ClientManagerImpl clientManager = null;
 
     @BeforeClass
-    public static void beforeClass() {
+    public static void setUpClass() {
         client = new Client("Test Name", "pasword", AccountType.GOLD, "address 6", "test@email.com", "054-1234567", "comment");
     }
 
     @AfterClass
-    public static void afterClass() {
+    public static void tearDownClass() {
         clientManager.disconnect();
     }
 
     @Before
-    public void before() {
+    public void setUp() {
         DropDb.dropAllTables();
         clientManager = new ClientManagerImpl();
         InitiateDB.createDb();
     }
 
 //    @After
-    public void after() {
+    public void tearDown() {
         DropDb.dropAllTables();
         InitiateDB.createDb();
     }

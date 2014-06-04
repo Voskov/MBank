@@ -9,7 +9,7 @@ import org.junit.Before;
 public class AbstractTest {
 
     @Before
-    public void before() {
+    public void setUp() {
         DropDb.dropAllTables();
         InitiateDB.createDb();
     }
@@ -17,7 +17,7 @@ public class AbstractTest {
 
 
     @After
-    public void after() {
+    public void tearDown() {
 //        DropTables.dropAllTables();
         DbConnectorManagerImpl.disconnect();
     }

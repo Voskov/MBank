@@ -6,9 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * Created by Ariel Voskov on 5/18/2014.
- */
 public class MessWithDates {
     public static void main(String[] args) throws ParseException {
         String date = "14-05-18";
@@ -22,5 +19,10 @@ public class MessWithDates {
         System.out.println(df.format(today));
         System.out.println("***********************");
         System.out.println(d.compareTo(today));
+
+        System.out.println("**************************");
+
+        System.out.println(new Date());
+        System.out.println(new Date(1401896199000L));
     }
 }

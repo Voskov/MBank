@@ -19,10 +19,19 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
     }
 
     @Override
-    public long createNewDeposit(Deposit deposit) {
+    public void createNewDeposit(Deposit deposit) {
         try {
-            String smstStr = "INSERT INTO Clients VALUES(" + deposit.getDeposit_id() + ", " + deposit.getClient_id() + ", " + deposit.getBalance() + ", '" + deposit.getType().toString() + "', " + deposit.getEstimated_balance() + ", '" + deposit.getOpening_date() + "', '" + deposit.getClosing_date() + "')";
-            stmt.executeUpdate(smstStr);
+//            String smstStr = "INSERT INTO Clients VALUES(" + deposit.getDeposit_id() + ", " + deposit.getClient_id() + ", " + deposit.getBalance() + ", '" + deposit.getType().toString() + "', " + deposit.getEstimated_balance() + ", '" + deposit.getOpening_date() + "', '" + deposit.getClosing_date() + "')";
+            sqlStrBldr = new StringBuilder("INSERT INTO Deposits ");
+            sqlStrBldr.append("(client_id, balance, type, estimated_balance, opening_date, closing_date) ");
+            sqlStrBldr.append("VALUES (");
+            sqlStrBldr.append(deposit.getClient_id()).append(", ");
+            sqlStrBldr.append(deposit.getBalance()).append(", '");
+            sqlStrBldr.append(deposit.getType().toString()).append("', ");
+            sqlStrBldr.append(deposit.getEstimated_balance()).append(", '");
+            sqlStrBldr.append(deposit.getOpening_date()).append("', '");
+            sqlStrBldr.append(deposit.getClosing_date()).append("')");
+            stmt.executeUpdate(sqlStrBldr.toString());
             String msg = "Deposit" + deposit.getDeposit_id() + " with " + deposit.getBalance() + " balance was created on DB";
             LOGGER.log(Level.INFO, msg);
         } catch (SQLIntegrityConstraintViolationException e) {
@@ -32,7 +41,6 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
             LOGGER.log(Level.WARNING, e.getMessage());
             e.printStackTrace();
         }
-        return 0L;
     }
 
     //TODO should be part of  an interface
@@ -80,9 +88,9 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
     }
 
     @Override
-    public Deposit findDeposit(long depositId){
+    public Deposit findDeposit(long depositId) {
         sqlStrBldr = new StringBuilder("SELECT * FROM Deposits WHERE deposit_id=").append(depositId);
-        try{
+        try {
             ResultSet res = stmt.executeQuery(sqlStrBldr.toString());
         } catch (SQLException e) {
             String msg = "Could not find the requested deposit";
@@ -93,11 +101,11 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
     }
 
     @Override
-    public Deposit findDeposit(Deposit deposit){
+    public Deposit findDeposit(Deposit deposit) {
         return findDeposit(deposit.getDeposit_id());
     }
 
-    public void updateDeposit(Deposit deposit){
+    public void updateDeposit(Deposit deposit) {
         sqlStrBldr = new StringBuilder("UPDATE Deposits SET ");
         sqlStrBldr.append("balance=").append(deposit.getBalance());
         sqlStrBldr.append(", type='").append(deposit.getType());
