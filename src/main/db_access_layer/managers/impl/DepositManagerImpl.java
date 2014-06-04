@@ -24,14 +24,14 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
     @Override
     public void createNewDeposit(Deposit deposit) {
         try {
-//            String smstStr = "INSERT INTO Clients VALUES(" + deposit.getDepositId() + ", " + deposit.getClient_id() + ", " + deposit.getBalance() + ", '" + deposit.getType().toString() + "', " + deposit.getEstimated_balance() + ", '" + deposit.getOpeningDate() + "', '" + deposit.getClosingDate() + "')";
+//            String smstStr = "INSERT INTO Clients VALUES(" + deposit.getDepositId() + ", " + deposit.getClientId() + ", " + deposit.getBalance() + ", '" + deposit.getType().toString() + "', " + deposit.getEstimatedBalance() + ", '" + deposit.getOpeningDate() + "', '" + deposit.getClosingDate() + "')";
             sqlStrBldr = new StringBuilder("INSERT INTO Deposits ");
             sqlStrBldr.append("(client_id, balance, type, estimated_balance, opening_date, closing_date) ");
             sqlStrBldr.append("VALUES (");
-            sqlStrBldr.append(deposit.getClient_id()).append(", ");
+            sqlStrBldr.append(deposit.getClientId()).append(", ");
             sqlStrBldr.append(deposit.getBalance()).append(", '");
             sqlStrBldr.append(deposit.getType().toString()).append("', ");
-            sqlStrBldr.append(deposit.getEstimated_balance()).append(", '");
+            sqlStrBldr.append(deposit.getEstimatedBalance()).append(", '");
             sqlStrBldr.append(df.format(deposit.getOpeningDate())).append("', '");
             sqlStrBldr.append(df.format(deposit.getClosingDate())).append("')");
             stmt.executeUpdate(sqlStrBldr.toString());

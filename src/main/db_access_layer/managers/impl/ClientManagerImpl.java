@@ -108,7 +108,7 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
     public void updateClient(Client client, String param, String value) {
         try {
             sqlStrBldr.append("UPDATE Clients SET  WHERE client_id=").append(client.getClient_id());
-//            String sqlStatement = "UPDATE Clients SET  WHERE client_id=" + client.getClient_id();
+//            String sqlStatement = "UPDATE Clients SET  WHERE client_id=" + client.getClientId();
             stmt.executeUpdate(sqlStrBldr.toString());
             String msg = "Client " + client.getClient_id() + " was deleted from DB";
             LOGGER.log(Level.INFO, msg);

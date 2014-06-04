@@ -24,7 +24,7 @@ public class Deposit {
         this.deposit_id = deposit_id;
     }
 
-    public long getClient_id() {
+    public long getClientId() {
         return client_id;
     }
 
@@ -48,7 +48,7 @@ public class Deposit {
         this.type = type;
     }
 
-    public long getEstimated_balance() {
+    public long getEstimatedBalance() {
         return estimated_balance;
     }
 

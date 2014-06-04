@@ -22,7 +22,7 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
 
     public void createAccount(Account account) {
         try {
-//            sqlStatement = "INSERT INTO Accounts VALUES(" + account.getAccount_id() + ", " + account.getClient_id() + ", " + account.getBalance() + ", " + account.getCredit_limit() + ", '" + account.getComment() + "')";
+//            sqlStatement = "INSERT INTO Accounts VALUES(" + account.getAccount_id() + ", " + account.getClientId() + ", " + account.getBalance() + ", " + account.getCredit_limit() + ", '" + account.getComment() + "')";
             sqlStrBldr = new StringBuilder("INSERT INTO Accounts ");
             sqlStrBldr.append(" (client_id, balance, credit_limit, comment) ");
             sqlStrBldr.append("VALUES(");
