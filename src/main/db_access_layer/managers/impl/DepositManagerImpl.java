@@ -10,6 +10,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
@@ -88,6 +89,11 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public ArrayList<Deposit> allClientsDeposits(long client_id) {
+        return null;
     }
 
     @Override

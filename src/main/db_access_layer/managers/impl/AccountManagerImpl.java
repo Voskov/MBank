@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
+import java.util.*;
 import java.util.logging.Level;
 
 public class AccountManagerImpl extends DbConnectorManagerImpl implements AccountManager {
@@ -230,5 +231,33 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
             e.printStackTrace();
         }
         return 0;
+    }
+
+    @Override
+    public HashSet<Account> allClientsAccounts(long client_id) {
+        sqlStrBldr = new StringBuilder("SELECT * FROM Accounts");
+        HashSet<Account> allAccounts = new HashSet<Account>();
+        try {
+            ResultSet res = stmt.executeQuery(sqlStrBldr.toString());
+            while (res.next()){
+                allAccounts.add(createAccountFromResult(res));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return allAccounts;
+    }
+
+
+
+    @Override
+    public Account createAccountFromResult(ResultSet res){
+        Account account = null;
+        try {
+            account = new Account(res.getLong(1), res.getLong(2), res.getDouble(3), res.getDouble(4), res.getString(5));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return account;
     }
 }

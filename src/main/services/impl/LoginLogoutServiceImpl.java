@@ -10,29 +10,29 @@ public class LoginLogoutServiceImpl implements LoginLogoutService {
 
     @Override
     public void logClientIn(String username, String password) throws Exception {
-       ClientManager cm =  new ClientManagerImpl();
+        ClientManager cm = new ClientManagerImpl();
         Client client = cm.findClient(username);
 
-        if (client== null){
+        if (client == null) {
             throw new Exception("Client with this username does not exists");
         }
 
-        if (!client.getPassword().equals(password)){
+        if (!client.getPassword().equals(password)) {
             throw new Exception("Wrong password");
         }
 
         MBank mBank = MBank.getMBank();
-        if (mBank.checkIfClientIsLoggedIn(client.getClient_id())){
+        if (mBank.checkIfClientIsLoggedIn(client.getClient_id())) {
             throw new Exception("Client already logged in");
         }
-        mBank.addLoggedInClient(client);
+        mBank.loginClient(client);
 
     }
 
     @Override
     public void logClientOut(long clientId) throws Exception {
         MBank mBank = MBank.getMBank();
-        if (!mBank.checkIfClientIsLoggedIn(clientId)){
+        if (!mBank.checkIfClientIsLoggedIn(clientId)) {
             throw new Exception("Client is not logged in");
         }
         mBank.logoutClient(clientId);

@@ -2,6 +2,11 @@ package main.db_access_layer.managers;
 
 import main.model.Account;
 
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 public interface AccountManager {
     void createAccount(long id, long client_id, double balance, double credit_limit, String comment);
     void deleteAccount(long account_id);
@@ -22,4 +27,7 @@ public interface AccountManager {
 
     long countAllAccounts();
 
+    HashSet<Account> allClientsAccounts(long client_id);
+
+    Account createAccountFromResult(ResultSet res);
 }

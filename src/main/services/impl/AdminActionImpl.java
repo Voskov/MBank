@@ -1,5 +1,9 @@
 package main.services.impl;
 
+import main.db_access_layer.managers.AccountManager;
+import main.db_access_layer.managers.ClientManager;
+import main.db_access_layer.managers.impl.AccountManagerImpl;
+import main.db_access_layer.managers.impl.ClientManagerImpl;
 import main.model.Account;
 import main.model.Client;
 import main.services.AdminAction;
@@ -11,18 +15,25 @@ public class AdminActionImpl implements AdminAction {
     }
 
     @Override
-    public void removeClient() {
+    public void removeClient(long client_id) {
 
     }
 
     @Override
-    public Account createNewAccount() {
-        return null;
+    public void removeClient(Client client) {
+
     }
 
     @Override
-    public void removeAccount() {
+    public void createNewAccount(Account account) {
+        AccountManager accountManager = new AccountManagerImpl();
+        accountManager.createAccount(account);
+    }
 
+    @Override
+    public void removeAccount(Account account) {
+        AccountManager accountManager = new AccountManagerImpl();
+        accountManager.createAccount(account);
     }
 
     @Override

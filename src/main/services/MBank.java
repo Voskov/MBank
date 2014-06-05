@@ -35,7 +35,7 @@ public class MBank {
         return false;
     }
 
-    public void addLoggedInClient(Client client) {
+    public void loginClient(Client client) {
         if (loggedInClients== null){
             loggedInClients = new HashMap<Long, Client>();
         }

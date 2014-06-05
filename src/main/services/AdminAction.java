@@ -10,11 +10,12 @@ public interface AdminAction extends Action{
 
     Client addNewClient();
 
-    void removeClient();
+    void removeClient(long client_id);
+    void removeClient(Client client);
 
-    Account createNewAccount();
+    void createNewAccount(Account account);
 
-    void removeAccount();
+    void removeAccount(Account account);
 
     void viewAllClientsDetails();
 
