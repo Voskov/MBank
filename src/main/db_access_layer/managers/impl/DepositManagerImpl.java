@@ -139,7 +139,7 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
     public Deposit buildDeposit(ResultSet res){
         Deposit deposit = null;
         try {
-            deposit = new Deposit(res.getLong(1), res.getLong(2), res.getDouble(3), DepositType.valueOf(res.getString(4)), res.getLong(5), df.parse(res.getNString(6)), df.parse(res.getNString(6)));
+            deposit = new Deposit(res.getLong(1), res.getLong(2), res.getDouble(3), DepositType.valueOf(res.getString(4)), res.getLong(5), df.parse(res.getString(6)), df.parse(res.getString(6)));
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ParseException e) {

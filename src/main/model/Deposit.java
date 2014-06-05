@@ -93,7 +93,7 @@ public class Deposit {
         if (client_id != deposit.client_id) return false;
         if (deposit_id != deposit.deposit_id) return false;
         if (estimated_balance != deposit.estimated_balance) return false;
-        if (closing_date != null ? !closing_date.equals(deposit.closing_date) : deposit.closing_date != null)
+        if (closing_date != null ? !closing_date.equals(deposit.closing_date) : deposit.closing_date != null)   // Here - something's wrong here
             return false;
         if (opening_date != null ? !opening_date.equals(deposit.opening_date) : deposit.opening_date != null)
             return false;
