@@ -4,9 +4,6 @@ import main.DepositType;
 
 import java.util.Date;
 
-/**
- * Created by Ariel Voskov on 4/25/2014.
- */
 public class Deposit {
     private long deposit_id;
     private long client_id;
@@ -83,5 +80,25 @@ public class Deposit {
         this.estimated_balance = estimated_balance;
         this.opening_date = opening_date;
         this.closing_date = closing_date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Deposit)) return false;
+
+        Deposit deposit = (Deposit) o;
+
+        if (Double.compare(deposit.balance, balance) != 0) return false;
+        if (client_id != deposit.client_id) return false;
+        if (deposit_id != deposit.deposit_id) return false;
+        if (estimated_balance != deposit.estimated_balance) return false;
+        if (closing_date != null ? !closing_date.equals(deposit.closing_date) : deposit.closing_date != null)
+            return false;
+        if (opening_date != null ? !opening_date.equals(deposit.opening_date) : deposit.opening_date != null)
+            return false;
+        if (type != deposit.type) return false;
+
+        return true;
     }
 }

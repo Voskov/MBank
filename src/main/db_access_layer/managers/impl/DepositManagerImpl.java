@@ -1,5 +1,6 @@
 package main.db_access_layer.managers.impl;
 
+import main.DepositType;
 import main.db_access_layer.managers.DepositManager;
 import main.model.Deposit;
 
@@ -92,14 +93,18 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
     @Override
     public Deposit findDeposit(long depositId) {
         sqlStrBldr = new StringBuilder("SELECT * FROM Deposits WHERE deposit_id=").append(depositId);
+        Deposit res_deposit = null;
         try {
             ResultSet res = stmt.executeQuery(sqlStrBldr.toString());
+            if (res.next()){
+                res_deposit = buildDeposit(res);
+            }
         } catch (SQLException e) {
             String msg = "Could not find the requested deposit";
             LOGGER.log(Level.WARNING, msg);
             e.printStackTrace();
         }
-        return null;
+        return res_deposit;
     }
 
     @Override
@@ -122,5 +127,18 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
             LOGGER.log(Level.WARNING, msg);
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public Deposit buildDeposit(ResultSet res){
+        Deposit deposit = null;
+        try {
+            deposit = new Deposit(res.getLong(1), res.getLong(2), res.getDouble(3), DepositType.valueOf(res.getString(4)), res.getLong(5), df.parse(res.getNString(6)), df.parse(res.getNString(6)));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return deposit;
     }
 }
