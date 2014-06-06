@@ -36,7 +36,7 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
             sqlStrBldr.append(df.format(deposit.getOpeningDate())).append("', '");
             sqlStrBldr.append(df.format(deposit.getClosingDate())).append("')");
             stmt.executeUpdate(sqlStrBldr.toString());
-            String msg = "Deposit" + deposit.getDepositId() + " with " + deposit.getBalance() + " balance was created on DB";
+            String msg = "Deposit " + deposit.getDepositId() + " with " + deposit.getBalance() + " balance was created on DB";
             LOGGER.log(Level.INFO, msg);
         } catch (SQLIntegrityConstraintViolationException e) {
             String msg = "Deposit " + deposit.getDepositId() + " already exists on DB. Deposit wasn't added";
@@ -139,7 +139,7 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
     public Deposit buildDeposit(ResultSet res){
         Deposit deposit = null;
         try {
-            deposit = new Deposit(res.getLong(1), res.getLong(2), res.getDouble(3), DepositType.valueOf(res.getString(4)), res.getLong(5), df.parse(res.getString(6)), df.parse(res.getString(6)));
+            deposit = new Deposit(res.getLong(1), res.getLong(2), res.getDouble(3), DepositType.valueOf(res.getString(4)), res.getLong(5), df.parse(res.getString(6)), df.parse(res.getString(7)));
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ParseException e) {

@@ -10,7 +10,9 @@ import org.junit.*;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class DepositManagerTest extends AbstractTest {
     static DepositManagerImpl depositManager = null;
@@ -43,10 +45,11 @@ public class DepositManagerTest extends AbstractTest {
 
     @Test
     public void testFindDepositById() {
-        Deposit testDeposit = new Deposit(1, 12345, 1000.0, DepositType.SHORT, 1010, new Date(1401896199000L), new Date(1402906199000L));
+        Calendar cal = new GregorianCalendar(2014, 06, 04);
+        Deposit testDeposit = new Deposit(1, 12345, 1000.0, DepositType.SHORT, 1010, new Date(2014, 06, 04), new Date(2014, 06, 14));
         depositManager.createNewDeposit(testDeposit);
         Deposit dbDeposit = depositManager.findDeposit(testDeposit.getDepositId());
-        Assert.assertEquals(testDeposit, dbDeposit);
+        Assert.assertTrue(testDeposit.equals(dbDeposit));
     }
 
     @Test
