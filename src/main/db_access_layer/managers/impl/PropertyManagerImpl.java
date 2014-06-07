@@ -28,6 +28,7 @@ public class PropertyManagerImpl extends DbConnectorManagerImpl implements Prope
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return value;
     }
 

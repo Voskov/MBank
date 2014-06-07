@@ -2,8 +2,10 @@ package main.services.impl;
 
 import main.db_access_layer.managers.AccountManager;
 import main.db_access_layer.managers.ClientManager;
+import main.db_access_layer.managers.PropertyManager;
 import main.db_access_layer.managers.impl.AccountManagerImpl;
 import main.db_access_layer.managers.impl.ClientManagerImpl;
+import main.db_access_layer.managers.impl.PropertyManagerImpl;
 import main.model.Account;
 import main.model.Client;
 import main.services.ClientAction;
@@ -38,11 +40,14 @@ public class ClientActionImpl implements ClientAction {
     public void withdrawFromAccount(long account_id, double withdrawalAmount) throws Exception {
         AccountManager accountManager = new AccountManagerImpl();
         Account dbAccount = accountManager.findAccount(account_id);
+        PropertyManager propertyManager = new PropertyManagerImpl();
+        double commission = 0.5;
+//        double commission = propertyManager.getProperty("commission_rate");
         double balance = dbAccount.getBalance();
-        if (withdrawalAmount > balance) {
+        if (withdrawalAmount > balance + commission) {
             throw new Exception("Not enough money in the account");
         }
-        dbAccount.setBalance(balance - withdrawalAmount);
+        dbAccount.setBalance(balance - withdrawalAmount - commission);
         accountManager.updateAccount(dbAccount);
     }
 
