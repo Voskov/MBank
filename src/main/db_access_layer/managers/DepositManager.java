@@ -15,4 +15,7 @@ public interface DepositManager {
     ArrayList<Deposit> allClientsDeposits(long client_id);
 
     Deposit buildDeposit(ResultSet res);
+
+    void closeDeposit(long deposit_id);
+    void closeDeposit(Deposit deposit);
 }

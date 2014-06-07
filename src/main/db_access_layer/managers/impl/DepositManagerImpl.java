@@ -147,4 +147,21 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
         }
         return deposit;
     }
+
+    @Override
+    public void closeDeposit(Deposit deposit) {
+        closeDeposit(deposit.getDepositId());
+    }
+
+    @Override
+    public void closeDeposit(long deposit_id) {
+        sqlStrBldr = new StringBuilder("DELETE FROM Deposits WHERE deposit_id=").append(deposit_id);
+        try {
+            stmt.executeUpdate(sqlStrBldr.toString());
+            LOGGER.log(Level.INFO, "Deposit " + deposit_id + " has been deleted");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
