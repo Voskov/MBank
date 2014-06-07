@@ -78,4 +78,5 @@ public class AccountManagerTest extends AbstractTest {
         HashSet<Account> allDbAccounts = accountManager.allClientsAccounts(client_id);
         Assert.assertTrue(testAccountsSet.retainAll(allDbAccounts));
     }
+
 }
