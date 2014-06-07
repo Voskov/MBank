@@ -41,8 +41,7 @@ public class ClientActionImpl implements ClientAction {
         AccountManager accountManager = new AccountManagerImpl();
         Account dbAccount = accountManager.findAccount(account_id);
         PropertyManager propertyManager = new PropertyManagerImpl();
-        double commission = 0.5;
-//        double commission = propertyManager.getProperty("commission_rate");
+        double commission = propertyManager.getProperty("commission_rate");
         double balance = dbAccount.getBalance();
         if (withdrawalAmount > balance + commission) {
             throw new Exception("Not enough money in the account");
