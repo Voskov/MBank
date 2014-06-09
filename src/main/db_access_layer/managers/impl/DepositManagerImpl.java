@@ -137,6 +137,21 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
     }
 
     @Override
+    public HashSet<Deposit> allDeposits() {
+        HashSet<Deposit> allDeposits = new HashSet<Deposit>();
+        sqlStrBldr = new StringBuilder("SELECT * FROM Deposits");
+        try {
+            ResultSet res = stmt.executeQuery(sqlStrBldr.toString());
+            while (res.next()){
+                allDeposits.add(buildDeposit(res));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return allDeposits;
+    }
+
+    @Override
     public HashSet<Deposit> allExpiredDeposits(){
         HashSet<Deposit> allExpired = new HashSet<Deposit>();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -181,6 +196,5 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 }

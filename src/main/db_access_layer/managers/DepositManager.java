@@ -15,6 +15,8 @@ public interface DepositManager {
 
     ArrayList<Deposit> allClientsDeposits(long client_id);
 
+    HashSet<Deposit> allDeposits();
+
     HashSet<Deposit> allExpiredDeposits();
     Deposit buildDeposit(ResultSet res);
 
