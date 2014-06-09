@@ -17,4 +17,7 @@ public interface DepositManager {
 
     HashSet<Deposit> allExpiredDeposits();
     Deposit buildDeposit(ResultSet res);
+
+    void closeDeposit(long deposit_id);
+    void closeDeposit(Deposit deposit);
 }

@@ -1,21 +1,22 @@
 package main.services.impl;
 
+import main.DepositType;
 import main.db_access_layer.managers.AccountManager;
 import main.db_access_layer.managers.ClientManager;
+import main.db_access_layer.managers.DepositManager;
 import main.db_access_layer.managers.PropertyManager;
 import main.db_access_layer.managers.impl.AccountManagerImpl;
 import main.db_access_layer.managers.impl.ClientManagerImpl;
+import main.db_access_layer.managers.impl.DepositManagerImpl;
 import main.db_access_layer.managers.impl.PropertyManagerImpl;
 import main.model.Account;
 import main.model.Client;
+import main.model.Deposit;
 import main.services.ClientAction;
 
 import java.util.HashSet;
 import java.util.Iterator;
 
-/**
- * Created by Einstine on 04/06/2014.
- */
 public class ClientActionImpl implements ClientAction {
     @Override
     public void withdrawFromAccount(Client client, double withdrawalAmount) throws Exception {
@@ -87,8 +88,31 @@ public class ClientActionImpl implements ClientAction {
     }
 
     @Override
-    public void preopenDeposit() {
+    public void preOpenDeposit(long deposit_id) throws Exception {
+        PropertyManager pm = new PropertyManagerImpl();
+        DepositManager dm = new DepositManagerImpl();
+        AccountManager am = new AccountManagerImpl();
+        ClientManager cm = new ClientManagerImpl();
 
+        Deposit dbDeposit = dm.findDeposit(deposit_id);
+        if (dbDeposit.getType() != DepositType.LONG){
+            throw new Exception("Only long deposits may be pre-opened");
+        }
+        Client client = cm.findClient(dbDeposit.getClientId());
+        HashSet<Account> allAccounts = am.allClientsAccounts(client.getClient_id());
+        if (allAccounts.isEmpty()){
+            throw new Exception("Client doesn't have accounts");
+        }
+        Iterator<Account> it = allAccounts.iterator();
+        Account account = it.next();
+        double preOpenFee = pm.getProperty("pre_open_fee");
+        account.setBalance(account.getBalance() + (dbDeposit.getBalance() * (100 - preOpenFee)));
+        am.updateAccount(account);
+        dm.closeDeposit(deposit_id);
+    }
+
+    public void preopenDeposit(Deposit deposit) throws Exception {
+        preOpenDeposit(deposit.getDepositId());
     }
 
     @Override

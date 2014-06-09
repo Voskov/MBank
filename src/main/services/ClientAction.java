@@ -3,9 +3,6 @@ package main.services;
 import main.model.Account;
 import main.model.Client;
 
-/**
- * Created by Einstine on 04/06/2014.
- */
 public interface ClientAction extends Action{
 
     void withdrawFromAccount(Account account, double withdrawalAmount) throws Exception;
@@ -18,5 +15,5 @@ public interface ClientAction extends Action{
 
     void createNewDeposit();
 
-    void preopenDeposit();
+    void preOpenDeposit(long deposit_id) throws Exception;
 }
