@@ -108,7 +108,6 @@ public class Deposit {
         if (opening_date != null ? !opening_date.equals(deposit.opening_date) : deposit.opening_date != null)
             return false;
         if (type != deposit.type) return false;
-
         return true;
     }
 }
