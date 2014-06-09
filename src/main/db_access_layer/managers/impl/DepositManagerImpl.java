@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.logging.Level;
 
 public class DepositManagerImpl extends DbConnectorManagerImpl implements DepositManager {
@@ -133,6 +134,24 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
             LOGGER.log(Level.WARNING, msg);
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public HashSet<Deposit> allExpiredDeposits(){
+        HashSet<Deposit> allExpired = new HashSet<Deposit>();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date now = Calendar.getInstance().getTime();
+        String today = df.format(now);
+        sqlStrBldr = new StringBuilder("SELECT * FROM Deposits WHERE closing_date < '").append(today).append("'");
+        try{
+            ResultSet res = stmt.executeQuery(sqlStrBldr.toString());
+            while (res.next()){
+                allExpired.add(buildDeposit(res));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return allExpired;
     }
 
     @Override

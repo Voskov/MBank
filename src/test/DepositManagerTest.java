@@ -10,9 +10,7 @@ import org.junit.*;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.*;
 
 public class DepositManagerTest extends AbstractTest {
     static DepositManagerImpl depositManager = null;
@@ -60,4 +58,17 @@ public class DepositManagerTest extends AbstractTest {
         Assert.assertTrue(testDeposit.equals(dbDeposit));
     }
 
+    @Test
+    public void testGetExpired(){
+        Deposit expiredDeposit = new Deposit(1, 12345, 1000.0, DepositType.SHORT, 1010, new Date(1400896199000L), new Date(1400906199000L));
+        Deposit notExpiredDeposit = new Deposit(2, 12345, 1000.0, DepositType.SHORT, 1010, new Date(1401896199000L), new Date(1403906199000L));;
+        depositManager.createNewDeposit(expiredDeposit);
+        depositManager.createNewDeposit(notExpiredDeposit);
+        HashSet<Deposit> testSet = new HashSet<Deposit>();
+        testSet.add(expiredDeposit);
+        HashSet expiredDeposits = depositManager.allExpiredDeposits();
+        Iterator<Deposit> it = expiredDeposits.iterator();
+        Deposit dbDeposit = it.next();
+        Assert.assertEquals(expiredDeposit, dbDeposit);
+    }
 }

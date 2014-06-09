@@ -2,6 +2,7 @@ package main.model;
 
 import main.DepositType;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class Deposit {
@@ -78,8 +79,17 @@ public class Deposit {
         this.balance = balance;
         this.type = type;
         this.estimated_balance = estimated_balance;
+        opening_date.setHours(0);
+        opening_date.setMinutes(0);
+        opening_date.setSeconds(0);
+        opening_date.setMinutes(0);
+        closing_date.setHours(0);
+        closing_date.setMinutes(0);
+        closing_date.setSeconds(0);
+        closing_date.setMinutes(0);
         this.opening_date = opening_date;
         this.closing_date = closing_date;
+
     }
 
     @Override

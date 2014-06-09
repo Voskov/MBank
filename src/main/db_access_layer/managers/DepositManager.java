@@ -4,6 +4,7 @@ import main.model.Deposit;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public interface DepositManager {
     void createNewDeposit(Deposit deposit);
@@ -14,5 +15,6 @@ public interface DepositManager {
 
     ArrayList<Deposit> allClientsDeposits(long client_id);
 
+    HashSet<Deposit> allExpiredDeposits();
     Deposit buildDeposit(ResultSet res);
 }

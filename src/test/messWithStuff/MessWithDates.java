@@ -18,11 +18,25 @@ public class MessWithDates {
         System.out.println("__________________________");
         System.out.println(df.format(today));
         System.out.println("***********************");
+        System.out.println("d - " + d.toString() + "; today - " + today.toString());
         System.out.println(d.compareTo(today));
-
         System.out.println("**************************");
 
         System.out.println(new Date());
         System.out.println(new Date(1401896199000L));
+
+        System.out.println("++++++++++++++++++++++++++++");
+        Calendar calToday = Calendar.getInstance();
+        System.out.println(calToday);
+        System.out.println(calToday.getTime());
+        calToday.set(Calendar.HOUR, 0);
+        calToday.set(Calendar.MINUTE, 0);
+        calToday.set(Calendar.SECOND, 0);
+//        calToday.set(Calendar.MILLISECOND, 0);
+        System.out.println(calToday.getTime());
+
+
+
+
     }
 }
