@@ -7,8 +7,8 @@ public interface AdminAction extends Action{
 
     void addNewClient(Client client, double initialAmount) throws Exception;
 
-    void removeClient(long client_id);
-    void removeClient(Client client);
+    void removeClient(long client_id) throws Exception;
+    void removeClient(Client client) throws Exception;
 
     void createNewAccount(Account account);
 
