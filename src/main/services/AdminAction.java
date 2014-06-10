@@ -3,12 +3,9 @@ package main.services;
 import main.model.Account;
 import main.model.Client;
 
-/**
- * Created by Einstine on 04/06/2014.
- */
 public interface AdminAction extends Action{
 
-    Client addNewClient();
+    void addNewClient(Client client, double initialAmount) throws Exception;
 
     void removeClient(long client_id);
     void removeClient(Client client);
