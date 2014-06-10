@@ -93,8 +93,18 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
     }
 
     @Override
-    public ArrayList<Deposit> allClientsDeposits(long client_id) {
-        return null;
+    public HashSet<Deposit> allClientsDeposits(long client_id) {
+        HashSet<Deposit> allDeposits = null;
+        sqlStrBldr = new StringBuilder("SELECT * FROM Deposits WHERE client_id=").append(client_id);
+        try {
+            ResultSet res = stmt.executeQuery(sqlStrBldr.toString());
+            while (res.next()){
+                allDeposits.add(buildDeposit(res));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return allDeposits;
     }
 
     @Override
@@ -103,7 +113,7 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
         Deposit res_deposit = null;
         try {
             ResultSet res = stmt.executeQuery(sqlStrBldr.toString());
-            if (res.next()){
+            if (res.next()) {
                 res_deposit = buildDeposit(res);
             }
         } catch (SQLException e) {
@@ -142,7 +152,7 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
         sqlStrBldr = new StringBuilder("SELECT * FROM Deposits");
         try {
             ResultSet res = stmt.executeQuery(sqlStrBldr.toString());
-            while (res.next()){
+            while (res.next()) {
                 allDeposits.add(buildDeposit(res));
             }
         } catch (SQLException e) {
@@ -152,15 +162,15 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
     }
 
     @Override
-    public HashSet<Deposit> allExpiredDeposits(){
+    public HashSet<Deposit> allExpiredDeposits() {
         HashSet<Deposit> allExpired = new HashSet<Deposit>();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date now = Calendar.getInstance().getTime();
         String today = df.format(now);
         sqlStrBldr = new StringBuilder("SELECT * FROM Deposits WHERE closing_date < '").append(today).append("'");
-        try{
+        try {
             ResultSet res = stmt.executeQuery(sqlStrBldr.toString());
-            while (res.next()){
+            while (res.next()) {
                 allExpired.add(buildDeposit(res));
             }
         } catch (SQLException e) {
@@ -170,7 +180,7 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
     }
 
     @Override
-    public Deposit buildDeposit(ResultSet res){
+    public Deposit buildDeposit(ResultSet res) {
         Deposit deposit = null;
         try {
             deposit = new Deposit(res.getLong(1), res.getLong(2), res.getDouble(3), DepositType.valueOf(res.getString(4)), res.getLong(5), df.parse(res.getString(6)), df.parse(res.getString(7)));

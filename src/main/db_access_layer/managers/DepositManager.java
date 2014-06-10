@@ -13,7 +13,7 @@ public interface DepositManager {
     void updateDeposit(Deposit deposit);
     void drawDeposit(long deposit_id);
 
-    ArrayList<Deposit> allClientsDeposits(long client_id);
+    HashSet<Deposit> allClientsDeposits(long client_id);
 
     HashSet<Deposit> allDeposits();
 
