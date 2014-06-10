@@ -1,7 +1,11 @@
 package main.services;
 
+import main.DepositType;
 import main.model.Account;
 import main.model.Client;
+import main.model.Deposit;
+
+import java.util.Date;
 
 public interface ClientAction extends Action{
 
@@ -13,7 +17,10 @@ public interface ClientAction extends Action{
     void depositToAccount(Account account, double depositAmount);
     void depositToAccount(long accountId, double depositAmount);
 
-    void createNewDeposit();
+    void createNewDeposit(Deposit deposit) throws Exception;
+    void createNewDeposit(Deposit deposit, Client client) throws Exception;
+
+    void createNewDeposit(Client client, double amount, DepositType type, Date closing_date) throws Exception;
 
     void preOpenDeposit(long deposit_id) throws Exception;
 }

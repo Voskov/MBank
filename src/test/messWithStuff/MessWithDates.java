@@ -34,8 +34,8 @@ public class MessWithDates {
         calToday.set(Calendar.SECOND, 0);
 //        calToday.set(Calendar.MILLISECOND, 0);
         System.out.println(calToday.getTime());
-
-
+        System.out.println("...............................");
+//        Calendar addYears = Calendar.getInstance().add(40, Calendar.YEAR);
 
 
     }

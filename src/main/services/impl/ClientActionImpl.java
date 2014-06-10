@@ -1,5 +1,6 @@
 package main.services.impl;
 
+import main.AccountType;
 import main.DepositType;
 import main.db_access_layer.managers.AccountManager;
 import main.db_access_layer.managers.ClientManager;
@@ -14,6 +15,8 @@ import main.model.Client;
 import main.model.Deposit;
 import main.services.ClientAction;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -34,35 +37,36 @@ public class ClientActionImpl implements ClientAction {
 
     @Override
     public void withdrawFromAccount(Account account, double withdrawalAmount) throws Exception {
-        withdrawFromAccount(account.getAccount_id(), withdrawalAmount);
+        AccountManager accountManager = new AccountManagerImpl();
+        PropertyManager propertyManager = new PropertyManagerImpl();
+        double commission = propertyManager.getProperty("commission_rate");
+        double balance = account.getBalance();
+        if (withdrawalAmount > balance + commission) {
+            throw new Exception("Not enough money in the account");
+        }
+        account.setBalance(balance - withdrawalAmount - commission);
+        accountManager.updateAccount(account);
     }
 
     @Override
     public void withdrawFromAccount(long account_id, double withdrawalAmount) throws Exception {
         AccountManager accountManager = new AccountManagerImpl();
         Account dbAccount = accountManager.findAccount(account_id);
-        PropertyManager propertyManager = new PropertyManagerImpl();
-        double commission = 0.5;
-//        double commission = propertyManager.getProperty("commission_rate");
-        double balance = dbAccount.getBalance();
-        if (withdrawalAmount > balance + commission) {
-            throw new Exception("Not enough money in the account");
-        }
-        dbAccount.setBalance(balance - withdrawalAmount - commission);
-        accountManager.updateAccount(dbAccount);
+        withdrawFromAccount(dbAccount, withdrawalAmount);
     }
 
     @Override
     public void depositToAccount(Client client, double depositAmount) throws Exception {
         AccountManager accountManager = new AccountManagerImpl();
         HashSet<Account> allAccounts = accountManager.allClientsAccounts(client.getClient_id());
+
+        //Not REALLY necessary
         if (allAccounts.size() > 1) {
             throw new Exception("More than one account, please choose account");
         } else if (allAccounts.size() < 1) {
             throw new Exception("No accounts for this client");
         }
-        Iterator<Account> accountsIterator = allAccounts.iterator();
-        Account account = accountsIterator.next();
+        Account account = allAccounts.iterator().next();
         depositToAccount(account, depositAmount);
     }
 
@@ -83,7 +87,62 @@ public class ClientActionImpl implements ClientAction {
     }
 
     @Override
-    public void createNewDeposit() {
+    public void createNewDeposit(Deposit deposit) throws Exception {
+        ClientManager cm = new ClientManagerImpl();
+        Client client = cm.findClient(deposit.getClientId());
+        createNewDeposit(deposit, client);
+    }
+
+    @Override
+    public void createNewDeposit(Deposit deposit, Client client) throws Exception {
+        Double interest = null;
+        PropertyManager pm = new PropertyManagerImpl();
+
+        Date closingDate = deposit.getClosingDate();
+        //TODO - verify date
+//        if (closingDate > 40 years){
+//        String msg = "Can't open a deposit for that long";
+//        throw Exception
+//        } else if (deposit.getType() == DepositType.SHORT && closingDate > 1 year){
+//        String msg = "Can't open a SHORT deposit for that long";
+//        throw Exception
+//    }
+
+
+        //TODO - switch
+        if (client.getAccountType() == AccountType.REGULAR) interest = pm.getProperty("regular_daily_interest");
+        else if (client.getAccountType() == AccountType.GOLD) interest = pm.getProperty("gold_daily_interest");
+        else if (client.getAccountType() == AccountType.PLATINUM) interest = pm.getProperty("platinum_daily_interest");
+
+    }
+
+    @Override
+    public void createNewDeposit(Client client, double amount, DepositType type, Date closing_date) throws Exception {
+        Double interest = null;
+        PropertyManager pm = new PropertyManagerImpl();
+        Calendar today = Calendar.getInstance();
+        today.add(Calendar.YEAR, 40);
+
+//        if (closingDate > 40 years){
+//        String msg = "Can't open a deposit for that long";
+//        throw Exception
+//        } else if (deposit.getType() == DepositType.SHORT && closingDate > 1 year){
+//        String msg = "Can't open a SHORT deposit for that long";
+//        throw Exception
+//        }
+
+
+        switch (client.getAccountType()){
+            case REGULAR:
+                interest = pm.getProperty("regular_daily_interest");
+                break;
+            case GOLD:
+                interest = pm.getProperty("gold_daily_interest");
+                break;
+            case PLATINUM:
+                interest = pm.getProperty("platinum_daily_interest");
+                break;
+        }
 
     }
 
@@ -95,12 +154,12 @@ public class ClientActionImpl implements ClientAction {
         ClientManager cm = new ClientManagerImpl();
 
         Deposit dbDeposit = dm.findDeposit(deposit_id);
-        if (dbDeposit.getType() != DepositType.LONG){
+        if (dbDeposit.getType() != DepositType.LONG) {
             throw new Exception("Only long deposits may be pre-opened");
         }
         Client client = cm.findClient(dbDeposit.getClientId());
         HashSet<Account> allAccounts = am.allClientsAccounts(client.getClient_id());
-        if (allAccounts.isEmpty()){
+        if (allAccounts.isEmpty()) {
             throw new Exception("Client doesn't have accounts");
         }
         Iterator<Account> it = allAccounts.iterator();
