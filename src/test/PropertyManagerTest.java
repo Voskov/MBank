@@ -1,7 +1,8 @@
-package main.db_access_layer.managers;
+package test;
 
 import init.InitiateDB;
 import junit.framework.Assert;
+import main.db_access_layer.managers.PropertyManager;
 import main.db_access_layer.managers.impl.PropertyManagerImpl;
 import org.junit.After;
 import org.junit.Before;
