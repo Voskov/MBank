@@ -14,6 +14,7 @@ import main.model.Client;
 import main.model.Deposit;
 import main.services.ClientAction;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -83,9 +84,24 @@ public class ClientActionImpl implements ClientAction {
     }
 
     @Override
-    public void createNewDeposit() {
-
+    public void createNewDeposit(Client client, double amount, DepositType type, Date openDate) {
+        AccountManager am = new AccountManagerImpl();
+        HashSet<Account> allAccounts = am.allClientsAccounts(client.getClient_id());
+        if (allAccounts.iterator().hasNext()) {
+            Account account = allAccounts.iterator().next();
+            createNewDeposit(account, amount, type, openDate);
+        }
     }
+
+    @Override
+    public void createNewDeposit(Account account, double amount, DepositType type, Date openDate) {
+
+//        PropertyManager
+//        if (account.getBalance() < amount) {
+//
+//        }
+    }
+
 
     @Override
     public void preOpenDeposit(long deposit_id) throws Exception {
