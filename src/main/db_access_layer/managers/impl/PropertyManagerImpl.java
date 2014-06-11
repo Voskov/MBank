@@ -1,5 +1,6 @@
 package main.db_access_layer.managers.impl;
 
+import main.AccountType;
 import main.db_access_layer.managers.PropertyManager;
 
 import java.sql.ResultSet;
@@ -53,6 +54,7 @@ public class PropertyManagerImpl extends DbConnectorManagerImpl implements Prope
         }
     }
 
+    @Override
     public void setProperty(String property, double value) {
         sqlStrBldr = new StringBuilder("UPDATE properties SET prop_value=");
         sqlStrBldr.append(String.valueOf(value));
@@ -65,5 +67,12 @@ public class PropertyManagerImpl extends DbConnectorManagerImpl implements Prope
             LOGGER.log(Level.WARNING, "Could not update property");
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public double getProp(AccountType type, String property) throws Exception {
+        String fullProperty = type.toString().toLowerCase() + "_" + property;
+        Double prop_value = this.getProperty(fullProperty);
+        return prop_value;
     }
 }

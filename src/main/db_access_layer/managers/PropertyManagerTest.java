@@ -2,6 +2,7 @@ package main.db_access_layer.managers;
 
 import init.InitiateDB;
 import junit.framework.Assert;
+import main.AccountType;
 import main.db_access_layer.managers.impl.PropertyManagerImpl;
 import org.junit.After;
 import org.junit.Before;
@@ -36,5 +37,11 @@ public class PropertyManagerTest {
         pm.setProperty("commission_rate", String.valueOf(newCommission));
         double commission = pm.getProperty("commission_rate");
         Assert.assertEquals(newCommission, commission);
+    }
+
+    @Test
+    public void testNewGetProp() throws Exception {
+        Assert.assertEquals(0.015, pm.getProp(AccountType.REGULAR, "deposit_commission"));
+        Assert.assertEquals(1000000D, pm.getProp(AccountType.GOLD, "deposit_credit"));
     }
 }
