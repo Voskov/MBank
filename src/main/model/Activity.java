@@ -34,8 +34,20 @@ public class Activity {
         this.amount = amount;
     }
 
+    @Override
+    public String toString() {
+        return "Activity{" +
+                "activityId=" + activityId +
+                ", clientId=" + clientId +
+                ", amount=" + amount +
+                ", activityDate=" + activityDate +
+                ", commission=" + commission +
+                ", description='" + description + '\'' +
+                '}';
+    }
+
     public String getActivityDate() {
-        SimpleDateFormat ft = new SimpleDateFormat ("yyyy-mm-dd");
+        SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
         ft.format(activityDate);
 
         return ft.format(activityDate);
@@ -89,6 +101,14 @@ public class Activity {
 
     public Activity(long activityId, long clientId, double amount, Date activityDate, double commission, String description) {
         this.activityId = activityId;
+        this.clientId = clientId;
+        this.amount = amount;
+        this.activityDate = activityDate;
+        this.commission = commission;
+        this.description = description;
+    }
+
+    public Activity(long clientId, double amount, Date activityDate, double commission, String description) {
         this.clientId = clientId;
         this.amount = amount;
         this.activityDate = activityDate;

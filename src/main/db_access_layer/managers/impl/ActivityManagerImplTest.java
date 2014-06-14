@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class ActivityManagerImplTest {
     ActivityManagerImpl am = null;
-    Activity testActivity = new Activity(12345, 54321, 1000.0, new Date(1400000000), 1.0, "Test Activity");
+    Activity testActivity = new Activity(54321, 1000.0, new Date(114, 5, 23), 1.0, "Test Activity");
 
     @Before
     public void setUp() throws Exception {
@@ -22,6 +22,7 @@ public class ActivityManagerImplTest {
 
     @Test
     public void testFindActivity() throws Exception {
-
+        Activity activity = am.findActivity(4);
+        System.out.println(activity.toString());
     }
 }

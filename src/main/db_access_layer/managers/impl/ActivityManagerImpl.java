@@ -17,17 +17,15 @@ public class ActivityManagerImpl extends DbConnectorManagerImpl implements Activ
     public void addActivity(Activity act) {
         try {
             sqlStrBldr = new StringBuilder("INSERT INTO Activity ");
-            sqlStrBldr.append("(activity_id, client_id, amount, activity_date, commission, description) ");
+            sqlStrBldr.append("(client_id, amount, activity_date, commission, description) ");
             sqlStrBldr.append("VALUES (");
-            sqlStrBldr.append(act.getActivityId()).append(", ");
+//            sqlStrBldr.append(act.getActivityId()).append(", ");
             sqlStrBldr.append(act.getClientId()).append(", ");
             sqlStrBldr.append(act.getAmount()).append(", '");
             sqlStrBldr.append(act.getActivityDate()).append("', ");
             sqlStrBldr.append(act.getCommission()).append(", '");
             sqlStrBldr.append(act.getDescription()).append("')");
-            String statement = "INSERT INTO Activity VALUES(" + act.getActivityId() + ", " + act.getClientId() + ", " + act.getAmount() + ", '" + act.getActivityDate() + "', " + act.getCommission() + ", '" + act.getDescription() + "')";
-            System.out.println(statement);
-            stmt.executeUpdate(statement);
+            stmt.executeUpdate(sqlStrBldr.toString());
             String msg = "Activity" + act.getActivityId() + " was created on DB";
             LOGGER.log(Level.INFO, msg);
 
@@ -60,7 +58,7 @@ public class ActivityManagerImpl extends DbConnectorManagerImpl implements Activ
 
     @Override
     public Activity findActivity(long activityId) throws SQLException {
-        sqlStrBldr = new StringBuilder("SELECT * FROM Activities WHERE activity_id=").append(activityId);
+        sqlStrBldr = new StringBuilder("SELECT * FROM Activity WHERE activity_id=").append(activityId);
         Activity dbActivity = null;
         ResultSet res = stmt.executeQuery(sqlStrBldr.toString());
         if (res.next()) {
