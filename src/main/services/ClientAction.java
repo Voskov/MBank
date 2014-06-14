@@ -16,6 +16,10 @@ public interface ClientAction extends Action{
     void depositToAccount(Account account, double depositAmount);
     void depositToAccount(long accountId, double depositAmount);
 
+    void createNewDeposit(Deposit deposit) throws Exception;
+    void createNewDeposit(Deposit deposit, Client client) throws Exception;
+
+    void createNewDeposit(Client client, double amount, DepositType type, Date closing_date) throws Exception;
     void createNewDeposit(Client client, double amount, DepositType type, Date openDate) throws Exception;
 
     void preOpenDeposit(long deposit_id) throws Exception;

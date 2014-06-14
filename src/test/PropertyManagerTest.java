@@ -3,6 +3,7 @@ package main.db_access_layer.managers;
 import init.InitiateDB;
 import junit.framework.Assert;
 import main.AccountType;
+import main.db_access_layer.managers.PropertyManager;
 import main.db_access_layer.managers.impl.PropertyManagerImpl;
 import org.junit.After;
 import org.junit.Before;

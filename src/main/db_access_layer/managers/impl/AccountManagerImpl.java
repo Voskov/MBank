@@ -51,37 +51,6 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
         executeStatement(sqlStr, logMessage);
     }
 
-    @Override
-    public void withdrawFromAccount(Account account, double withdraw_amount){
-        Account dbAccount = findAccount(account);
-
-    }
-
-//    public void withdrawFromAccount(Account account, double withdraw_amount) {
-//        sqlStrBldr = new StringBuilder("Select balance, credit_limit FROM Accounts WHERE account_id=").append(account.getAccount_id());
-//        try {
-//            ResultSet res = stmt.executeQuery(sqlStrBldr.toString());
-//            double balance, cred_lim = 0, new_balance = 0;
-//            if (res.next()) {
-//                balance = res.getDouble(1);
-//                cred_lim = res.getDouble(2);
-//                new_balance = balance - withdraw_amount;
-//            }
-//            if (new_balance >= cred_lim) {
-//                sqlStatement = "UPDATE Accounts SET balance=" + new_balance;
-//                stmt.executeUpdate(sqlStatement);
-//                String msg = withdraw_amount + " was withdrawn from account " + account.getAccount_id() + ". The new balance is " + new_balance;
-//                LOGGER.log(Level.INFO, msg);
-//            } else {
-//                String msg = "Your credit limit isn't large enough to withdraw " + withdraw_amount;
-//                LOGGER.log(Level.INFO, msg);
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
-
     public void createAccount(long accountId, long clientId, double balance, double creditLimit, String comment) {
         try {
             sqlStrBldr = new StringBuilder("INSERT INTO Accounts VALUES(");
@@ -106,30 +75,6 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
         sqlStr = "DELETE FROM Accounts WHERE account_id=" + id;
         String logMsg = "Account " + id + " was deleted from DB";
         executeStatement(sqlStr, logMsg);
-    }
-
-    public void withdrawFromAccount(long account_id, double withdraw_amount) {
-        sqlStatement = "Select balance, credit_limit FROM Accounts";
-        try {
-            ResultSet res = stmt.executeQuery(sqlStatement);
-            double balance, cred_lim = 0, new_balance = 0;
-            if (res.next()) {
-                balance = res.getDouble(1);
-                cred_lim = res.getDouble(2);
-                new_balance = balance - withdraw_amount;
-            }
-            if (new_balance >= cred_lim) {
-                sqlStatement = "UPDATE Accounts SET balance=" + new_balance;
-                stmt.executeUpdate(sqlStatement);
-                String msg = withdraw_amount + " was withdrawn from account " + account_id + ". The new balance is " + new_balance;
-                LOGGER.log(Level.INFO, msg);
-            } else {
-                String msg = "Your credit limit isn't large enough to withdraw " + withdraw_amount;
-                LOGGER.log(Level.INFO, msg);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -262,4 +207,34 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
         }
         return account;
     }
+
+    //    @Override
+//    public void withdrawFromAccount(Account account, double withdraw_amount){
+//        withdrawFromAccount(account.getAccount_id(), withdraw_amount);
+//    }
+//
+//    @Override
+//    public void withdrawFromAccount(long account_id, double withdraw_amount) {
+//        sqlStatement = "SELECT balance, credit_limit FROM Accounts";
+//        try {
+//            ResultSet res = stmt.executeQuery(sqlStatement);
+//            double balance, cred_lim = 0, new_balance = 0;
+//            if (res.next()) {
+//                balance = res.getDouble(1);
+//                cred_lim = res.getDouble(2);
+//                new_balance = balance - withdraw_amount;
+//            }
+//            if (new_balance >= cred_lim) {
+//                sqlStatement = "UPDATE Accounts SET balance=" + new_balance;
+//                stmt.executeUpdate(sqlStatement);
+//                String msg = withdraw_amount + " was withdrawn from account " + account_id + ". The new balance is " + new_balance;
+//                LOGGER.log(Level.INFO, msg);
+//            } else {
+//                String msg = "Your credit limit isn't large enough to withdraw " + withdraw_amount;
+//                LOGGER.log(Level.INFO, msg);
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }
