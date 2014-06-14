@@ -3,6 +3,7 @@ package main.services;
 import main.DepositType;
 import main.model.Account;
 import main.model.Client;
+import main.model.Deposit;
 
 import java.util.Date;
 
@@ -19,8 +20,10 @@ public interface ClientAction extends Action{
     void createNewDeposit(Deposit deposit) throws Exception;
     void createNewDeposit(Deposit deposit, Client client) throws Exception;
 
-    void createNewDeposit(Client client, double amount, DepositType type, Date closing_date) throws Exception;
-    void createNewDeposit(Client client, double amount, DepositType type, Date openDate) throws Exception;
+//    void createNewDeposit(Client client, double amount, DepositType type, Date closing_date) throws Exception;
+//    void createNewDeposit(Client client, double amount, DepositType type, Date openDate) throws Exception;
+
+//    void createNewDeposit(Deposit deposit, Client client) throws Exception;
 
     void preOpenDeposit(long deposit_id) throws Exception;
 }

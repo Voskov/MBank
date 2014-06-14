@@ -1,5 +1,6 @@
 package main.services.impl;
 
+import main.AccountType;
 import main.DepositType;
 import main.db_access_layer.managers.AccountManager;
 import main.db_access_layer.managers.ClientManager;
@@ -94,7 +95,6 @@ public class ClientActionImpl implements ClientAction {
 
     @Override
     public void createNewDeposit(Deposit deposit, Client client) throws Exception {
-        Double interest = null;
         PropertyManager pm = new PropertyManagerImpl();
 
         Date closingDate = deposit.getClosingDate();
@@ -107,11 +107,7 @@ public class ClientActionImpl implements ClientAction {
 //        throw Exception
 //    }
 
-
-        //TODO - switch
-        if (client.getAccountType() == AccountType.REGULAR) interest = pm.getProperty("regular_daily_interest");
-        else if (client.getAccountType() == AccountType.GOLD) interest = pm.getProperty("gold_daily_interest");
-        else if (client.getAccountType() == AccountType.PLATINUM) interest = pm.getProperty("platinum_daily_interest");
+        double interest = pm.getProp(client.getAccountType(), "daily_interest");
 
     }
 
