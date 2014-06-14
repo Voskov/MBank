@@ -84,24 +84,19 @@ public class ClientActionImpl implements ClientAction {
     }
 
     @Override
-    public void createNewDeposit(Client client, double amount, DepositType type, Date openDate) {
+    public void createNewDeposit(Client client, double depositAmount, DepositType type, Date openDate) throws Exception {
         AccountManager am = new AccountManagerImpl();
         HashSet<Account> allAccounts = am.allClientsAccounts(client.getClient_id());
+        Account account = null;
         if (allAccounts.iterator().hasNext()) {
-            Account account = allAccounts.iterator().next();
-            createNewDeposit(account, amount, type, openDate);
+            account = allAccounts.iterator().next();
+        }
+        PropertyManager pm = new PropertyManagerImpl();
+        double allowedLimit = pm.getProp(client.getAccountType(), "deposit_credit");
+        if ((account.getBalance() + allowedLimit) < depositAmount) {
+            throw new Exception("Not enough money to deposit");
         }
     }
-
-    @Override
-    public void createNewDeposit(Account account, double amount, DepositType type, Date openDate) {
-
-//        PropertyManager
-//        if (account.getBalance() < amount) {
-//
-//        }
-    }
-
 
     @Override
     public void preOpenDeposit(long deposit_id) throws Exception {
