@@ -1,0 +1,80 @@
+package main.db_access_layer.managers.impl;
+
+import main.db_access_layer.managers.ActivityManager;
+import main.model.Activity;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.logging.Level;
+
+public class ActivityManagerImpl extends DbConnectorManagerImpl implements ActivityManager {
+
+    public ActivityManagerImpl() {
+        connectToDb();
+    }
+
+    public void addActivity(Activity act) {
+        try {
+            sqlStrBldr = new StringBuilder("INSERT INTO Activity ");
+            sqlStrBldr.append("(activity_id, client_id, amount, activity_date, commission, description) ");
+            sqlStrBldr.append("VALUES (");
+            sqlStrBldr.append(act.getActivityId()).append(", ");
+            sqlStrBldr.append(act.getClientId()).append(", ");
+            sqlStrBldr.append(act.getAmount()).append(", '");
+            sqlStrBldr.append(act.getActivityDate()).append("', ");
+            sqlStrBldr.append(act.getCommission()).append(", '");
+            sqlStrBldr.append(act.getDescription()).append("')");
+            String statement = "INSERT INTO Activity VALUES(" + act.getActivityId() + ", " + act.getClientId() + ", " + act.getAmount() + ", '" + act.getActivityDate() + "', " + act.getCommission() + ", '" + act.getDescription() + "')";
+            System.out.println(statement);
+            stmt.executeUpdate(statement);
+            String msg = "Activity" + act.getActivityId() + " was created on DB";
+            LOGGER.log(Level.INFO, msg);
+
+        } catch (SQLIntegrityConstraintViolationException e) {
+            String msg = "Account" + act.getActivityId() + " already exists on DB. Client wasn't added";
+            LOGGER.log(Level.WARNING, msg);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void addActivity(long id, long client_id, double amount, String date, double commission, String description) {
+        try {
+
+            String statement = "INSERT INTO Activity VALUES(" + id + ", " + client_id + ", " + amount + ", '" + date + "', " + commission + ", '" + description + "')";
+            System.out.println(statement);
+            stmt.executeUpdate(statement);
+            String msg = "Activity" + id + " was created on DB";
+            LOGGER.log(Level.INFO, msg);
+
+        } catch (SQLIntegrityConstraintViolationException e) {
+            String msg = "Activity " + id + " already exists on DB. Activity wasn't added";
+            LOGGER.log(Level.WARNING, msg);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public Activity findActivity(long activityId) throws SQLException {
+        sqlStrBldr = new StringBuilder("SELECT * FROM Activities WHERE activity_id=").append(activityId);
+        Activity dbActivity = null;
+        ResultSet res = stmt.executeQuery(sqlStrBldr.toString());
+        if (res.next()) {
+            dbActivity = buildActivity(res);
+        }
+        return dbActivity;
+    }
+
+    @Override
+    public Activity findActivity(Activity activity) throws SQLException {
+        return findActivity(activity.getActivityId());
+    }
+
+    private Activity buildActivity(ResultSet res) throws SQLException {
+        return new Activity(res.getLong(1), res.getLong(2), res.getDouble(3), res.getDate(4), res.getDouble(5), res.getString(6));
+    }
+}

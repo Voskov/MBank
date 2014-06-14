@@ -1,6 +1,7 @@
 package main.db_access_layer.managers;
 
 import main.model.Account;
+import main.model.Activity;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -28,7 +29,6 @@ public interface AccountManager {
     HashSet<Account> allClientsAccounts(long client_id);
 
     Account createAccountFromResult(ResultSet res);
-
 
 //These shouldn't be here...
 //    void withdrawFromAccount(long account_id, double amount);

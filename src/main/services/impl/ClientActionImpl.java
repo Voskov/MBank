@@ -127,8 +127,7 @@ public class ClientActionImpl implements ClientAction {
         if (allAccounts.isEmpty()) {
             throw new Exception("Client doesn't have accounts");
         }
-        Iterator<Account> it = allAccounts.iterator();
-        Account account = it.next();
+        Account account = allAccounts.iterator().next();
         double preOpenFee = pm.getProperty("pre_open_fee");
         account.setBalance(account.getBalance() + (dbDeposit.getBalance() * (100 - preOpenFee)));
         am.updateAccount(account);

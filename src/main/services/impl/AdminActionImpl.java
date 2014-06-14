@@ -1,21 +1,16 @@
 package main.services.impl;
 
 import main.AccountType;
-import main.db_access_layer.managers.AccountManager;
-import main.db_access_layer.managers.ClientManager;
-import main.db_access_layer.managers.DepositManager;
-import main.db_access_layer.managers.PropertyManager;
-import main.db_access_layer.managers.impl.AccountManagerImpl;
-import main.db_access_layer.managers.impl.ClientManagerImpl;
-import main.db_access_layer.managers.impl.DepositManagerImpl;
-import main.db_access_layer.managers.impl.PropertyManagerImpl;
+import main.db_access_layer.managers.*;
+import main.db_access_layer.managers.impl.*;
 import main.model.Account;
+import main.model.Activity;
 import main.model.Client;
 import main.model.Deposit;
 import main.services.AdminAction;
 import main.services.ClientAction;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.HashSet;
 
 public class AdminActionImpl implements AdminAction {
@@ -58,16 +53,16 @@ public class AdminActionImpl implements AdminAction {
     public void removeClient(Client client) throws Exception {
         DepositManager dm = new DepositManagerImpl();
         HashSet<Deposit> allDeposits = dm.allClientsDeposits(client.getClient_id());
-        if (allDeposits != null){
-            for (Deposit deposit : allDeposits){
+        if (allDeposits != null) {
+            for (Deposit deposit : allDeposits) {
                 ClientAction ca = new ClientActionImpl();
-                ca.preOpenDeposit(deposit.getDepositId());
+                ca.preOpenDeposit(deposit.getDepositId());  //this may be problematic because short deposits cannot be preopened
             }
         }
         AccountManager am = new AccountManagerImpl();
         HashSet<Account> allAccounts = am.allClientsAccounts(client.getClient_id());
-        if (!allAccounts.isEmpty()){
-            for (Account account : allAccounts){
+        if (!allAccounts.isEmpty()) {
+            for (Account account : allAccounts) {
                 this.removeAccount(account);
             }
         }
@@ -83,27 +78,38 @@ public class AdminActionImpl implements AdminAction {
 
     @Override
     public void removeAccount(Account account) {
+        AccountManager accountManager = new AccountManagerImpl();
 
     }
 
     @Override
-    public void viewAllClientsDetails() {
+    public Client viewAllClientsDetails(long client_id) {
+        ClientManager cm = new ClientManagerImpl();
+        return cm.findClient(client_id);
+    }
+
+    @Override
+    public Account viewAllAccountsDetails(long accountId) {
+        AccountManager am = new AccountManagerImpl();
+        return am.findAccount(accountId);
 
     }
 
     @Override
-    public void viewAllAccountsDetails() {
-
-    }
-
-    @Override
-    public void viewAllDepositsDetails() {
-
+    public Deposit viewAllDepositsDetails(long depositId) {
+        DepositManager dm = new DepositManagerImpl();
+        return dm.findDeposit(depositId);
     }
 
     @Override
     public void ViewAllActivitiesDetails() {
 
+    }
+
+    @Override
+    public Activity ViewAllActivitiesDetails(long activityId) throws SQLException {
+        ActivityManager am = new ActivityManagerImpl();
+        return am.findActivity(activityId);
     }
 
     @Override

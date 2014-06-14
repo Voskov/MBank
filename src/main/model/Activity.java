@@ -4,26 +4,26 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Activity {
-    private long id;
-    private long client_id;
+    private long activityId;
+    private long clientId;
     private double amount;
-    private Date activity_date;
+    private Date activityDate;
     private double commission;
 
-    public long getId() {
-        return id;
+    public long getActivityId() {
+        return activityId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setActivityId(long activityId) {
+        this.activityId = activityId;
     }
 
-    public long getClient_id() {
-        return client_id;
+    public long getClientId() {
+        return clientId;
     }
 
-    public void setClient_id(long client_id) {
-        this.client_id = client_id;
+    public void setClientId(long clientId) {
+        this.clientId = clientId;
     }
 
     public double getAmount() {
@@ -34,16 +34,16 @@ public class Activity {
         this.amount = amount;
     }
 
-    public String getActivity_date() {
+    public String getActivityDate() {
         SimpleDateFormat ft = new SimpleDateFormat ("yyyy-mm-dd");
-        ft.format(activity_date);
+        ft.format(activityDate);
 
-        return ft.format(activity_date);
+        return ft.format(activityDate);
 
     }
 
-    public void setActivity_date(Date activity_date) {
-        this.activity_date = activity_date;
+    public void setActivityDate(Date activityDate) {
+        this.activityDate = activityDate;
     }
 
     public double getCommission() {
@@ -68,11 +68,30 @@ public class Activity {
 
     }
 
-    public Activity(long id, long client_id, double amount, Date activity_date, double commission, String description) {
-        this.id = id;
-        this.client_id = client_id;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Activity)) return false;
+
+        Activity activity = (Activity) o;
+
+        if (activityId != activity.activityId) return false;
+        if (Double.compare(activity.amount, amount) != 0) return false;
+        if (clientId != activity.clientId) return false;
+        if (Double.compare(activity.commission, commission) != 0) return false;
+        if (activityDate != null ? !activityDate.equals(activity.activityDate) : activity.activityDate != null)
+            return false;
+        if (description != null ? !description.equals(activity.description) : activity.description != null)
+            return false;
+
+        return true;
+    }
+
+    public Activity(long activityId, long clientId, double amount, Date activityDate, double commission, String description) {
+        this.activityId = activityId;
+        this.clientId = clientId;
         this.amount = amount;
-        this.activity_date = activity_date;
+        this.activityDate = activityDate;
         this.commission = commission;
         this.description = description;
     }

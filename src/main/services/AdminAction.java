@@ -1,7 +1,11 @@
 package main.services;
 
 import main.model.Account;
+import main.model.Activity;
 import main.model.Client;
+import main.model.Deposit;
+
+import java.sql.SQLException;
 
 public interface AdminAction extends Action{
 
@@ -14,13 +18,15 @@ public interface AdminAction extends Action{
 
     void removeAccount(Account account);
 
-    void viewAllClientsDetails();
+    Client viewAllClientsDetails(long client_id);
 
-    void viewAllAccountsDetails();
+    Account viewAllAccountsDetails(long account_id);
 
-    void viewAllDepositsDetails();
+    Deposit viewAllDepositsDetails(long depositId);
 
     void ViewAllActivitiesDetails();
+
+    Activity ViewAllActivitiesDetails(long activityId) throws SQLException;
 
     void updateSystemProperty();
 

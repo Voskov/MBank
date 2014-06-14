@@ -1,7 +1,7 @@
 package test;
 
 import main.db_access_layer.managers.impl.AccountManagerImpl;
-import main.db_access_layer.managers.impl.AcitivityManagerImpl;
+import main.db_access_layer.managers.impl.ActivityManagerImpl;
 import main.model.Account;
 import main.model.Activity;
 
@@ -23,7 +23,7 @@ public class TestDbConnector {
 
     static void activityAdd(){
         Activity act = new Activity(1234567, 12345, 100.0, new Date(), 5.0, "Test Activity");
-        AcitivityManagerImpl actCon = new AcitivityManagerImpl();
+        ActivityManagerImpl actCon = new ActivityManagerImpl();
         actCon.addActivity(act);
         actCon.disconnect();
     }
