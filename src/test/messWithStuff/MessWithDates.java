@@ -41,7 +41,6 @@ public class MessWithDates {
         String dateStart = "11/03/14 09:29:58";
         String dateStop = "11/03/14 09:33:43";
 
-// Custom date format
         SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
 
         Date d1 = null;
