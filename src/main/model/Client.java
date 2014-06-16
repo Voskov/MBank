@@ -47,19 +47,19 @@ public class Client {
 
     }
 
-    public void setClient_id(long client_id) {
+    public void setClientId(long client_id) {
         this.client_id = client_id;
     }
 
-    public long getClient_id() {
+    public long getClientId() {
         return client_id;
     }
 
-    public String getClient_name() {
+    public String getClientName() {
         return client_name;
     }
 
-    public void setClient_name(String client_name) {
+    public void setClientName(String client_name) {
         this.client_name = client_name;
     }
 
