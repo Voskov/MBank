@@ -1,5 +1,6 @@
 package main.services;
 
+import main.AccountType;
 import main.model.Account;
 import main.model.Activity;
 import main.model.Client;
@@ -30,4 +31,13 @@ public interface AdminAction extends Action{
 
     void updateSystemProperty();
 
+    void updateSystemProperty(String property, String value);
+
+    void updateSystemProperty(String property, double value);
+
+    void updateSystemProperty(AccountType type, String property, String value);
+
+    void updateSystemProperty(AccountType type, String property, double value);
+
+    void updateClientDetails(Client updatedClient);
 }

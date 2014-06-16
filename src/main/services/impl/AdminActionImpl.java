@@ -113,12 +113,30 @@ public class AdminActionImpl implements AdminAction {
     }
 
     @Override
-    public void updateSystemProperty() {
-
+    public void updateSystemProperty(String property, String value) {
+        PropertyManager pm = new PropertyManagerImpl();
+        pm.setProperty(property, value);
     }
 
     @Override
-    public void updateClientDetails() {
+    public void updateSystemProperty(String property, double value) {
+        updateSystemProperty(property, Double.toString(value));
+    }
+
+    @Override
+    public void updateSystemProperty(AccountType type, String property, String value) {
+        property += type.toString().toLowerCase();
+        updateSystemProperty(property, value);
+    }
+
+    @Override
+    public void updateSystemProperty(AccountType type, String property, double value) {
+        property += type.toString().toLowerCase();
+        updateSystemProperty(property, Double.toString(value));
+    }
+
+    @Override
+    public void updateClientDetails(Client updatedClient) {
 
     }
 
