@@ -34,9 +34,9 @@ public class AdminActionImpl implements AdminAction {
 
         ClientManager cm = new ClientManagerImpl();
         cm.createClient(client);
-        Client dbClient = cm.findClient(client.getClient_name());
+        Client dbClient = cm.findClient(client.getClientName());
 
-        Account initialAccount = new Account(dbClient.getClient_id(), initialAmount, limit, "Initial account");
+        Account initialAccount = new Account(dbClient.getClientId(), initialAmount, limit, "Initial account");
         AccountManager am = new AccountManagerImpl();
         am.createAccount(initialAccount);
 
@@ -52,7 +52,7 @@ public class AdminActionImpl implements AdminAction {
     @Override
     public void removeClient(Client client) throws Exception {
         DepositManager dm = new DepositManagerImpl();
-        HashSet<Deposit> allDeposits = dm.allClientsDeposits(client.getClient_id());
+        HashSet<Deposit> allDeposits = dm.allClientsDeposits(client.getClientId());
         if (allDeposits != null) {
             for (Deposit deposit : allDeposits) {
                 ClientAction ca = new ClientActionImpl();
@@ -60,7 +60,7 @@ public class AdminActionImpl implements AdminAction {
             }
         }
         AccountManager am = new AccountManagerImpl();
-        HashSet<Account> allAccounts = am.allClientsAccounts(client.getClient_id());
+        HashSet<Account> allAccounts = am.allClientsAccounts(client.getClientId());
         if (!allAccounts.isEmpty()) {
             for (Account account : allAccounts) {
                 this.removeAccount(account);
@@ -137,7 +137,16 @@ public class AdminActionImpl implements AdminAction {
 
     @Override
     public void updateClientDetails(Client updatedClient) {
-
+        ClientManager cm = new ClientManagerImpl();
+        Client dbClient = cm.findClient(updatedClient);
+        if (updatedClient.getClientName() != null) dbClient.setClientName(updatedClient.getClientName());
+        if (updatedClient.getPassword() != null) dbClient.setPassword(updatedClient.getPassword());
+        if (updatedClient.getAccountType() != null) dbClient.setAccountType(updatedClient.getAccountType());
+        if (updatedClient.getAddress() != null) dbClient.setAddress(updatedClient.getAddress());
+        if (updatedClient.getEmail() != null) dbClient.setEmail(updatedClient.getEmail());
+        if (updatedClient.getPhone() != null) dbClient.setPhone(updatedClient.getPhone());
+        if (updatedClient.getComment() != null) dbClient.setComment(updatedClient.getComment());
+        cm.updateClient(dbClient);
     }
 
     @Override

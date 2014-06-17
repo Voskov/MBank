@@ -46,28 +46,28 @@ public class ClientManagerTest {
         String newPassword = "newPassword";
         client.setPassword(newPassword);
         clientManager.updateClient(client);
-        Client dbClient = clientManager.findClient(client.getClient_id());
+        Client dbClient = clientManager.findClient(client.getClientId());
         Assert.assertEquals(newPassword, dbClient.getPassword());
     }
 
     @Test
     public void testFindById(){
         clientManager.createClient(client);
-        Client dbClient = clientManager.findClient(client.getClient_id());
+        Client dbClient = clientManager.findClient(client.getClientId());
         Assert.assertEquals(dbClient, client);
     }
 
     @Test
     public void testFindByUsername(){
         clientManager.createClient(client);
-        Client dbClient = clientManager.findClient(client.getClient_name());
+        Client dbClient = clientManager.findClient(client.getClientName());
         Assert.assertEquals(dbClient, client);
     }
 
     @Test
     public void testFindByClient(){
         clientManager.createClient(client);
-        client.setClient_id(1);
+        client.setClientId(1);
         Client dbClient = clientManager.findClient(client);
         Assert.assertEquals(dbClient, client);
     }

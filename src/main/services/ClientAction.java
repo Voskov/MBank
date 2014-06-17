@@ -26,4 +26,6 @@ public interface ClientAction extends Action{
 //    void createNewDeposit(Deposit deposit, Client client) throws Exception;
 
     void preOpenDeposit(long deposit_id) throws Exception;
+
+    void updateClientDetails(Client client);
 }

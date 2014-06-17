@@ -1,11 +1,10 @@
 package main.services;
 
-/**
- * Created by Einstine on 04/06/2014.
- */
+import main.model.Client;
+
 public interface Action {
 
-    void updateClientDetails();
+    void updateClientDetails(Client client);
 
     void viewClientDetails();
 

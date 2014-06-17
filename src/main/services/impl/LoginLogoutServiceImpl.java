@@ -22,7 +22,7 @@ public class LoginLogoutServiceImpl implements LoginLogoutService {
         }
 
         MBank mBank = MBank.getMBank();
-        if (mBank.checkIfClientIsLoggedIn(client.getClient_id())) {
+        if (mBank.checkIfClientIsLoggedIn(client.getClientId())) {
             throw new Exception("Client already logged in");
         }
         mBank.loginClient(client);

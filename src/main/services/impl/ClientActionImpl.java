@@ -22,7 +22,7 @@ public class ClientActionImpl implements ClientAction {
     @Override
     public void withdrawFromAccount(Client client, double withdrawalAmount) throws Exception {
         AccountManager accountManager = new AccountManagerImpl();
-        HashSet<Account> allAccounts = accountManager.allClientsAccounts(client.getClient_id());
+        HashSet<Account> allAccounts = accountManager.allClientsAccounts(client.getClientId());
         if (allAccounts.size() > 1) {
             throw new Exception("More than one account, please choose account");
         } else if (allAccounts.size() < 1) {
@@ -56,7 +56,7 @@ public class ClientActionImpl implements ClientAction {
     @Override
     public void depositToAccount(Client client, double depositAmount) throws Exception {
         AccountManager accountManager = new AccountManagerImpl();
-        HashSet<Account> allAccounts = accountManager.allClientsAccounts(client.getClient_id());
+        HashSet<Account> allAccounts = accountManager.allClientsAccounts(client.getClientId());
 
         //Not REALLY necessary
         if (allAccounts.size() > 1) {
@@ -121,7 +121,7 @@ public class ClientActionImpl implements ClientAction {
             throw new Exception("Only long deposits may be pre-opened");
         }
         Client client = cm.findClient(dbDeposit.getClientId());
-        HashSet<Account> allAccounts = am.allClientsAccounts(client.getClient_id());
+        HashSet<Account> allAccounts = am.allClientsAccounts(client.getClientId());
         if (allAccounts.isEmpty()) {
             throw new Exception("Client doesn't have accounts");
         }
@@ -137,8 +137,13 @@ public class ClientActionImpl implements ClientAction {
     }
 
     @Override
-    public void updateClientDetails() {
-
+    public void updateClientDetails(Client updatedClient) {
+        ClientManager cm = new ClientManagerImpl();
+        Client dbClient = cm.findClient(updatedClient);
+        if (updatedClient.getPhone() != null) dbClient.setPhone(updatedClient.getPhone());
+        if (updatedClient.getEmail() != null) dbClient.setEmail(updatedClient.getEmail());
+        if (updatedClient.getComment() != null) dbClient.setComment(updatedClient.getComment());
+        cm.updateClient(dbClient);
     }
 
     @Override

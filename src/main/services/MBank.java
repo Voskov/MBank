@@ -39,7 +39,7 @@ public class MBank {
         if (loggedInClients== null){
             loggedInClients = new HashMap<Long, Client>();
         }
-        loggedInClients.put(client.getClient_id(), client);
+        loggedInClients.put(client.getClientId(), client);
     }
 
     public void logoutClient(long clientId) {
