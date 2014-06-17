@@ -7,6 +7,10 @@ import main.db_access_layer.managers.impl.AccountManagerImpl;
 import main.model.Account;
 import main.model.Client;
 import org.junit.*;
+import org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,7 +34,7 @@ public class AccountManagerTest extends AbstractTest {
         accountManager.createAccount(testAccount);
 
         accountManager.deleteAccount(testAccount.getAccount_id());
-        Assert.assertEquals(0, accountManager.countAllAccounts());
+        assertEquals(0, accountManager.countAllAccounts());
     }
 
     @Test
@@ -39,7 +43,7 @@ public class AccountManagerTest extends AbstractTest {
         accountManager.createAccount(testAccount);
 
         accountManager.deleteAccount(testAccount);
-        Assert.assertEquals(0, accountManager.countAllAccounts());
+        assertEquals(0, accountManager.countAllAccounts());
     }
 
     @Test
@@ -48,7 +52,7 @@ public class AccountManagerTest extends AbstractTest {
         accountManager.createAccount(testAccount);
 
         Account dbAccount = accountManager.findAccount(testAccount);
-        Assert.assertTrue(testAccount.equals(dbAccount));
+        assertTrue(testAccount.equals(dbAccount));
     }
 
     @Test
@@ -60,7 +64,7 @@ public class AccountManagerTest extends AbstractTest {
         testAccount.setBalance(newBalance);
         accountManager.updateAccount(testAccount);
         Account dbAccount = accountManager.findAccount(testAccount);
-        Assert.assertTrue(testAccount.equals(dbAccount));
+        assertTrue(testAccount.equals(dbAccount));
     }
 
     @Test
@@ -76,7 +80,6 @@ public class AccountManagerTest extends AbstractTest {
         }
 
         HashSet<Account> allDbAccounts = accountManager.allClientsAccounts(client_id);
-        Assert.assertTrue(testAccountsSet.retainAll(allDbAccounts));
+        assertTrue(testAccountsSet.retainAll(allDbAccounts));
     }
-
 }

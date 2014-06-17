@@ -6,6 +6,7 @@ import main.AccountType;
 import main.db_access_layer.managers.impl.ClientManagerImpl;
 import main.model.Client;
 import org.junit.*;
+import static org.junit.Assert.*;
 
 
 public class ClientManagerTest {
@@ -47,21 +48,21 @@ public class ClientManagerTest {
         client.setPassword(newPassword);
         clientManager.updateClient(client);
         Client dbClient = clientManager.findClient(client.getClientId());
-        Assert.assertEquals(newPassword, dbClient.getPassword());
+        assertEquals(newPassword, dbClient.getPassword());
     }
 
     @Test
     public void testFindById(){
         clientManager.createClient(client);
         Client dbClient = clientManager.findClient(client.getClientId());
-        Assert.assertEquals(dbClient, client);
+        assertEquals(dbClient, client);
     }
 
     @Test
     public void testFindByUsername(){
         clientManager.createClient(client);
         Client dbClient = clientManager.findClient(client.getClientName());
-        Assert.assertEquals(dbClient, client);
+        assertEquals(dbClient, client);
     }
 
     @Test
@@ -69,6 +70,6 @@ public class ClientManagerTest {
         clientManager.createClient(client);
         client.setClientId(1);
         Client dbClient = clientManager.findClient(client);
-        Assert.assertEquals(dbClient, client);
+        assertEquals(dbClient, client);
     }
 }

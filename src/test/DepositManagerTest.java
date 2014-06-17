@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.*;
 
+import static org.junit.Assert.*;
+
 public class DepositManagerTest extends AbstractTest {
     static DepositManagerImpl depositManager = null;
 
@@ -47,7 +49,7 @@ public class DepositManagerTest extends AbstractTest {
         Deposit testDeposit = new Deposit(1, 12345, 1000.0, DepositType.SHORT, 1010, new Date(2014, 06, 04), new Date(2014, 06, 14));
         depositManager.createNewDeposit(testDeposit);
         Deposit dbDeposit = depositManager.findDeposit(testDeposit.getDepositId());
-        Assert.assertTrue(testDeposit.equals(dbDeposit));
+        assertTrue(testDeposit.equals(dbDeposit));
     }
 
     @Test
@@ -55,7 +57,7 @@ public class DepositManagerTest extends AbstractTest {
         Deposit testDeposit = new Deposit(1, 12345, 1000.0, DepositType.SHORT, 1010, new Date(1401896199000L), new Date(1402906199000L));
         depositManager.createNewDeposit(testDeposit);
         Deposit dbDeposit = depositManager.findDeposit(testDeposit);
-        Assert.assertTrue(testDeposit.equals(dbDeposit));
+        assertTrue(testDeposit.equals(dbDeposit));
     }
 
     @Test
@@ -69,6 +71,6 @@ public class DepositManagerTest extends AbstractTest {
         HashSet expiredDeposits = depositManager.allExpiredDeposits();
         Iterator<Deposit> it = expiredDeposits.iterator();
         Deposit dbDeposit = it.next();
-        Assert.assertEquals(expiredDeposit, dbDeposit);
+        assertEquals(expiredDeposit, dbDeposit);
     }
 }
