@@ -35,4 +35,7 @@ public interface AdminAction extends Action{
     void updateSystemProperty(AccountType type, String property, double value);
 
     void updateClientDetails(Client updatedClient);
+
+    double viewSystemProperty(String property) throws Exception;
+    double viewSystemProperty(AccountType type, String property) throws Exception;
 }

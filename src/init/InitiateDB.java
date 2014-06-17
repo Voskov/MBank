@@ -88,7 +88,7 @@ public class InitiateDB {
         statement.executeUpdate("INSERT INTO Properties VALUES ('platinum_deposit_commission', '0.005')");
         statement.executeUpdate("INSERT INTO Properties VALUES ('regular_deposit_credit', '100000')");
         statement.executeUpdate("INSERT INTO Properties VALUES ('gold_deposit_credit', '1000000')");
-        statement.executeUpdate("INSERT INTO Properties VALUES ('platinum_deposit_credit', '99999999999999999999')"); //TODO - Do something better
+        statement.executeUpdate("INSERT INTO Properties VALUES ('platinum_deposit_credit', '99999999999999999999999')"); //TODO - Do something better
         statement.executeUpdate("INSERT INTO Properties VALUES ('commission_rate', '0.5')");
         statement.executeUpdate("INSERT INTO Properties VALUES ('regular_daily_interest', '5.0/365')");
         statement.executeUpdate("INSERT INTO Properties VALUES ('gold_daily_interest', '7.0/365')");

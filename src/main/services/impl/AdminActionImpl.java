@@ -113,6 +113,54 @@ public class AdminActionImpl implements AdminAction {
     }
 
     @Override
+    public void updateClientDetails(Client updatedClient) {
+        ClientManager cm = new ClientManagerImpl();
+        Client dbClient = cm.findClient(updatedClient);
+        if (updatedClient.getClientName() != null) dbClient.setClientName(updatedClient.getClientName());
+        if (updatedClient.getPassword() != null) dbClient.setPassword(updatedClient.getPassword());
+        if (updatedClient.getAccountType() != null) dbClient.setAccountType(updatedClient.getAccountType());
+        if (updatedClient.getAddress() != null) dbClient.setAddress(updatedClient.getAddress());
+        if (updatedClient.getEmail() != null) dbClient.setEmail(updatedClient.getEmail());
+        if (updatedClient.getPhone() != null) dbClient.setPhone(updatedClient.getPhone());
+        if (updatedClient.getComment() != null) dbClient.setComment(updatedClient.getComment());
+        cm.updateClient(dbClient);
+    }
+
+    @Override
+    public Client viewClientDetails(Client client) {
+        return viewClientDetails(client.getClientId());
+    }
+
+    @Override
+    public Client viewClientDetails(long clientId) {
+        ClientManager cm = new ClientManagerImpl();
+        Client dbClient = cm.findClient(clientId);
+        return dbClient;
+    }
+
+    @Override
+    public Account viewAccountDetails(Account account) {
+        return viewAccountDetails(account.getAccount_id());
+    }
+
+    @Override
+    public Account viewAccountDetails(long accountId) {
+        AccountManager am = new AccountManagerImpl();
+        Account dbAccount = am.findAccount(accountId);
+        return dbAccount;
+    }
+
+    @Override
+    public void viewClientDeposits() {
+
+    }
+
+    @Override
+    public void viewClientActivities() {
+
+    }
+
+    @Override
     public void updateSystemProperty(String property, String value) {
         PropertyManager pm = new PropertyManagerImpl();
         pm.setProperty(property, value);
@@ -136,46 +184,14 @@ public class AdminActionImpl implements AdminAction {
     }
 
     @Override
-    public void updateClientDetails(Client updatedClient) {
-        ClientManager cm = new ClientManagerImpl();
-        Client dbClient = cm.findClient(updatedClient);
-        if (updatedClient.getClientName() != null) dbClient.setClientName(updatedClient.getClientName());
-        if (updatedClient.getPassword() != null) dbClient.setPassword(updatedClient.getPassword());
-        if (updatedClient.getAccountType() != null) dbClient.setAccountType(updatedClient.getAccountType());
-        if (updatedClient.getAddress() != null) dbClient.setAddress(updatedClient.getAddress());
-        if (updatedClient.getEmail() != null) dbClient.setEmail(updatedClient.getEmail());
-        if (updatedClient.getPhone() != null) dbClient.setPhone(updatedClient.getPhone());
-        if (updatedClient.getComment() != null) dbClient.setComment(updatedClient.getComment());
-        cm.updateClient(dbClient);
+    public double viewSystemProperty(String property) throws Exception {
+        PropertyManager pm = new PropertyManagerImpl();
+        return pm.getProperty(property);
     }
 
     @Override
-    public void updateClientDetails() {
-        
-    }
-
-    @Override
-    public void viewClientDetails() {
-
-    }
-
-    @Override
-    public void viewAccountDetails() {
-
-    }
-
-    @Override
-    public void viewClientDeposits() {
-
-    }
-
-    @Override
-    public void viewClientActivities() {
-
-    }
-
-    @Override
-    public void viewSystemProperty() {
-
+    public double viewSystemProperty(AccountType type, String property) throws Exception {
+        PropertyManager pm = new PropertyManagerImpl();
+        return pm.getProperty(type, property);
     }
 }

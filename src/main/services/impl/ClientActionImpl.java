@@ -147,13 +147,23 @@ public class ClientActionImpl implements ClientAction {
     }
 
     @Override
-    public void viewClientDetails() {
-
+    public Client viewClientDetails(Client client) {
+        return null;
     }
 
     @Override
-    public void viewAccountDetails() {
+    public Client viewClientDetails(long clientId) {
+        return null;
+    }
 
+    @Override
+    public Account viewAccountDetails(Account account) {
+        return null;
+    }
+
+    @Override
+    public Account viewAccountDetails(long AccountId) {
+        return null;
     }
 
     @Override
@@ -163,11 +173,6 @@ public class ClientActionImpl implements ClientAction {
 
     @Override
     public void viewClientActivities() {
-
-    }
-
-    @Override
-    public void viewSystemProperty() {
 
     }
 }

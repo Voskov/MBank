@@ -1,18 +1,19 @@
 package main.services;
 
+import main.model.Account;
 import main.model.Client;
 
 public interface Action {
 
     void updateClientDetails(Client client);
 
-    void viewClientDetails();
+    Client viewClientDetails(Client client);
+    Client viewClientDetails(long clientId);
 
-    void viewAccountDetails();
+    Account viewAccountDetails(Account account);
+    Account viewAccountDetails(long AccountId);
 
     void viewClientDeposits();
 
     void viewClientActivities();
-
-    void viewSystemProperty();
 }
