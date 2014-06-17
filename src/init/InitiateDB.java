@@ -60,7 +60,7 @@ public class InitiateDB {
     }
 
     private static void createActivitiesTable(Statement statement) throws SQLException {
-        statement.executeUpdate("create table Activity(activity_id  BIGINT NOT NULL primary key GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),client_id  BIGINT NOT NULL, amount DOUBLE, activity_date DATE, commision DOUBLE, description VARCHAR(50))");
+        statement.executeUpdate("create table Activity(activity_id  BIGINT NOT NULL primary key GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),client_id  BIGINT NOT NULL, amount DOUBLE, activity_date DATE, commission DOUBLE, description VARCHAR(50))");
 //        System.out.println("Activities was created");
     }
 
