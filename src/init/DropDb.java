@@ -8,10 +8,10 @@ import java.sql.Statement;
 public class DropDb {
 
     public static void dropAllTables(){
-        String db_address = "jdbc:derby://localhost:1527/MBank;create=true";
+        String dbAddress = "jdbc:derby://localhost:1527/MBank;create=true";
 
         try {
-            Connection connection = DriverManager.getConnection(db_address);
+            Connection connection = DriverManager.getConnection(dbAddress);
             try {
 //                System.out.println("Connection established successfully");
 

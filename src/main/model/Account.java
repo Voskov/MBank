@@ -1,26 +1,26 @@
 package main.model;
 
 public class Account {
-    private long account_id;
-    private long client_id;
+    private long accountId;
+    private long clientId;
     private double balance;
-    private double credit_limit;
+    private double creditLimit;
     private String comment;
 
-    public long getAccount_id() {
-        return account_id;
+    public long getAccountId() {
+        return accountId;
     }
 
-    public void setAccount_id(long account_id) {
-        this.account_id = account_id;
+    public void setAccountId(long accountId1) {
+        this.accountId = accountId1;
     }
 
-    public long getClient_id() {
-        return client_id;
+    public long getClientId() {
+        return clientId;
     }
 
-    public void setClient_id(long client_id) {
-        this.client_id = client_id;
+    public void setClientId(long clientId) {
+        this.clientId = clientId;
     }
 
     public double getBalance() {
@@ -31,12 +31,12 @@ public class Account {
         this.balance = balance;
     }
 
-    public double getCredit_limit() {
-        return credit_limit;
+    public double getCreditLimit() {
+        return creditLimit;
     }
 
-    public void setCredit_limit(double credit_limit) {
-        this.credit_limit = credit_limit;
+    public void setCreditLimit(double creditLimit) {
+        this.creditLimit = creditLimit;
     }
 
     public String getComment() {
@@ -50,28 +50,28 @@ public class Account {
     public Account() {
     }
 
-    public Account(long account_id, long client_id, double balance, double credit_limit, String comment) {
-        this.account_id = account_id;
-        this.client_id = client_id;
+    public Account(long accountId, long clientId, double balance, double creditLimit, String comment) {
+        this.accountId = accountId;
+        this.clientId = clientId;
         this.balance = balance;
-        this.credit_limit = credit_limit;
+        this.creditLimit = creditLimit;
         this.comment = comment;
     }
 
-    public Account(long client_id, double balance, double credit_limit, String comment) {
-        this.client_id = client_id;
+    public Account(long clientId, double balance, double creditLimit, String comment) {
+        this.clientId = clientId;
         this.balance = balance;
-        this.credit_limit = credit_limit;
+        this.creditLimit = creditLimit;
         this.comment = comment;
     }
 
     @Override
     public String toString() {
         return "Account{" +
-                "account_id=" + account_id +
-                ", client_id=" + client_id +
+                "account_id=" + accountId +
+                ", client_id=" + clientId +
                 ", balance=" + balance +
-                ", credit_limit=" + credit_limit +
+                ", credit_limit=" + creditLimit +
                 ", comment='" + comment + '\'' +
                 '}';
     }
@@ -83,10 +83,10 @@ public class Account {
 
         Account account = (Account) o;
 
-        if (account_id != account.account_id) return false;
+        if (accountId != account.accountId) return false;
         if (Double.compare(account.balance, balance) != 0) return false;
-        if (client_id != account.client_id) return false;
-        if (Double.compare(account.credit_limit, credit_limit) != 0) return false;
+        if (clientId != account.clientId) return false;
+        if (Double.compare(account.creditLimit, creditLimit) != 0) return false;
         if (comment != null ? !comment.equals(account.comment) : account.comment != null) return false;
 
         return true;

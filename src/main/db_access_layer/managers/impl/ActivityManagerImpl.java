@@ -37,10 +37,10 @@ public class ActivityManagerImpl extends DbConnectorManagerImpl implements Activ
 
     }
 
-    public void addActivity(long id, long client_id, double amount, String date, double commission, String description) {
+    public void addActivity(long id, long clientId, double amount, String date, double commission, String description) {
         try {
 
-            String statement = "INSERT INTO Activity VALUES(" + id + ", " + client_id + ", " + amount + ", '" + date + "', " + commission + ", '" + description + "')";
+            String statement = "INSERT INTO Activity VALUES(" + id + ", " + clientId + ", " + amount + ", '" + date + "', " + commission + ", '" + description + "')";
             System.out.println(statement);
             stmt.executeUpdate(statement);
             String msg = "Activity" + id + " was created on DB";

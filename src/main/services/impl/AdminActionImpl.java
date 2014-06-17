@@ -140,7 +140,7 @@ public class AdminActionImpl implements AdminAction {
 
     @Override
     public Account viewAccountDetails(Account account) {
-        return viewAccountDetails(account.getAccount_id());
+        return viewAccountDetails(account.getAccountId());
     }
 
     @Override

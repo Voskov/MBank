@@ -1,4 +1,4 @@
-package main.services;
+package test;
 
 import init.DropDb;
 import init.InitiateDB;

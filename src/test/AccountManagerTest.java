@@ -5,14 +5,12 @@ import init.InitiateDB;
 import main.db_access_layer.managers.AccountManager;
 import main.db_access_layer.managers.impl.AccountManagerImpl;
 import main.model.Account;
-import main.model.Client;
 import org.junit.*;
-import org.junit.Assert.*;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.*;
 
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 public class AccountManagerTest extends AbstractTest {
@@ -33,7 +31,7 @@ public class AccountManagerTest extends AbstractTest {
         Account testAccount = new Account(1, 12345678, 1000, 100000, "Comment");
         accountManager.createAccount(testAccount);
 
-        accountManager.deleteAccount(testAccount.getAccount_id());
+        accountManager.deleteAccount(testAccount.getAccountId());
         assertEquals(0, accountManager.countAllAccounts());
     }
 

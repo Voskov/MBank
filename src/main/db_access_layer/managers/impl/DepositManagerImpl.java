@@ -50,7 +50,7 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
 
     //TODO should be part of  an interface
     @Override
-    public void drawDeposit(long deposit_id) {
+    public void drawDeposit(long depositId) {
         try {
             double deposit_amount;
             long client_id = 0;
@@ -59,7 +59,7 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
             String msg, client_type;
             String sqlStr = "SELECT d.balance, d.closing_date, d.client_id , c.type, a.account_id" +
                     "FROM Deposits d JOIN Clients c on d.client_id = c.client_id JOIN Accounts a on c.client_id = a.client_id" +
-                    "WHERE deposit_id = " + deposit_id;
+                    "WHERE deposit_id = " + depositId;
             ResultSet res = stmt.executeQuery(sqlStr);
             if (res.next()) {
                 deposit_amount = res.getDouble(1);
@@ -76,13 +76,13 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
                     //TODO  implement with string builder
                     StringBuilder sb = new StringBuilder();
 
-                    msg = "The closing date of deposit " + deposit_id + " is " + closing_date_string +
+                    msg = "The closing date of deposit " + depositId + " is " + closing_date_string +
                             ". Therefore a commission was charged.";
                     LOGGER.log(Level.INFO, msg);
                 }
 
 
-                msg = "deposit " + deposit_id + "was closed. " + deposit_amount + " was added to the account";
+                msg = "deposit " + depositId + "was closed. " + deposit_amount + " was added to the account";
                 LOGGER.log(Level.INFO, msg);
             }
         } catch (SQLException e) {
@@ -93,9 +93,9 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
     }
 
     @Override
-    public HashSet<Deposit> allClientsDeposits(long client_id) {
+    public HashSet<Deposit> allClientsDeposits(long clientId) {
         HashSet<Deposit> allDeposits = null;
-        sqlStrBldr = new StringBuilder("SELECT * FROM Deposits WHERE client_id=").append(client_id);
+        sqlStrBldr = new StringBuilder("SELECT * FROM Deposits WHERE client_id=").append(clientId);
         try {
             ResultSet res = stmt.executeQuery(sqlStrBldr.toString());
             while (res.next()){
@@ -198,11 +198,11 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
     }
 
     @Override
-    public void closeDeposit(long deposit_id) {
-        sqlStrBldr = new StringBuilder("DELETE FROM Deposits WHERE deposit_id=").append(deposit_id);
+    public void closeDeposit(long depositId) {
+        sqlStrBldr = new StringBuilder("DELETE FROM Deposits WHERE deposit_id=").append(depositId);
         try {
             stmt.executeUpdate(sqlStrBldr.toString());
-            LOGGER.log(Level.INFO, "Deposit " + deposit_id + " has been deleted");
+            LOGGER.log(Level.INFO, "Deposit " + depositId + " has been deleted");
         } catch (SQLException e) {
             e.printStackTrace();
         }

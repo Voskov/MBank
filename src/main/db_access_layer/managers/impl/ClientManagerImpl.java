@@ -93,11 +93,11 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
     }
 
     @Override
-    public void updateClient(long client_id, String param, String value) {
+    public void updateClient(long clientId, String param, String value) {
         try {
-            String sqlStatement = "UPDATE Clients SET  WHERE client_id=" + client_id;
+            String sqlStatement = "UPDATE Clients SET  WHERE client_id=" + clientId;
             stmt.executeUpdate(sqlStatement);
-            String msg = "Client " + client_id + " was deleted from DB";
+            String msg = "Client " + clientId + " was deleted from DB";
             LOGGER.log(Level.INFO, msg);
         } catch (SQLException e) {
             disconnect();
@@ -141,11 +141,11 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
 
 
     @Override
-    public void updateClientAddress(long client_id, String new_address) {
+    public void updateClientAddress(long clientId, String new_address) {
         try {
-            String sqlStatement = "UPDATE Clients SET address=" + new_address + " WHERE client_id=" + client_id;
+            String sqlStatement = "UPDATE Clients SET address=" + new_address + " WHERE client_id=" + clientId;
             stmt.executeUpdate(sqlStatement);
-            String msg = "Client " + client_id + " was updated";
+            String msg = "Client " + clientId + " was updated";
             LOGGER.log(Level.INFO, msg);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -153,16 +153,16 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
     }
 
     @Override
-    public void updateClientAddress(Client client, String new_address) {
-        updateClientAddress(client.getClientId(), new_address);
+    public void updateClientAddress(Client client, String newAddress) {
+        updateClientAddress(client.getClientId(), newAddress);
     }
 
     @Override
-    public void updateClientEmail(long client_id, String new_email) {
+    public void updateClientEmail(long clientId, String newEmail) {
         try {
-            String sqlStatement = "UPDATE Clients SET email=" + new_email + " WHERE client_id=" + client_id;
+            String sqlStatement = "UPDATE Clients SET email=" + newEmail + " WHERE client_id=" + clientId;
             stmt.executeUpdate(sqlStatement);
-            String msg = "Client " + client_id + " was updated";
+            String msg = "Client " + clientId + " was updated";
             LOGGER.log(Level.INFO, msg);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -170,31 +170,31 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
     }
 
     @Override
-    public void updateClientEmail(Client client, String new_email) {
-        updateClientEmail(client.getClientId(), new_email);
+    public void updateClientEmail(Client client, String newEmail) {
+        updateClientEmail(client.getClientId(), newEmail);
     }
 
     @Override
-    public void updateClientPhone(long client_id, String new_phone) {
+    public void updateClientPhone(long clientId, String newPhone) {
         try {
-            String sqlStatement = "UPDATE Clients SET phone='" + new_phone + "' WHERE client_id=" + client_id;
+            String sqlStatement = "UPDATE Clients SET phone='" + newPhone + "' WHERE client_id=" + clientId;
             stmt.executeUpdate(sqlStatement);
-            String msg = "Client " + client_id + " was updated";
+            String msg = "Client " + clientId + " was updated";
             LOGGER.log(Level.INFO, msg);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void updateClientPhone(Client client, String new_phone) {
-        updateClientPhone(client.getClientId(), new_phone);
+    public void updateClientPhone(Client client, String newPhone) {
+        updateClientPhone(client.getClientId(), newPhone);
     }
 
-    public void deleteClient(long client_id) {
+    public void deleteClient(long clientId) {
         try {
-            String sqlStatement = "DELETE FROM Clients WHERE client_id=" + client_id;
+            String sqlStatement = "DELETE FROM Clients WHERE client_id=" + clientId;
             stmt.executeUpdate(sqlStatement);
-            String msg = "Client " + client_id + " was deleted from DB";
+            String msg = "Client " + clientId + " was deleted from DB";
             LOGGER.log(Level.INFO, msg);
         } catch (SQLException e) {
             e.printStackTrace();

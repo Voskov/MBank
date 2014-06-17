@@ -11,15 +11,15 @@ public interface DepositManager {
     Deposit findDeposit(Deposit deposit);
     Deposit findDeposit(long depositId);
     void updateDeposit(Deposit deposit);
-    void drawDeposit(long deposit_id);
+    void drawDeposit(long depositId);
 
-    HashSet<Deposit> allClientsDeposits(long client_id);
+    HashSet<Deposit> allClientsDeposits(long clientId);
 
     HashSet<Deposit> allDeposits();
 
     HashSet<Deposit> allExpiredDeposits();
     Deposit buildDeposit(ResultSet res);
 
-    void closeDeposit(long deposit_id);
+    void closeDeposit(long depositId);
     void closeDeposit(Deposit deposit);
 }

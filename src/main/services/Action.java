@@ -2,6 +2,9 @@ package main.services;
 
 import main.model.Account;
 import main.model.Client;
+import main.model.Deposit;
+
+import java.util.HashSet;
 
 public interface Action {
 
@@ -10,10 +13,8 @@ public interface Action {
     Client viewClientDetails(Client client);
     Client viewClientDetails(long clientId);
 
-    Account viewAccountDetails(Account account);
-    Account viewAccountDetails(long AccountId);
+    Account viewAccountDetails(Account account) throws Exception;
+    Account viewAccountDetails(long AccountId) throws Exception;
 
-    void viewClientDeposits();
-
-    void viewClientActivities();
+    HashSet<Deposit> viewClientDeposits();
 }

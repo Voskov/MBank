@@ -69,12 +69,12 @@ public class ClientActionImpl implements ClientAction {
     }
 
     @Override
-    public void depositToAccount(Account account, double depositAmount) {
-        depositToAccount(account.getAccount_id(), depositAmount);
+    public void depositToAccount(Account account, double depositAmount) throws Exception {
+        depositToAccount(account.getAccountId(), depositAmount);
     }
 
     @Override
-    public void depositToAccount(long accountId, double depositAmount) {
+    public void depositToAccount(long accountId, double depositAmount) throws Exception {
         //TODO - add activity
         //TODO - update client status
         AccountManager accountManager = new AccountManagerImpl();
@@ -148,27 +148,42 @@ public class ClientActionImpl implements ClientAction {
 
     @Override
     public Client viewClientDetails(Client client) {
-        return null;
+        return viewClientDetails(client.getClientId());
     }
 
     @Override
     public Client viewClientDetails(long clientId) {
+        ClientManager cm = new ClientManagerImpl();
+        Client dbClient = cm.findClient(clientId);
+        dbClient.setPassword(null);
+        dbClient.setClientId(Long.parseLong(null));
+        return dbClient;
+    }
+
+    @Override
+    public Account viewAccountDetails(Account account) throws Exception {
+        return viewAccountDetails(account.getAccountId());
+    }
+
+    @Override
+    public Account viewAccountDetails(long AccountId) throws Exception {
+        AccountManager am = new AccountManagerImpl();
+        Account dbAccount = am.findAccount(AccountId);
+        return dbAccount;
+    }
+
+    @Override
+    public HashSet<Deposit> viewClientDeposits() {
+        //DOTO
         return null;
     }
 
     @Override
-    public Account viewAccountDetails(Account account) {
-        return null;
-    }
-
-    @Override
-    public Account viewAccountDetails(long AccountId) {
-        return null;
-    }
-
-    @Override
-    public void viewClientDeposits() {
-
+    public HashSet<Deposit> viewClientDeposits(long clientId) {
+        DepositManager dm = new DepositManagerImpl();
+        HashSet allClientsDeposits = dm.allClientsDeposits(clientId);
+//TODO
+        return allClientsDeposits;
     }
 
     @Override
