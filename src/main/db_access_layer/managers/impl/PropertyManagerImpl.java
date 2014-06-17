@@ -70,7 +70,7 @@ public class PropertyManagerImpl extends DbConnectorManagerImpl implements Prope
     }
 
     @Override
-    public double getProp(AccountType type, String property) throws Exception {
+    public double getProperty(AccountType type, String property) throws Exception {
         String fullProperty = type.toString().toLowerCase() + "_" + property;
         Double prop_value = this.getProperty(fullProperty);
         return prop_value;

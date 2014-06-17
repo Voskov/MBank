@@ -1,5 +1,7 @@
 package main.db_access_layer.managers.impl;
 
+import init.InitiateDB;
+import junit.framework.Assert;
 import main.model.Activity;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +15,7 @@ public class ActivityManagerImplTest {
     @Before
     public void setUp() throws Exception {
         am = new ActivityManagerImpl();
+        InitiateDB.restartDb();
     }
 
     @Test
@@ -21,8 +24,18 @@ public class ActivityManagerImplTest {
     }
 
     @Test
-    public void testFindActivity() throws Exception {
-        Activity activity = am.findActivity(4);
-        System.out.println(activity.toString());
+    public void testFindActivityById() throws Exception {
+        am.addActivity(testActivity);
+        Activity activity = am.findActivity(1);
+        testActivity.setActivityId(1);
+        Assert.assertEquals(testActivity, activity);
+    }
+
+    @Test
+    public void testFindActivityByActivity() throws Exception {
+        am.addActivity(testActivity);
+        testActivity.setActivityId(1);
+        Activity activity = am.findActivity(testActivity);
+        Assert.assertEquals(testActivity, activity);
     }
 }
