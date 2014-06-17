@@ -1,6 +1,5 @@
 package main.services.impl;
 
-import main.AccountType;
 import main.DepositType;
 import main.db_access_layer.managers.AccountManager;
 import main.db_access_layer.managers.ClientManager;
@@ -15,7 +14,6 @@ import main.model.Client;
 import main.model.Deposit;
 import main.services.ClientAction;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -107,7 +105,7 @@ public class ClientActionImpl implements ClientAction {
 //        throw Exception
 //    }
 
-        double interest = pm.getProp(client.getAccountType(), "daily_interest");
+        double interest = pm.getProperty(client.getAccountType(), "daily_interest");
 
     }
 

@@ -29,14 +29,9 @@ public interface AdminAction extends Action{
 
     Activity ViewAllActivitiesDetails(long activityId) throws SQLException;
 
-    void updateSystemProperty();
-
     void updateSystemProperty(String property, String value);
-
     void updateSystemProperty(String property, double value);
-
     void updateSystemProperty(AccountType type, String property, String value);
-
     void updateSystemProperty(AccountType type, String property, double value);
 
     void updateClientDetails(Client updatedClient);

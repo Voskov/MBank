@@ -141,6 +141,11 @@ public class AdminActionImpl implements AdminAction {
     }
 
     @Override
+    public void updateClientDetails() {
+        
+    }
+
+    @Override
     public void viewClientDetails() {
 
     }
