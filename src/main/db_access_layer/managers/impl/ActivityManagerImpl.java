@@ -19,18 +19,17 @@ public class ActivityManagerImpl extends DbConnectorManagerImpl implements Activ
             sqlStrBldr = new StringBuilder("INSERT INTO Activity ");
             sqlStrBldr.append("(client_id, amount, activity_date, commission, description) ");
             sqlStrBldr.append("VALUES (");
-//            sqlStrBldr.append(act.getActivityId()).append(", ");
             sqlStrBldr.append(act.getClientId()).append(", ");
             sqlStrBldr.append(act.getAmount()).append(", '");
             sqlStrBldr.append(act.getActivityDate()).append("', ");
             sqlStrBldr.append(act.getCommission()).append(", '");
             sqlStrBldr.append(act.getDescription()).append("')");
             stmt.executeUpdate(sqlStrBldr.toString());
-            String msg = "Activity" + act.getActivityId() + " was created on DB";
+            String msg = "Activity was created on DB";
             LOGGER.log(Level.INFO, msg);
 
         } catch (SQLIntegrityConstraintViolationException e) {
-            String msg = "Account" + act.getActivityId() + " already exists on DB. Client wasn't added";
+            String msg = "An activity with the same id already exists on DB. Activity wasn't added";
             LOGGER.log(Level.WARNING, msg);
         } catch (SQLException e) {
             e.printStackTrace();

@@ -1,12 +1,14 @@
-package main.db_access_layer.managers.impl;
+package test;
 
 import init.InitiateDB;
-import junit.framework.Assert;
+import main.db_access_layer.managers.impl.ActivityManagerImpl;
 import main.model.Activity;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
+
+import static org.junit.Assert.*;
 
 public class ActivityManagerImplTest {
     ActivityManagerImpl am = null;
@@ -28,7 +30,7 @@ public class ActivityManagerImplTest {
         am.addActivity(testActivity);
         Activity activity = am.findActivity(1);
         testActivity.setActivityId(1);
-        Assert.assertEquals(testActivity, activity);
+        assertEquals(testActivity, activity);
     }
 
     @Test
@@ -36,6 +38,6 @@ public class ActivityManagerImplTest {
         am.addActivity(testActivity);
         testActivity.setActivityId(1);
         Activity activity = am.findActivity(testActivity);
-        Assert.assertEquals(testActivity, activity);
+        assertEquals(testActivity, activity);
     }
 }
