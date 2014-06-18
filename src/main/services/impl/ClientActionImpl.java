@@ -1,19 +1,15 @@
 package main.services.impl;
 
 import main.DepositType;
-import main.db_access_layer.managers.AccountManager;
-import main.db_access_layer.managers.ClientManager;
-import main.db_access_layer.managers.DepositManager;
-import main.db_access_layer.managers.PropertyManager;
-import main.db_access_layer.managers.impl.AccountManagerImpl;
-import main.db_access_layer.managers.impl.ClientManagerImpl;
-import main.db_access_layer.managers.impl.DepositManagerImpl;
-import main.db_access_layer.managers.impl.PropertyManagerImpl;
+import main.db_access_layer.managers.*;
+import main.db_access_layer.managers.impl.*;
 import main.model.Account;
+import main.model.Activity;
 import main.model.Client;
 import main.model.Deposit;
 import main.services.ClientAction;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -172,22 +168,29 @@ public class ClientActionImpl implements ClientAction {
         return dbAccount;
     }
 
-    @Override
-    public HashSet<Deposit> viewClientDeposits() {
-        //DOTO
-        return null;
+    public HashSet<Deposit> viewClientDeposits(Client client) {
+        return viewClientDeposits(client.getClientId());
     }
 
     @Override
     public HashSet<Deposit> viewClientDeposits(long clientId) {
         DepositManager dm = new DepositManagerImpl();
-        HashSet allClientsDeposits = dm.allClientsDeposits(clientId);
-//TODO
+        HashSet<Deposit> allClientsDeposits = dm.allClientsDeposits(clientId);
+        for (Deposit deposit : allClientsDeposits) {
+            deposit.setClientId(0);
+            deposit.setDepositId(0);
+        }
         return allClientsDeposits;
     }
 
     @Override
-    public void viewClientActivities() {
-
+    public HashSet<Activity> viewClientActivities(Client client) throws SQLException {
+        ActivityManager am = new ActivityManagerImpl();
+        HashSet<Activity> allClientActivities = am.findAllClientActivities(client.getClientId());
+        for (Activity activity : allClientActivities) {
+            activity.setActivityId(Long.parseLong(null));
+            activity.setClientId(Long.parseLong(null));
+        }
+        return allClientActivities;
     }
 }

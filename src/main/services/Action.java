@@ -16,5 +16,5 @@ public interface Action {
     Account viewAccountDetails(Account account) throws Exception;
     Account viewAccountDetails(long AccountId) throws Exception;
 
-    HashSet<Deposit> viewClientDeposits();
+    HashSet<Deposit> viewClientDeposits(Client client);
 }

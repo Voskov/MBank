@@ -6,6 +6,7 @@ import main.model.Activity;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.HashSet;
 import java.util.logging.Level;
 
 public class ActivityManagerImpl extends DbConnectorManagerImpl implements ActivityManager {
@@ -37,7 +38,7 @@ public class ActivityManagerImpl extends DbConnectorManagerImpl implements Activ
 
     }
 
-    public void addActivity(long id, long clientId, double amount, String date, double commission, String description) {
+    public void addActivity(long id, long clientId, double amount, String date, double commission, String description) throws SQLException {
         try {
 
             String statement = "INSERT INTO Activity VALUES(" + id + ", " + clientId + ", " + amount + ", '" + date + "', " + commission + ", '" + description + "')";
@@ -49,9 +50,7 @@ public class ActivityManagerImpl extends DbConnectorManagerImpl implements Activ
         } catch (SQLIntegrityConstraintViolationException e) {
             String msg = "Activity " + id + " already exists on DB. Activity wasn't added";
             LOGGER.log(Level.WARNING, msg);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } 
 
     }
 
@@ -73,5 +72,16 @@ public class ActivityManagerImpl extends DbConnectorManagerImpl implements Activ
 
     private Activity buildActivity(ResultSet res) throws SQLException {
         return new Activity(res.getLong(1), res.getLong(2), res.getDouble(3), res.getDate(4), res.getDouble(5), res.getString(6));
+    }
+
+    @Override
+    public HashSet<Activity> findAllClientActivities(long clientId) throws SQLException {
+        sqlStrBldr = new StringBuilder("SELECT * FROM Activity WHERE client_id=").append(clientId);
+        HashSet<Activity> allActivities = new HashSet<Activity>();
+        ResultSet res = stmt.executeQuery(sqlStrBldr.toString());
+        if (res.next()) {
+            allActivities.add(buildActivity(res));
+        }
+        return allActivities;
     }
 }
