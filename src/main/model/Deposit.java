@@ -2,32 +2,31 @@ package main.model;
 
 import main.DepositType;
 
-import java.util.Calendar;
 import java.util.Date;
 
 public class Deposit {
-    private long deposit_id;
-    private long client_id;
+    private long depositId;
+    private long clientId;
     private double balance;
     private DepositType type;
-    private long estimated_balance;
-    private Date opening_date;
-    private Date closing_date;
+    private long estimatedBalance;
+    private Date openingDate;
+    private Date closingDate;
 
     public long getDepositId() {
-        return deposit_id;
+        return depositId;
     }
 
-    public void setDeposit_id(long deposit_id) {
-        this.deposit_id = deposit_id;
+    public void setDepositId(long deposit_id) {
+        this.depositId = deposit_id;
     }
 
     public long getClientId() {
-        return client_id;
+        return clientId;
     }
 
-    public void setClient_id(long client_id) {
-        this.client_id = client_id;
+    public void setClientId(long clientId) {
+        this.clientId = clientId;
     }
 
     public double getBalance() {
@@ -47,48 +46,48 @@ public class Deposit {
     }
 
     public long getEstimatedBalance() {
-        return estimated_balance;
+        return estimatedBalance;
     }
 
-    public void setEstimated_balance(long estimated_balance) {
-        this.estimated_balance = estimated_balance;
+    public void setEstimatedBalance(long estimatedBalance) {
+        this.estimatedBalance = estimatedBalance;
     }
 
     public Date getOpeningDate() {
-        return opening_date;    //TODO
+        return openingDate;    //TODO
     }
 
-    public void setOpening_date(Date opening_date) {
-        this.opening_date = opening_date;
+    public void setOpeningDate(Date openingDate) {
+        this.openingDate = openingDate;
     }
 
     public Date getClosingDate() {
-        return closing_date;    //TODO
+        return closingDate;    //TODO
     }
 
-    public void setClosing_date(Date closing_date) {
-        this.closing_date = closing_date;
+    public void setClosingDate(Date closingDate) {
+        this.closingDate = closingDate;
     }
 
     public Deposit() {
     }
 
-    public Deposit(long deposit_id, long client_id, double balance, DepositType type, long estimated_balance, Date opening_date, Date closing_date) {
-        this.deposit_id = deposit_id;
-        this.client_id = client_id;
+    public Deposit(long depositId, long clientId, double balance, DepositType type, long estimatedBalance, Date openingDate, Date closingDate) {
+        this.depositId = depositId;
+        this.clientId = clientId;
         this.balance = balance;
         this.type = type;
-        this.estimated_balance = estimated_balance;
-        opening_date.setHours(0);
-        opening_date.setMinutes(0);
-        opening_date.setSeconds(0);
-        opening_date.setMinutes(0);
-        closing_date.setHours(0);
-        closing_date.setMinutes(0);
-        closing_date.setSeconds(0);
-        closing_date.setMinutes(0);
-        this.opening_date = opening_date;
-        this.closing_date = closing_date;
+        this.estimatedBalance = estimatedBalance;
+        openingDate.setHours(0);
+        openingDate.setMinutes(0);
+        openingDate.setSeconds(0);
+        openingDate.setMinutes(0);
+        closingDate.setHours(0);
+        closingDate.setMinutes(0);
+        closingDate.setSeconds(0);
+        closingDate.setMinutes(0);
+        this.openingDate = openingDate;
+        this.closingDate = closingDate;
 
     }
 
@@ -100,12 +99,12 @@ public class Deposit {
         Deposit deposit = (Deposit) o;
 
         if (Double.compare(deposit.balance, balance) != 0) return false;
-        if (client_id != deposit.client_id) return false;
-        if (deposit_id != deposit.deposit_id) return false;
-        if (estimated_balance != deposit.estimated_balance) return false;
-        if (closing_date != null ? !closing_date.equals(deposit.closing_date) : deposit.closing_date != null)   // Here - something's wrong here
+        if (clientId != deposit.clientId) return false;
+        if (depositId != deposit.depositId) return false;
+        if (estimatedBalance != deposit.estimatedBalance) return false;
+        if (closingDate != null ? !closingDate.equals(deposit.closingDate) : deposit.closingDate != null)   // Here - something's wrong here
             return false;
-        if (opening_date != null ? !opening_date.equals(deposit.opening_date) : deposit.opening_date != null)
+        if (openingDate != null ? !openingDate.equals(deposit.openingDate) : deposit.openingDate != null)
             return false;
         if (type != deposit.type) return false;
         return true;
