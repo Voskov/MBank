@@ -15,6 +15,7 @@ public class ActivityManagerImpl extends DbConnectorManagerImpl implements Activ
         connectToDb();
     }
 
+    @Override
     public void addActivity(Activity act) {
         try {
             sqlStrBldr = new StringBuilder("INSERT INTO Activity ");

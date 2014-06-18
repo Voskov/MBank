@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.HashSet;
 
 public interface ActivityManager {
+    void addActivity(Activity act);
+
     Activity findActivity(long activityId) throws SQLException;
     Activity findActivity(Activity activity) throws SQLException;
 

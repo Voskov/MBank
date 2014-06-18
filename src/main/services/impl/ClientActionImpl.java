@@ -1,5 +1,6 @@
 package main.services.impl;
 
+import main.AccountType;
 import main.DepositType;
 import main.db_access_layer.managers.*;
 import main.db_access_layer.managers.impl.*;
@@ -11,6 +12,7 @@ import main.services.ClientAction;
 
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -66,18 +68,60 @@ public class ClientActionImpl implements ClientAction {
 
     @Override
     public void depositToAccount(Account account, double depositAmount) throws Exception {
-        depositToAccount(account.getAccountId(), depositAmount);
+        ClientManager cm = new ClientManagerImpl();
+        Client dbClient = cm.findClient(account.getClientId());
+        PropertyManager pm = new PropertyManagerImpl();
+        double commission = pm.getProperty("commission_rate");
+        AccountManager accountManager = new AccountManagerImpl();
+        Account dbAccount = accountManager.findAccount(account.getAccountId());
+        double newBalance = dbAccount.getBalance() + depositAmount - commission;
+        //TODO - see if enough (in case the client tries to deposit less than the commission
+        dbAccount.setBalance(newBalance);
+        accountManager.updateAccount(dbAccount);
+        updateClientStatus(dbClient);
+
+        //Add activity
+        String msg = "Client " + dbClient.getClientName() + " has deposited to account the amount of " + depositAmount;
+        Activity activity = new Activity(dbClient.getClientId(), depositAmount, new Date(), commission, msg);
+        ActivityManager actMan = new ActivityManagerImpl();
+        actMan.addActivity(activity);
+
     }
 
     @Override
     public void depositToAccount(long accountId, double depositAmount) throws Exception {
-        //TODO - add activity
-        //TODO - update client status
-        AccountManager accountManager = new AccountManagerImpl();
-        Account dbAccount = accountManager.findAccount(accountId);
-        double newBalance = dbAccount.getBalance() + depositAmount;
-        dbAccount.setBalance(newBalance);
-        accountManager.updateAccount(dbAccount);
+        AccountManager am = new AccountManagerImpl();
+        Account dbAccount = am.findAccount(accountId);
+        depositToAccount(dbAccount, depositAmount);
+    }
+
+    public void updateClientStatus(Client client) throws Exception {
+        AccountManager am = new AccountManagerImpl();
+        HashSet<Account> allAccounts = am.allClientsAccounts(client.getClientId());
+        double sum = 0;
+        for (Account acc : allAccounts) {
+            sum += acc.getBalance();
+        }
+        PropertyManager pm = new PropertyManagerImpl();
+        HashMap<AccountType, Double> rates = new HashMap<AccountType, Double>();
+        rates.put(AccountType.REGULAR, pm.getProperty(AccountType.REGULAR, "deposit_rate"));
+        rates.put(AccountType.GOLD, pm.getProperty(AccountType.GOLD, "deposit_rate"));
+        rates.put(AccountType.PLATINUM, pm.getProperty(AccountType.PLATINUM, "deposit_rate"));
+        if (sum > rates.get(AccountType.PLATINUM)) {
+            client.setAccountType(AccountType.PLATINUM);
+        } else if (sum < rates.get(AccountType.PLATINUM) && sum > rates.get(AccountType.GOLD)) {
+            client.setAccountType(AccountType.GOLD);
+        } else if (sum < rates.get(AccountType.GOLD)) {
+            client.setAccountType(AccountType.REGULAR);
+        }
+        ClientManager cm = new ClientManagerImpl();
+        cm.updateClient(client);
+    }
+
+    public void updateClientStatus(long clientId) throws Exception {
+        ClientManager cm = new ClientManagerImpl();
+        Client dbClient = cm.findClient(clientId);
+        updateClientStatus(dbClient);
     }
 
     @Override
