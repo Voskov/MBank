@@ -89,7 +89,7 @@ public class AdminActionImpl implements AdminAction {
     }
 
     @Override
-    public Account viewAllAccountsDetails(long accountId) {
+    public Account viewAllAccountsDetails(long accountId) throws Exception {
         AccountManager am = new AccountManagerImpl();
         return am.findAccount(accountId);
 
@@ -139,25 +139,22 @@ public class AdminActionImpl implements AdminAction {
     }
 
     @Override
-    public Account viewAccountDetails(Account account) {
+    public Account viewAccountDetails(Account account) throws Exception {
         return viewAccountDetails(account.getAccountId());
     }
 
     @Override
-    public Account viewAccountDetails(long accountId) {
+    public Account viewAccountDetails(long accountId) throws Exception {
         AccountManager am = new AccountManagerImpl();
         Account dbAccount = am.findAccount(accountId);
         return dbAccount;
     }
 
     @Override
-    public void viewClientDeposits() {
-
-    }
-
-    @Override
-    public void viewClientActivities() {
-
+    public HashSet<Deposit> viewClientDeposits(Client client) {
+        DepositManager dm = new DepositManagerImpl();
+        HashSet<Deposit> allDeposits = dm.allClientsDeposits(client.getClientId());
+        return allDeposits;
     }
 
     @Override

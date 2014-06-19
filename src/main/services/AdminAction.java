@@ -21,7 +21,7 @@ public interface AdminAction extends Action{
 
     Client viewAllClientsDetails(long client_id);
 
-    Account viewAllAccountsDetails(long account_id);
+    Account viewAllAccountsDetails(long account_id) throws Exception;
 
     Deposit viewAllDepositsDetails(long depositId);
 

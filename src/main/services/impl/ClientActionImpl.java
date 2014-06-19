@@ -75,7 +75,10 @@ public class ClientActionImpl implements ClientAction {
         AccountManager accountManager = new AccountManagerImpl();
         Account dbAccount = accountManager.findAccount(account.getAccountId());
         double newBalance = dbAccount.getBalance() + depositAmount - commission;
-        //TODO - see if enough (in case the client tries to deposit less than the commission
+        if (newBalance < (-1 * dbAccount.getCreditLimit())) {
+            // in case the client tries to deposit less than the commission
+            throw new Exception("Not enough money in the account to perform this action.");
+        }
         dbAccount.setBalance(newBalance);
         accountManager.updateAccount(dbAccount);
         updateClientStatus(dbClient);
@@ -137,6 +140,7 @@ public class ClientActionImpl implements ClientAction {
 
         Date closingDate = deposit.getClosingDate();
         //TODO - verify date
+
 //        if (closingDate > 40 years){
 //        String msg = "Can't open a deposit for that long";
 //        throw Exception
