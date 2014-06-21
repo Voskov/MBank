@@ -91,6 +91,23 @@ public class Deposit {
 
     }
 
+    public Deposit(long clientId, double balance, DepositType type, Date openingDate, Date closingDate) {
+        this.clientId = clientId;
+        this.balance = balance;
+        this.type = type;
+        openingDate.setHours(0);
+        openingDate.setMinutes(0);
+        openingDate.setSeconds(0);
+        openingDate.setMinutes(0);
+        closingDate.setHours(0);
+        closingDate.setMinutes(0);
+        closingDate.setSeconds(0);
+        closingDate.setMinutes(0);
+        this.openingDate = openingDate;
+        this.closingDate = closingDate;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

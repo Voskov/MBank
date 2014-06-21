@@ -11,6 +11,7 @@ import main.services.AdminAction;
 import main.services.ClientAction;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashSet;
 
 public class AdminActionImpl implements AdminAction {
@@ -39,7 +40,9 @@ public class AdminActionImpl implements AdminAction {
         Account initialAccount = new Account(dbClient.getClientId(), initialAmount, limit, "Initial account");
         AccountManager am = new AccountManagerImpl();
         am.createAccount(initialAccount);
-
+        Activity activity = new Activity(client.getClientId(), initialAmount, new Date(), 0, "Account created");
+        ActivityManager acm = new ActivityManagerImpl();
+        acm.addActivity(activity);
     }
 
     @Override

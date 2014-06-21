@@ -84,7 +84,7 @@ public class ClientActionImpl implements ClientAction {
         updateClientStatus(dbClient);
 
         //Add activity
-        String msg = "Client " + dbClient.getClientName() + " has deposited to account the amount of " + depositAmount;
+        String msg = "Client " + dbClient.getClientName() + " has deposited " + depositAmount;
         Activity activity = new Activity(dbClient.getClientId(), depositAmount, new Date(), commission, msg);
         ActivityManager actMan = new ActivityManagerImpl();
         actMan.addActivity(activity);
