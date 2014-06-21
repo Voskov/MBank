@@ -1,16 +1,55 @@
-package main.services.impl;
+package test;
 
+import init.InitiateDB;
+import main.AccountType;
+import main.db_access_layer.managers.AccountManager;
+import main.db_access_layer.managers.ActivityManager;
+import main.db_access_layer.managers.ClientManager;
+import main.db_access_layer.managers.impl.AccountManagerImpl;
+import main.db_access_layer.managers.impl.ActivityManagerImpl;
+import main.db_access_layer.managers.impl.ClientManagerImpl;
+import main.model.Account;
+import main.model.Activity;
+import main.model.Client;
+import main.services.AdminAction;
+import main.services.impl.AdminActionImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.util.Date;
+
+import static org.junit.Assert.assertEquals;
 
 public class AdminActionImplTest {
+    AdminAction aa;
+
+    ClientManager cm;
+    AccountManager am;
+    ActivityManager acm;
+
+    Client testClient;
+    Account testAccount;
+    Activity testActivity;
+
 
     @Before
     public void setUp() throws Exception {
+        InitiateDB.restartDb();
+        aa = new AdminActionImpl();
 
+        cm = new ClientManagerImpl();
+        am = new AccountManagerImpl();
+        acm = new ActivityManagerImpl();
+
+        Date today = new Date();
+        today.setHours(0);
+        today.setMinutes(0);
+        today.setSeconds(0);
+
+        testClient = new Client(1, "test Client", "qwerty", AccountType.REGULAR, "qwertyui fgh jkl", "wertyui@lkjhgfd.com", "876543", "Test client");
+        testAccount = new Account(1, 1, 10000, 0, "Initial account");
+        testActivity = new Activity(1, 1, 10000, today, 0, "Account created");
     }
 
     @After
@@ -20,7 +59,15 @@ public class AdminActionImplTest {
 
     @Test
     public void testAddNewClient() throws Exception {
+        aa.addNewClient(testClient, 10000);
+        Client dbClient = cm.findClient(testClient);
+        Account dbAccount = am.findAccount(testAccount);
+        Activity dbActivity = acm.findActivity(1);
 
+
+        assertEquals(testClient, dbClient);
+        assertEquals(testAccount, dbAccount);
+        assertEquals(testActivity, dbActivity);
     }
 
     @Test

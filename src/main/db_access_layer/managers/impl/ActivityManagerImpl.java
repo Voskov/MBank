@@ -73,6 +73,7 @@ public class ActivityManagerImpl extends DbConnectorManagerImpl implements Activ
 
     private Activity buildActivity(ResultSet res) throws SQLException {
         return new Activity(res.getLong(1), res.getLong(2), res.getDouble(3), res.getDate(4), res.getDouble(5), res.getString(6));
+
     }
 
     @Override

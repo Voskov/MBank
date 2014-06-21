@@ -32,7 +32,7 @@ public class ClientActionTest {
     @Before
     public void setUp() throws Exception {
         InitiateDB.restartDb();
-        testClient = new Client(1, "test Client", "wertyuio", AccountType.REGULAR, "qwertyui fgh jkl", "wertyui@lkjhgfd.com", "876543", "Test client");
+        testClient = new Client(1, "test Client", "qwerty", AccountType.REGULAR, "qwertyui fgh jkl", "wertyui@lkjhgfd.com", "876543", "Test client");
         testAccount = new Account(1, 1, 1000, 10000, "Test Account");
         ca = new ClientActionImpl();
         cm = new ClientManagerImpl();
