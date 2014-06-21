@@ -12,7 +12,7 @@ public class PropertyManagerImpl extends DbConnectorManagerImpl implements Prope
 
 
     public PropertyManagerImpl() {
-        this.connectToDb();
+        connectToDb();
     }
 
     // This method receives the property name as a string

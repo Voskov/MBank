@@ -54,7 +54,7 @@ public class Deposit {
     }
 
     public Date getOpeningDate() {
-        return openingDate;    //TODO
+        return openingDate;
     }
 
     public void setOpeningDate(Date openingDate) {
@@ -62,7 +62,7 @@ public class Deposit {
     }
 
     public Date getClosingDate() {
-        return closingDate;    //TODO
+        return closingDate;
     }
 
     public void setClosingDate(Date closingDate) {

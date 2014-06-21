@@ -20,7 +20,6 @@ public class PropertyManagerTest {
     public void setUp() throws Exception {
         InitiateDB.restartDb();
         pm = new PropertyManagerImpl();
-
     }
 
     @After
@@ -52,11 +51,10 @@ public class PropertyManagerTest {
 
     @Test
     public void testGetCredentials() throws SQLException {
-        HashMap dbCredentials = pm.getAdminCredentials();
-        HashMap testCredentials = new HashMap();
+        HashMap<String, String> dbCredentials = pm.getAdminCredentials();
+        HashMap<String, String> testCredentials = new HashMap<String, String>();
         testCredentials.put("admin_username", "system");
         testCredentials.put("admin_password", "admin");
         assertEquals(testCredentials, dbCredentials);
-
     }
 }

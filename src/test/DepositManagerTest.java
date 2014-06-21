@@ -73,4 +73,10 @@ public class DepositManagerTest extends AbstractTest {
         Deposit dbDeposit = it.next();
         assertEquals(expiredDeposit, dbDeposit);
     }
+
+    @Test
+    public void testDate() {
+        Deposit testDeposit = new Deposit(1, 12345, 1000.0, DepositType.SHORT, 1010, new Date(1400896199000L), new Date(1400901234567L));
+        System.out.println(testDeposit.getClosingDate());
+    }
 }
