@@ -150,7 +150,7 @@ public class ClientActionImpl implements ClientAction {
 //    }
 
         double interest = pm.getProperty(client.getAccountType(), "daily_interest");
-
+        //TODO - finish this
     }
 
     @Override

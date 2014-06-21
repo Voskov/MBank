@@ -5,6 +5,7 @@ import main.db_access_layer.managers.PropertyManager;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.logging.Level;
 
 public class PropertyManagerImpl extends DbConnectorManagerImpl implements PropertyManager {
@@ -37,6 +38,24 @@ public class PropertyManagerImpl extends DbConnectorManagerImpl implements Prope
         }
     }
 
+    @Override
+    public double getProperty(AccountType type, String property) throws Exception {
+        String fullProperty = type.toString().toLowerCase() + "_" + property;
+        Double propertyValue = this.getProperty(fullProperty);
+        return propertyValue;
+    }
+
+    @Override
+    public HashMap<String, String> getAdminCredentials() throws SQLException {
+        sqlStrBldr = new StringBuilder("SELECT * FROM properties WHERE prop_key LIKE 'admin%'");
+        HashMap adminCredentials = new HashMap();
+        ResultSet res = stmt.executeQuery(sqlStrBldr.toString());
+        while (res.next()) {
+            adminCredentials.put(res.getString(1), res.getString(2));
+        }
+        return adminCredentials;
+    }
+
     // This method receives the property name as a string
     // And the new value as a string, ans sets the value to the property
     @Override
@@ -67,12 +86,5 @@ public class PropertyManagerImpl extends DbConnectorManagerImpl implements Prope
             LOGGER.log(Level.WARNING, "Could not update property");
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public double getProperty(AccountType type, String property) throws Exception {
-        String fullProperty = type.toString().toLowerCase() + "_" + property;
-        Double prop_value = this.getProperty(fullProperty);
-        return prop_value;
     }
 }

@@ -95,8 +95,8 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
         }
     }
 
-    public void checkBalance(long account_id) {
-        sqlStatement = "SELECT balance FROM Accounts WHERE account_id" + account_id;
+    public void checkBalance(long accountId) {
+        sqlStatement = "SELECT balance FROM Accounts WHERE account_id" + accountId;
         try {
             ResultSet res = stmt.executeQuery(sqlStatement);
             if (res.next()) {
@@ -124,8 +124,8 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
     @Override
     public void deleteAllAccounts() {
         sqlStr = "DELETE FROM Accounts";
-        String log_message = "All accounts were deleted";
-        executeStatement(sqlStr, log_message);
+        String logMessage = "All accounts were deleted";
+        executeStatement(sqlStr, logMessage);
     }
 
     @Override

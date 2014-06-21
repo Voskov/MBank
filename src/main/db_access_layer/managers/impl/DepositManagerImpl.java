@@ -52,37 +52,37 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
     @Override
     public void drawDeposit(long depositId) {
         try {
-            double deposit_amount;
-            long client_id = 0;
+            double depositAmount;
+            long clientId = 0;
             Date today = Calendar.getInstance().getTime();
-            Date closing_date;
-            String msg, client_type;
+            Date closingDate;
+            String msg, clientType;
             String sqlStr = "SELECT d.balance, d.closing_date, d.client_id , c.type, a.account_id" +
                     "FROM Deposits d JOIN Clients c on d.client_id = c.client_id JOIN Accounts a on c.client_id = a.client_id" +
                     "WHERE deposit_id = " + depositId;
             ResultSet res = stmt.executeQuery(sqlStr);
             if (res.next()) {
-                deposit_amount = res.getDouble(1);
-                String closing_date_string = res.getString(2);
-                client_id = res.getLong(3);
-                closing_date = new SimpleDateFormat("yy-MM-dd").parse(closing_date_string);
-                client_type = res.getString(4);
-                long account_id = res.getLong(5);
+                depositAmount = res.getDouble(1);
+                String closingDateString = res.getString(2);
+                clientId = res.getLong(3);
+                closingDate = new SimpleDateFormat("yy-MM-dd").parse(closingDateString);
+                clientType = res.getString(4);
+                long accountId = res.getLong(5);
 
                 AccountManagerImpl accountDbConnector = new AccountManagerImpl();
-                accountDbConnector.depositToAccount(account_id, deposit_amount);
-                if (today.compareTo(closing_date) < 0) {
+                accountDbConnector.depositToAccount(accountId, depositAmount);
+                if (today.compareTo(closingDate) < 0) {
                     //TODO - implement the whole interest
                     //TODO  implement with string builder
                     StringBuilder sb = new StringBuilder();
 
-                    msg = "The closing date of deposit " + depositId + " is " + closing_date_string +
+                    msg = "The closing date of deposit " + depositId + " is " + closingDateString +
                             ". Therefore a commission was charged.";
                     LOGGER.log(Level.INFO, msg);
                 }
 
 
-                msg = "deposit " + depositId + "was closed. " + deposit_amount + " was added to the account";
+                msg = "deposit " + depositId + "was closed. " + depositAmount + " was added to the account";
                 LOGGER.log(Level.INFO, msg);
             }
         } catch (SQLException e) {
@@ -110,18 +110,18 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
     @Override
     public Deposit findDeposit(long depositId) {
         sqlStrBldr = new StringBuilder("SELECT * FROM Deposits WHERE deposit_id=").append(depositId);
-        Deposit res_deposit = null;
+        Deposit resDeposit = null;
         try {
             ResultSet res = stmt.executeQuery(sqlStrBldr.toString());
             if (res.next()) {
-                res_deposit = buildDeposit(res);
+                resDeposit = buildDeposit(res);
             }
         } catch (SQLException e) {
             String msg = "Could not find the requested deposit";
             LOGGER.log(Level.WARNING, msg);
             e.printStackTrace();
         }
-        return res_deposit;
+        return resDeposit;
     }
 
     @Override

@@ -3,7 +3,7 @@ package main.model;
 import main.AccountType;
 
 public class Client {
-    private long client_id;
+    private long clientId;
     private String client_name;
     private String password;
     private AccountType accountType;
@@ -12,9 +12,9 @@ public class Client {
     private String phone;
     private String comment;
 
-    public Client(long client_id, String client_name, String password, AccountType accountType, String address, String email, String phone, String comment) {
-        this.client_id = client_id;
-        this.client_name = client_name;
+    public Client(long clientId, String clientName, String password, AccountType accountType, String address, String email, String phone, String comment) {
+        this.clientId = clientId;
+        this.client_name = clientName;
         this.password = password;
         this.accountType = accountType;
         this.address = address;
@@ -48,11 +48,11 @@ public class Client {
     }
 
     public void setClientId(long client_id) {
-        this.client_id = client_id;
+        this.clientId = client_id;
     }
 
     public long getClientId() {
-        return client_id;
+        return clientId;
     }
 
     public String getClientName() {
@@ -114,7 +114,7 @@ public class Client {
     @Override
     public String toString() {
         return "Client{" +
-                "client_id=" + client_id +
+                "clientId=" + clientId +
                 ", client_name='" + client_name + '\'' +
                 ", password='" + password + '\'' +
                 ", accountType=" + accountType +
@@ -132,7 +132,7 @@ public class Client {
 
         Client client = (Client) o;
 
-        if (client_id != client.client_id) return false;
+        if (clientId != client.clientId) return false;
         if (accountType != client.accountType) return false;
         if (address != null ? !address.equals(client.address) : client.address != null) return false;
         if (client_name != null ? !client_name.equals(client.client_name) : client.client_name != null) return false;

@@ -21,9 +21,9 @@ public class DbConnectorManagerImpl   {
     protected static Properties prop = ImportDbSettings.loadDbProperties();   // load DB properties from the config file
 
     public static void connectToDb() {
-        String db_url = prop.getProperty("DB_ADDRESS") + "/" + prop.getProperty("DB_NAME");
+        String dbUrl = prop.getProperty("DB_ADDRESS") + "/" + prop.getProperty("DB_NAME");
         try {
-            con = DriverManager.getConnection(db_url);           // init to the DB
+            con = DriverManager.getConnection(dbUrl);           // init to the DB
             System.out.println("Connected successfully to " + prop.getProperty("DB_NAME"));
             stmt = con.createStatement();
         } catch (SQLException e) {

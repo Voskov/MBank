@@ -107,8 +107,7 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
 
     public void updateClient(Client client, String param, String value) {
         try {
-            sqlStrBldr.append("UPDATE Clients SET  WHERE client_id=").append(client.getClientId());
-//            String sqlStatement = "UPDATE Clients SET  WHERE client_id=" + client.getClientId();
+            sqlStrBldr = new StringBuilder("UPDATE Clients SET  WHERE client_id=").append(client.getClientId());
             stmt.executeUpdate(sqlStrBldr.toString());
             String msg = "Client " + client.getClientId() + " was deleted from DB";
             LOGGER.log(Level.INFO, msg);
@@ -141,9 +140,9 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
 
 
     @Override
-    public void updateClientAddress(long clientId, String new_address) {
+    public void updateClientAddress(long clientId, String newAddress) {
         try {
-            String sqlStatement = "UPDATE Clients SET address=" + new_address + " WHERE client_id=" + clientId;
+            String sqlStatement = "UPDATE Clients SET address=" + newAddress + " WHERE client_id=" + clientId;
             stmt.executeUpdate(sqlStatement);
             String msg = "Client " + clientId + " was updated";
             LOGGER.log(Level.INFO, msg);
