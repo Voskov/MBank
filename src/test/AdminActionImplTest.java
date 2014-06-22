@@ -18,8 +18,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
+import java.util.HashSet;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class AdminActionImplTest {
     AdminAction aa;
@@ -57,7 +60,7 @@ public class AdminActionImplTest {
 
     }
 
-    @Test
+//    @Test
     public void testAddNewClient() throws Exception {
         aa.addNewClient(testClient, 10000);
         Client dbClient = cm.findClient(testClient);
@@ -72,11 +75,26 @@ public class AdminActionImplTest {
 
     @Test
     public void testRemoveClient() throws Exception {
+        aa.addNewClient(testClient, 10000);
+        aa.removeClient(testClient);
 
+        Client dbClient = cm.findClient(1);
+        HashSet<Account> dbAccounts = am.allClientsAccounts(1);
+
+        assertNull(dbClient);
+        assertTrue(dbAccounts.isEmpty());   // fails here
     }
 
     @Test
     public void testRemoveClient1() throws Exception {
+        aa.addNewClient(testClient, 10000);
+        aa.removeClient(1);
+
+        Client dbClient = cm.findClient(1);
+        HashSet<Account> dbAccounts = am.allClientsAccounts(1);
+
+        assertNull(dbClient);
+        assertTrue(dbAccounts.isEmpty());   // fails here
 
     }
 

@@ -56,7 +56,7 @@ public class AdminActionImpl implements AdminAction {
     public void removeClient(Client client) throws Exception {
         DepositManager dm = new DepositManagerImpl();
         HashSet<Deposit> allDeposits = dm.allClientsDeposits(client.getClientId());
-        if (allDeposits != null) {
+        if (allDeposits != null && !allDeposits.isEmpty()) {
             for (Deposit deposit : allDeposits) {
                 ClientAction ca = new ClientActionImpl();
                 ca.preOpenDeposit(deposit.getDepositId());  //this may be problematic because short deposits cannot be preopened
@@ -64,7 +64,7 @@ public class AdminActionImpl implements AdminAction {
         }
         AccountManager am = new AccountManagerImpl();
         HashSet<Account> allAccounts = am.allClientsAccounts(client.getClientId());
-        if (!allAccounts.isEmpty()) {
+        if (allAccounts != null && !allAccounts.isEmpty()) {
             for (Account account : allAccounts) {
                 this.removeAccount(account);
             }
@@ -82,7 +82,7 @@ public class AdminActionImpl implements AdminAction {
     @Override
     public void removeAccount(Account account) {
         AccountManager accountManager = new AccountManagerImpl();
-
+        //TODO - NOW
     }
 
     @Override
