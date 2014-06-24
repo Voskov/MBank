@@ -80,9 +80,13 @@ public class AdminActionImpl implements AdminAction {
     }
 
     @Override
-    public void removeAccount(Account account) {
-        AccountManager accountManager = new AccountManagerImpl();
-        //TODO - NOW
+    public double removeAccount(Account account) throws Exception {
+
+        AccountManager am = new AccountManagerImpl();
+        Account dbAccount = am.findAccount(account);
+        double balance = dbAccount.getBalance();
+        am.deleteAccount(account);
+        return balance;
     }
 
     @Override

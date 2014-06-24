@@ -17,7 +17,7 @@ public interface AdminAction extends Action{
 
     void createNewAccount(Account account);
 
-    void removeAccount(Account account);
+    double removeAccount(Account account) throws Exception;
 
     Client viewAllClientsDetails(long client_id);
 
