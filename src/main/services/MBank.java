@@ -11,12 +11,12 @@ public class MBank {
 
     protected static Logger LOGGER = Logger.getLogger(MBank.class.getName());
 
-     private Map<Long, Client> loggedInClients;
+    private Map<Long, Client> loggedInClients;
 
     private static MBank mBank;
 
-    public static MBank getMBank(){
-        if (mBank == null){
+    public static MBank getMBank() {
+        if (mBank == null) {
             mBank = new MBank();
             LOGGER.log(Level.INFO, "Creating MBank singleton");
         }
@@ -28,22 +28,22 @@ public class MBank {
         return loggedInClients;
     }
 
-    public boolean checkIfClientIsLoggedIn(long clientId){
-        if (loggedInClients!=null && ! loggedInClients.isEmpty() && loggedInClients.containsKey(clientId) ) {
+    public boolean checkIfClientIsLoggedIn(long clientId) {
+        if (loggedInClients != null && !loggedInClients.isEmpty() && loggedInClients.containsKey(clientId)) {
             return true;
         }
         return false;
     }
 
     public void loginClient(Client client) {
-        if (loggedInClients== null){
+        if (loggedInClients == null) {
             loggedInClients = new HashMap<Long, Client>();
         }
         loggedInClients.put(client.getClientId(), client);
     }
 
     public void logoutClient(long clientId) {
-        if (loggedInClients!= null && !loggedInClients.isEmpty()){
+        if (loggedInClients != null && !loggedInClients.isEmpty()) {
             loggedInClients.remove(clientId);
         }
     }

@@ -3,9 +3,8 @@ package test;
 import main.services.MBank;
 import org.junit.Test;
 
-/**
- * Created by Einstine on 30/05/2014.
- */
+import static org.junit.Assert.assertEquals;
+
 public class MBankTest {
 
     @Test
@@ -13,9 +12,10 @@ public class MBankTest {
         MBank bank = MBank.getMBank();
         MBank bank2 = MBank.getMBank();
 
-       // TODO LATER ON, WHEN OUR SINGELTON WILL HAVE SOME FIELDS AND WILL STORE DATA,
-       // WE CAN TEST THAT WHEN UPDATING SOME FIELD FROM OBJECT 1, IT WILL BE UPDATED  FOR OBJECT 2 AS WELL
-
+        assertEquals(bank, bank2);
+        assertEquals(bank.toString(), bank2.toString());
 
     }
+
+
 }
