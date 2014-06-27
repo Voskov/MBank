@@ -7,6 +7,7 @@ import main.db_access_layer.managers.PropertyManager;
 import main.db_access_layer.managers.impl.ClientManagerImpl;
 import main.db_access_layer.managers.impl.DepositManagerImpl;
 import main.db_access_layer.managers.impl.PropertyManagerImpl;
+import main.exceptions.DbConnectorException;
 import main.model.Client;
 import main.model.Deposit;
 
@@ -19,11 +20,25 @@ public class UpdateInterests implements Runnable {
 
     @Override
     public void run() {
-        DepositManager dm = new DepositManagerImpl();
+        DepositManager dm = null;
+        try {
+            dm = new DepositManagerImpl();
+        } catch (DbConnectorException e) {
+            e.printStackTrace();    //TODO - Deal with exception
+        }
 
-        updateRates();
+        try {
+            updateRates();
+        } catch (DbConnectorException e) {
+            e.printStackTrace();        //TODO - Deal with exception
+        }
 
-        HashSet<Deposit> allDeposits = dm.allDeposits();
+        HashSet<Deposit> allDeposits = null;
+        try {
+            allDeposits = dm.allDeposits();
+        } catch (DbConnectorException e) {
+            e.printStackTrace();        //TODO - Deal with exception
+        }
         for (Deposit deposit : allDeposits) {
             try {
                 updateInterest(deposit);
@@ -55,7 +70,7 @@ public class UpdateInterests implements Runnable {
         dm.updateDeposit(deposit);
     }
 
-    private void updateRates() {
+    private void updateRates() throws DbConnectorException {
         PropertyManager pm = new PropertyManagerImpl();
         String[] types = {"regular_daily_interest", "gold_daily_interest", "platinum_daily_interest"};
         try {

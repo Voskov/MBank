@@ -3,6 +3,7 @@ package main.db_access_layer.managers.impl;
 import main.AccountType;
 import main.db_access_layer.managers.AccountManager;
 import main.db_access_layer.managers.ClientManager;
+import main.exceptions.DbConnectorException;
 import main.model.Account;
 import main.model.Client;
 
@@ -13,7 +14,7 @@ import java.util.logging.Level;
 
 public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientManager {
 
-    public ClientManagerImpl() {
+    public ClientManagerImpl() throws DbConnectorException {
         connectToDb();
     }
 
@@ -41,8 +42,9 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
         }
     }
 
+    @Deprecated
     @Override
-    public long createClient(Client client, Account account) {
+    public long createClient(Client client, Account account) throws DbConnectorException {
         AccountType accountType;
         if (account.getBalance() > 100000) {
             accountType = AccountType.GOLD;
@@ -68,10 +70,9 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
         return client.getClientId();
     }
 
-    public void createClient(Client client) {
+    public void createClient(Client client) throws DbConnectorException {
         sqlStrBldr = new StringBuilder("INSERT INTO Clients ");
-        sqlStrBldr.append("(client_name, password, type, address, email, phone, comment)");
-        sqlStrBldr.append(" VALUES('");
+        sqlStrBldr.append("(client_name, password, type, address, email, phone, comment) VALUES('");
         sqlStrBldr.append(client.getClientName()).append("', '");
         sqlStrBldr.append(client.getPassword()).append("', '");
         sqlStrBldr.append(client.getAccountType().toString()).append("', '");
@@ -86,14 +87,15 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
         } catch (SQLIntegrityConstraintViolationException e) {
             String msg = "Client " + client.getClientId() + " already exists on DB. Client wasn't added";
             LOGGER.log(Level.WARNING, msg);
+            throw new DbConnectorException(msg, e);
         } catch (SQLException e) {
             disconnect();
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
     }
 
     @Override
-    public void updateClient(long clientId, String param, String value) {
+    public void updateClient(long clientId, String param, String value) throws DbConnectorException {
         try {
             String sqlStatement = "UPDATE Clients SET  WHERE client_id=" + clientId;
             stmt.executeUpdate(sqlStatement);
@@ -101,11 +103,11 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
             LOGGER.log(Level.INFO, msg);
         } catch (SQLException e) {
             disconnect();
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
     }
 
-    public void updateClient(Client client, String param, String value) {
+    public void updateClient(Client client, String param, String value) throws DbConnectorException {
         try {
             sqlStrBldr = new StringBuilder("UPDATE Clients SET  WHERE client_id=").append(client.getClientId());
             stmt.executeUpdate(sqlStrBldr.toString());
@@ -113,12 +115,12 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
             LOGGER.log(Level.INFO, msg);
         } catch (SQLException e) {
             disconnect();
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
     }
 
     @Override
-    public void updateClient(Client client) {
+    public void updateClient(Client client) throws DbConnectorException {
         sqlStrBldr = new StringBuilder("UPDATE clients SET");
         sqlStrBldr.append(" client_name='").append(client.getClientName());
         sqlStrBldr.append("', password='").append(client.getPassword());
@@ -134,78 +136,77 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
             LOGGER.log(Level.INFO, msg);
         } catch (SQLException e) {
             disconnect();
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
     }
 
-
     @Override
-    public void updateClientAddress(long clientId, String newAddress) {
+    public void updateClientAddress(long clientId, String newAddress) throws DbConnectorException {
         try {
             String sqlStatement = "UPDATE Clients SET address=" + newAddress + " WHERE client_id=" + clientId;
             stmt.executeUpdate(sqlStatement);
             String msg = "Client " + clientId + " was updated";
             LOGGER.log(Level.INFO, msg);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
     }
 
     @Override
-    public void updateClientAddress(Client client, String newAddress) {
+    public void updateClientAddress(Client client, String newAddress) throws DbConnectorException {
         updateClientAddress(client.getClientId(), newAddress);
     }
 
     @Override
-    public void updateClientEmail(long clientId, String newEmail) {
+    public void updateClientEmail(long clientId, String newEmail) throws DbConnectorException {
         try {
             String sqlStatement = "UPDATE Clients SET email=" + newEmail + " WHERE client_id=" + clientId;
             stmt.executeUpdate(sqlStatement);
             String msg = "Client " + clientId + " was updated";
             LOGGER.log(Level.INFO, msg);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
     }
 
     @Override
-    public void updateClientEmail(Client client, String newEmail) {
+    public void updateClientEmail(Client client, String newEmail) throws DbConnectorException {
         updateClientEmail(client.getClientId(), newEmail);
     }
 
     @Override
-    public void updateClientPhone(long clientId, String newPhone) {
+    public void updateClientPhone(long clientId, String newPhone) throws DbConnectorException {
         try {
             String sqlStatement = "UPDATE Clients SET phone='" + newPhone + "' WHERE client_id=" + clientId;
             stmt.executeUpdate(sqlStatement);
             String msg = "Client " + clientId + " was updated";
             LOGGER.log(Level.INFO, msg);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
     }
 
-    public void updateClientPhone(Client client, String newPhone) {
+    public void updateClientPhone(Client client, String newPhone) throws DbConnectorException {
         updateClientPhone(client.getClientId(), newPhone);
     }
 
-    public void deleteClient(long clientId) {
+    public void deleteClient(long clientId) throws DbConnectorException {
         try {
             String sqlStatement = "DELETE FROM Clients WHERE client_id=" + clientId;
             stmt.executeUpdate(sqlStatement);
             String msg = "Client " + clientId + " was deleted from DB";
             LOGGER.log(Level.INFO, msg);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
 
     }
 
-    public void deleteClient(Client client) {
+    public void deleteClient(Client client) throws DbConnectorException {
         deleteClient(client.getClientId());
     }
 
-    public Client creteClientFromSqlResult(String sqlQuery) {
+    public Client creteClientFromSqlResult(String sqlQuery) throws DbConnectorException {
         try {
             ResultSet res = stmt.executeQuery(sqlQuery);
             if (res.next()) {
@@ -222,34 +223,33 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Could not create Client");
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
         return null;
     }
 
 
     @Override
-    public Client findClient(long clientId) {
+    public Client findClient(long clientId) throws DbConnectorException {
         sqlStrBldr = new StringBuilder("SELECT * FROM Clients WHERE client_id=").append(clientId);
         return creteClientFromSqlResult(sqlStrBldr.toString());
     }
 
     @Override
-    public Client findClient(String clientName) {
+    public Client findClient(String clientName) throws DbConnectorException {
         sqlStrBldr = new StringBuilder("SELECT * FROM Clients WHERE client_name='").append(clientName).append("'");
         return creteClientFromSqlResult(sqlStrBldr.toString());
     }
 
     @Override
-    public Client findClient(Client client) {
+    public Client findClient(Client client) throws DbConnectorException {
         return findClient(client.getClientId());
     }
 
     @Override
-    public void deleteAllClients() {
+    public void deleteAllClients() throws DbConnectorException {
         String sqlStr = "DELETE FROM Clients";
         String logMessage = "All clients were deleted";
         DbConnectorManagerImpl.executeStatement(sqlStr, logMessage);
     }
 }
-

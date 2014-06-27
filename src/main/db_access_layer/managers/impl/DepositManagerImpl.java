@@ -2,6 +2,7 @@ package main.db_access_layer.managers.impl;
 
 import main.DepositType;
 import main.db_access_layer.managers.DepositManager;
+import main.exceptions.DbConnectorException;
 import main.model.Deposit;
 
 import java.sql.ResultSet;
@@ -20,12 +21,12 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
     private static DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
 
-    public DepositManagerImpl() {
+    public DepositManagerImpl() throws DbConnectorException {
         connectToDb();
     }
 
     @Override
-    public void createNewDeposit(Deposit deposit) {
+    public void createNewDeposit(Deposit deposit) throws DbConnectorException {
         try {
             sqlStrBldr = new StringBuilder("INSERT INTO Deposits ");
             sqlStrBldr.append("(client_id, balance, type, estimated_balance, opening_date, closing_date) ");
@@ -44,13 +45,13 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
             LOGGER.log(Level.WARNING, msg);
         } catch (SQLException e) {
             LOGGER.log(Level.WARNING, e.getMessage());
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
     }
 
     //TODO should be part of  an interface
     @Override
-    public void drawDeposit(long depositId) {
+    public void drawDeposit(long depositId) throws DbConnectorException {
         try {
             double depositAmount;
             long clientId = 0;
@@ -86,14 +87,14 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
                 LOGGER.log(Level.INFO, msg);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         } catch (ParseException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
     }
 
     @Override
-    public HashSet<Deposit> allClientsDeposits(long clientId) {
+    public HashSet<Deposit> allClientsDeposits(long clientId) throws DbConnectorException {
         HashSet<Deposit> allDeposits = null;
         sqlStrBldr = new StringBuilder("SELECT * FROM Deposits WHERE client_id=").append(clientId);
         try {
@@ -102,13 +103,13 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
                 allDeposits.add(buildDeposit(res));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
         return allDeposits;
     }
 
     @Override
-    public Deposit findDeposit(long depositId) {
+    public Deposit findDeposit(long depositId) throws DbConnectorException {
         sqlStrBldr = new StringBuilder("SELECT * FROM Deposits WHERE deposit_id=").append(depositId);
         Deposit resDeposit = null;
         try {
@@ -119,17 +120,17 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
         } catch (SQLException e) {
             String msg = "Could not find the requested deposit";
             LOGGER.log(Level.WARNING, msg);
-            e.printStackTrace();
+            throw new DbConnectorException(msg, e);
         }
         return resDeposit;
     }
 
     @Override
-    public Deposit findDeposit(Deposit deposit) {
+    public Deposit findDeposit(Deposit deposit) throws DbConnectorException {
         return findDeposit(deposit.getDepositId());
     }
 
-    public void updateDeposit(Deposit deposit) {
+    public void updateDeposit(Deposit deposit) throws DbConnectorException {
         sqlStrBldr = new StringBuilder("UPDATE Deposits SET ");
         sqlStrBldr.append("balance=").append(deposit.getBalance());
         sqlStrBldr.append(", type='").append(deposit.getType());
@@ -142,12 +143,12 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
         } catch (SQLException e) {
             String msg = "Deposit " + deposit.getDepositId() + " could not be updated";
             LOGGER.log(Level.WARNING, msg);
-            e.printStackTrace();
+            throw new DbConnectorException(msg, e);
         }
     }
 
     @Override
-    public HashSet<Deposit> allDeposits() {
+    public HashSet<Deposit> allDeposits() throws DbConnectorException {
         HashSet<Deposit> allDeposits = new HashSet<Deposit>();
         sqlStrBldr = new StringBuilder("SELECT * FROM Deposits");
         try {
@@ -156,13 +157,13 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
                 allDeposits.add(buildDeposit(res));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
         return allDeposits;
     }
 
     @Override
-    public HashSet<Deposit> allExpiredDeposits() {
+    public HashSet<Deposit> allExpiredDeposits() throws DbConnectorException {
         HashSet<Deposit> allExpired = new HashSet<Deposit>();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date now = Calendar.getInstance().getTime();
@@ -174,37 +175,37 @@ public class DepositManagerImpl extends DbConnectorManagerImpl implements Deposi
                 allExpired.add(buildDeposit(res));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
         return allExpired;
     }
 
     @Override
-    public Deposit buildDeposit(ResultSet res) {
+    public Deposit buildDeposit(ResultSet res) throws DbConnectorException {
         Deposit deposit = null;
         try {
             deposit = new Deposit(res.getLong(1), res.getLong(2), res.getDouble(3), DepositType.valueOf(res.getString(4)), res.getLong(5), df.parse(res.getString(6)), df.parse(res.getString(7)));
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         } catch (ParseException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
         return deposit;
     }
 
     @Override
-    public void closeDeposit(Deposit deposit) {
+    public void closeDeposit(Deposit deposit) throws DbConnectorException {
         closeDeposit(deposit.getDepositId());
     }
 
     @Override
-    public void closeDeposit(long depositId) {
+    public void closeDeposit(long depositId) throws DbConnectorException {
         sqlStrBldr = new StringBuilder("DELETE FROM Deposits WHERE deposit_id=").append(depositId);
         try {
             stmt.executeUpdate(sqlStrBldr.toString());
             LOGGER.log(Level.INFO, "Deposit " + depositId + " has been deleted");
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
     }
 }

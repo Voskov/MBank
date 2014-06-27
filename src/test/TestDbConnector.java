@@ -2,18 +2,19 @@ package test;
 
 import main.db_access_layer.managers.impl.AccountManagerImpl;
 import main.db_access_layer.managers.impl.ActivityManagerImpl;
+import main.exceptions.DbConnectorException;
 import main.model.Account;
 import main.model.Activity;
 
 import java.util.Date;
 
 public class TestDbConnector {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DbConnectorException {
         activityAdd();
 
     }
 
-    static void accountAdd(){
+    static void accountAdd() throws DbConnectorException {
         Account acc1 = new Account(123, 12345, 100.0,1000, "Test Account");
         AccountManagerImpl acConn = new AccountManagerImpl();
         acConn.createAccount(acc1);
@@ -21,7 +22,7 @@ public class TestDbConnector {
         acConn.disconnect();
     }
 
-    static void activityAdd(){
+    static void activityAdd() throws DbConnectorException {
         Activity act = new Activity(1234567, 12345, 100.0, new Date(), 5.0, "Test Activity");
         ActivityManagerImpl actCon = new ActivityManagerImpl();
         actCon.addActivity(act);

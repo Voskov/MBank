@@ -60,7 +60,7 @@ public class AdminActionImplTest {
 
     }
 
-//    @Test
+    @Test
     public void testAddNewClient() throws Exception {
         aa.addNewClient(testClient, 10000);
         Client dbClient = cm.findClient(testClient);

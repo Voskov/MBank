@@ -1,5 +1,6 @@
 package main.db_access_layer.managers.impl;
 
+import main.exceptions.DbConnectorException;
 import main.db_access_layer.managers.AccountManager;
 import main.model.Account;
 
@@ -13,7 +14,7 @@ import java.util.logging.Level;
 public class AccountManagerImpl extends DbConnectorManagerImpl implements AccountManager {
     private String sqlStatement;
 
-    public AccountManagerImpl() {
+    public AccountManagerImpl() throws DbConnectorException {
         connectToDb();
     }
 
@@ -21,9 +22,8 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
         DbConnectorManagerImpl.stmt = stmt;
     }
 
-    public void createAccount(Account account) {
+    public void createAccount(Account account) throws DbConnectorException {
         try {
-//            sqlStatement = "INSERT INTO Accounts VALUES(" + account.getAccountId() + ", " + account.getClientId() + ", " + account.getBalance() + ", " + account.getCreditLimit() + ", '" + account.getComment() + "')";
             sqlStrBldr = new StringBuilder("INSERT INTO Accounts ");
             sqlStrBldr.append(" (client_id, balance, credit_limit, comment) ");
             sqlStrBldr.append("VALUES(");
@@ -37,19 +37,20 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
         } catch (SQLIntegrityConstraintViolationException e) {
             String msg = "Account" + account.getAccountId() + " already exists on DB. Client wasn't added";
             LOGGER.log(Level.WARNING, msg);
+            throw new DbConnectorException(msg, e);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
     }
 
     @Override
-    public void deleteAccount(Account account) {
+    public void deleteAccount(Account account) throws DbConnectorException {
         sqlStr = "DELETE FROM Accounts WHERE account_id=" + account.getAccountId();
         String logMessage = "Account " + account.getAccountId() + " was deleted from DB";
         executeStatement(sqlStr, logMessage);
     }
 
-    public void createAccount(long accountId, long clientId, double balance, double creditLimit, String comment) {
+    public void createAccount(long accountId, long clientId, double balance, double creditLimit, String comment) throws DbConnectorException {
         try {
             sqlStrBldr = new StringBuilder("INSERT INTO Accounts VALUES(");
             sqlStrBldr.append(accountId).append(", ");
@@ -64,38 +65,39 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
         } catch (SQLIntegrityConstraintViolationException e) {
             String msg = "Account" + accountId + " already exists on DB. Client wasn't added";
             LOGGER.log(Level.WARNING, msg);
+            throw new DbConnectorException(msg, e);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
     }
 
-    public void deleteAccount(long accountId) {
+    public void deleteAccount(long accountId) throws DbConnectorException {
         sqlStr = "DELETE FROM Accounts WHERE account_id=" + accountId;
         String logMsg = "Account " + accountId + " was deleted from DB";
         executeStatement(sqlStr, logMsg);
     }
 
     @Override
-    public void depositToAccount(long accountId, double depositdepositAmountamount) {
+    public void depositToAccount(long accountId, double depositAmount) throws DbConnectorException {
         sqlStatement = "SELECT balance FROM Accounts";
         try {
             double balance, new_balance = 0;
             ResultSet res = stmt.executeQuery(sqlStatement);
             if (res.next()) {
                 balance = res.getDouble(1);
-                new_balance = balance + depositdepositAmountamount;
+                new_balance = balance + depositAmount;
             }
             sqlStatement = "UPDATE Accounts SET balance=" + new_balance;
             System.out.println(sqlStatement);
             stmt.executeUpdate(sqlStatement);
-            String msg = depositdepositAmountamount + " was deposited to account " + accountId + ". The new balance is " + new_balance;
+            String msg = depositAmount + " was deposited to account " + accountId + ". The new balance is " + new_balance;
             LOGGER.log(Level.INFO, msg);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
     }
 
-    public void checkBalance(long accountId) {
+    public void checkBalance(long accountId) throws DbConnectorException {
         sqlStatement = "SELECT balance FROM Accounts WHERE account_id" + accountId;
         try {
             ResultSet res = stmt.executeQuery(sqlStatement);
@@ -104,11 +106,11 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
                 LOGGER.log(Level.INFO, String.valueOf(balance));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
     }
 
-    public void checkBalance(Account account) {
+    public void checkBalance(Account account) throws DbConnectorException {
         sqlStatement = "SELECT balance FROM Accounts WHERE account_id=" + account.getAccountId();
         try {
             ResultSet res = stmt.executeQuery(sqlStatement);
@@ -117,20 +119,21 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
                 LOGGER.log(Level.INFO, String.valueOf(balance));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
+
         }
     }
 
     @Override
-    public void deleteAllAccounts() {
+    public void deleteAllAccounts() throws DbConnectorException {
         sqlStr = "DELETE FROM Accounts";
         String logMessage = "All accounts were deleted";
         executeStatement(sqlStr, logMessage);
     }
 
     @Override
-    public Account findAccount(long accountId) throws Exception {
-        if (accountId == 0) throw new Exception("accountId cannot be 0");
+    public Account findAccount(long accountId) throws DbConnectorException {
+        if (accountId == 0) throw new DbConnectorException("accountId cannot be 0");
         sqlStrBldr = new StringBuilder("SELECT * FROM accounts WHERE account_id=").append(accountId);
         Account account = null;
         try {
@@ -139,17 +142,17 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
                 account = new Account(resultSet.getLong(1), resultSet.getLong(2), resultSet.getDouble(3), resultSet.getDouble(4), resultSet.getString(5));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
         return account;
     }
 
-    public Account findAccount(Account account) throws Exception {
+    public Account findAccount(Account account) throws DbConnectorException {
         return findAccount(account.getAccountId());
     }
 
     @Override
-    public void updateAccount(Account account) {
+    public void updateAccount(Account account) throws DbConnectorException {
         sqlStrBldr = new StringBuilder("UPDATE Accounts SET ") ;
         sqlStrBldr.append("balance=").append(account.getBalance());
         sqlStrBldr.append(", credit_limit=").append(account.getCreditLimit());
@@ -161,12 +164,12 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
         } catch (SQLException e) {
             String msg = "Account " + account.getAccountId() + " could not be updated.";
             LOGGER.log(Level.WARNING, msg);
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
     }
 
     @Override
-    public long countAllAccounts(){
+    public long countAllAccounts() throws DbConnectorException {
         sqlStrBldr = new StringBuilder("SELECT count(*) FROM Accounts");
         try {
             ResultSet res = stmt.executeQuery(sqlStrBldr.toString());
@@ -174,13 +177,13 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
                 return res.getLong(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
         return 0;
     }
 
     @Override
-    public HashSet<Account> allClientsAccounts(long clientId) {
+    public HashSet<Account> allClientsAccounts(long clientId) throws DbConnectorException {
         sqlStrBldr = new StringBuilder("SELECT * FROM Accounts");
         HashSet<Account> allAccounts = new HashSet<Account>();
         try {
@@ -189,7 +192,7 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
                 allAccounts.add(createAccountFromResult(res));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
         return allAccounts;
     }
@@ -197,12 +200,12 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
 
 
     @Override
-    public Account createAccountFromResult(ResultSet res){
+    public Account createAccountFromResult(ResultSet res) throws DbConnectorException {
         Account account = null;
         try {
             account = new Account(res.getLong(1), res.getLong(2), res.getDouble(3), res.getDouble(4), res.getString(5));
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
         return account;
     }

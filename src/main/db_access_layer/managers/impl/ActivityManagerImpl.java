@@ -1,6 +1,7 @@
 package main.db_access_layer.managers.impl;
 
 import main.db_access_layer.managers.ActivityManager;
+import main.exceptions.DbConnectorException;
 import main.model.Activity;
 
 import java.sql.ResultSet;
@@ -11,12 +12,12 @@ import java.util.logging.Level;
 
 public class ActivityManagerImpl extends DbConnectorManagerImpl implements ActivityManager {
 
-    public ActivityManagerImpl() {
+    public ActivityManagerImpl() throws DbConnectorException {
         connectToDb();
     }
 
     @Override
-    public void addActivity(Activity act) {
+    public void addActivity(Activity act) throws DbConnectorException {
         try {
             sqlStrBldr = new StringBuilder("INSERT INTO Activity ");
             sqlStrBldr.append("(client_id, amount, activity_date, commission, description) ");
@@ -33,13 +34,14 @@ public class ActivityManagerImpl extends DbConnectorManagerImpl implements Activ
         } catch (SQLIntegrityConstraintViolationException e) {
             String msg = "An activity with the same id already exists on DB. Activity wasn't added";
             LOGGER.log(Level.WARNING, msg);
+            throw new DbConnectorException(msg, e);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
 
     }
 
-    public void addActivity(long id, long clientId, double amount, String date, double commission, String description) throws SQLException {
+    public void addActivity(long id, long clientId, double amount, String date, double commission, String description) throws SQLException, DbConnectorException {
         try {
 
             String statement = "INSERT INTO Activity VALUES(" + id + ", " + clientId + ", " + amount + ", '" + date + "', " + commission + ", '" + description + "')";
@@ -51,23 +53,29 @@ public class ActivityManagerImpl extends DbConnectorManagerImpl implements Activ
         } catch (SQLIntegrityConstraintViolationException e) {
             String msg = "Activity " + id + " already exists on DB. Activity wasn't added";
             LOGGER.log(Level.WARNING, msg);
+            throw new DbConnectorException(msg, e);
         } 
 
     }
 
     @Override
-    public Activity findActivity(long activityId) throws SQLException {
+    public Activity findActivity(long activityId) throws DbConnectorException {
         sqlStrBldr = new StringBuilder("SELECT * FROM Activity WHERE activity_id=").append(activityId);
         Activity dbActivity = null;
-        ResultSet res = stmt.executeQuery(sqlStrBldr.toString());
-        if (res.next()) {
-            dbActivity = buildActivity(res);
+        ResultSet res = null;
+        try {
+            res = stmt.executeQuery(sqlStrBldr.toString());
+            if (res.next()) {
+                dbActivity = buildActivity(res);
+            }
+        } catch (SQLException e) {
+            throw new DbConnectorException(e);
         }
         return dbActivity;
     }
 
     @Override
-    public Activity findActivity(Activity activity) throws SQLException {
+    public Activity findActivity(Activity activity) throws DbConnectorException {
         return findActivity(activity.getActivityId());
     }
 

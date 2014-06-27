@@ -4,6 +4,7 @@ import main.AccountType;
 import main.DepositType;
 import main.db_access_layer.managers.*;
 import main.db_access_layer.managers.impl.*;
+import main.exceptions.DbConnectorException;
 import main.model.Account;
 import main.model.Activity;
 import main.model.Client;
@@ -181,7 +182,7 @@ public class ClientActionImpl implements ClientAction {
     }
 
     @Override
-    public void updateClientDetails(Client updatedClient) {
+    public void updateClientDetails(Client updatedClient) throws DbConnectorException {
         ClientManager cm = new ClientManagerImpl();
         Client dbClient = cm.findClient(updatedClient);
         if (updatedClient.getPhone() != null) dbClient.setPhone(updatedClient.getPhone());
@@ -191,12 +192,12 @@ public class ClientActionImpl implements ClientAction {
     }
 
     @Override
-    public Client viewClientDetails(Client client) {
+    public Client viewClientDetails(Client client) throws DbConnectorException {
         return viewClientDetails(client.getClientId());
     }
 
     @Override
-    public Client viewClientDetails(long clientId) {
+    public Client viewClientDetails(long clientId) throws DbConnectorException {
         ClientManager cm = new ClientManagerImpl();
         Client dbClient = cm.findClient(clientId);
         dbClient.setPassword(null);
@@ -216,12 +217,12 @@ public class ClientActionImpl implements ClientAction {
         return dbAccount;
     }
 
-    public HashSet<Deposit> viewClientDeposits(Client client) {
+    public HashSet<Deposit> viewClientDeposits(Client client) throws DbConnectorException {
         return viewClientDeposits(client.getClientId());
     }
 
     @Override
-    public HashSet<Deposit> viewClientDeposits(long clientId) {
+    public HashSet<Deposit> viewClientDeposits(long clientId) throws DbConnectorException {
         DepositManager dm = new DepositManagerImpl();
         HashSet<Deposit> allClientsDeposits = dm.allClientsDeposits(clientId);
         for (Deposit deposit : allClientsDeposits) {
@@ -232,7 +233,7 @@ public class ClientActionImpl implements ClientAction {
     }
 
     @Override
-    public HashSet<Activity> viewClientActivities(Client client) throws SQLException {
+    public HashSet<Activity> viewClientActivities(Client client) throws SQLException, DbConnectorException {
         ActivityManager am = new ActivityManagerImpl();
         HashSet<Activity> allClientActivities = am.findAllClientActivities(client.getClientId());
         for (Activity activity : allClientActivities) {

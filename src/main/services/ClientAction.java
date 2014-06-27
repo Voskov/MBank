@@ -1,6 +1,7 @@
 package main.services;
 
 import main.DepositType;
+import main.exceptions.DbConnectorException;
 import main.model.Account;
 import main.model.Activity;
 import main.model.Client;
@@ -25,9 +26,9 @@ public interface ClientAction extends Action{
 
     void preOpenDeposit(long deposit_id) throws Exception;
 
-    void updateClientDetails(Client client);
+    void updateClientDetails(Client client) throws DbConnectorException;
 
-    HashSet<Deposit> viewClientDeposits(long clientId);
+    HashSet<Deposit> viewClientDeposits(long clientId) throws DbConnectorException;
 
-    HashSet<Activity> viewClientActivities(Client client) throws SQLException;
+    HashSet<Activity> viewClientActivities(Client client) throws SQLException, DbConnectorException;
 }

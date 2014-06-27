@@ -4,6 +4,7 @@ import main.db_access_layer.managers.AccountManager;
 import main.db_access_layer.managers.DepositManager;
 import main.db_access_layer.managers.impl.AccountManagerImpl;
 import main.db_access_layer.managers.impl.DepositManagerImpl;
+import main.exceptions.DbConnectorException;
 import main.model.Account;
 import main.model.Deposit;
 
@@ -16,8 +17,18 @@ public class CloseDepositsThread implements Runnable {
     private static int DAY = 86400000;
     @Override
     public void run() {
-        DepositManager dm = new DepositManagerImpl();
-        HashSet<Deposit> allExpired = dm.allExpiredDeposits();
+        DepositManager dm = null;
+        try {
+            dm = new DepositManagerImpl();
+        } catch (DbConnectorException e) {
+            e.printStackTrace();    //TODO - Deal with exception
+        }
+        HashSet<Deposit> allExpired = null;
+        try {
+            allExpired = dm.allExpiredDeposits();
+        } catch (DbConnectorException e) {
+            e.printStackTrace();    //TODO - Deal with exception
+        }
         for (Deposit deposit : allExpired) {
             try {
                 closeDeposit(deposit);

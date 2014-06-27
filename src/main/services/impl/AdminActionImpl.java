@@ -3,6 +3,7 @@ package main.services.impl;
 import main.AccountType;
 import main.db_access_layer.managers.*;
 import main.db_access_layer.managers.impl.*;
+import main.exceptions.DbConnectorException;
 import main.model.Account;
 import main.model.Activity;
 import main.model.Client;
@@ -74,14 +75,13 @@ public class AdminActionImpl implements AdminAction {
     }
 
     @Override
-    public void createNewAccount(Account account) {
+    public void createNewAccount(Account account) throws DbConnectorException {
         AccountManager accountManager = new AccountManagerImpl();
         accountManager.createAccount(account);
     }
 
     @Override
     public double removeAccount(Account account) throws Exception {
-
         AccountManager am = new AccountManagerImpl();
         Account dbAccount = am.findAccount(account);
         double balance = dbAccount.getBalance();
@@ -90,7 +90,7 @@ public class AdminActionImpl implements AdminAction {
     }
 
     @Override
-    public Client viewAllClientsDetails(long client_id) {
+    public Client viewAllClientsDetails(long client_id) throws DbConnectorException {
         ClientManager cm = new ClientManagerImpl();
         return cm.findClient(client_id);
     }
@@ -103,7 +103,7 @@ public class AdminActionImpl implements AdminAction {
     }
 
     @Override
-    public Deposit viewAllDepositsDetails(long depositId) {
+    public Deposit viewAllDepositsDetails(long depositId) throws DbConnectorException {
         DepositManager dm = new DepositManagerImpl();
         return dm.findDeposit(depositId);
     }
@@ -114,13 +114,13 @@ public class AdminActionImpl implements AdminAction {
     }
 
     @Override
-    public Activity ViewAllActivitiesDetails(long activityId) throws SQLException {
+    public Activity ViewAllActivitiesDetails(long activityId) throws SQLException, DbConnectorException {
         ActivityManager am = new ActivityManagerImpl();
         return am.findActivity(activityId);
     }
 
     @Override
-    public void updateClientDetails(Client updatedClient) {
+    public void updateClientDetails(Client updatedClient) throws DbConnectorException {
         ClientManager cm = new ClientManagerImpl();
         Client dbClient = cm.findClient(updatedClient);
         if (updatedClient.getClientName() != null) dbClient.setClientName(updatedClient.getClientName());
@@ -134,12 +134,12 @@ public class AdminActionImpl implements AdminAction {
     }
 
     @Override
-    public Client viewClientDetails(Client client) {
+    public Client viewClientDetails(Client client) throws DbConnectorException {
         return viewClientDetails(client.getClientId());
     }
 
     @Override
-    public Client viewClientDetails(long clientId) {
+    public Client viewClientDetails(long clientId) throws DbConnectorException {
         ClientManager cm = new ClientManagerImpl();
         Client dbClient = cm.findClient(clientId);
         return dbClient;
@@ -158,31 +158,31 @@ public class AdminActionImpl implements AdminAction {
     }
 
     @Override
-    public HashSet<Deposit> viewClientDeposits(Client client) {
+    public HashSet<Deposit> viewClientDeposits(Client client) throws DbConnectorException {
         DepositManager dm = new DepositManagerImpl();
         HashSet<Deposit> allDeposits = dm.allClientsDeposits(client.getClientId());
         return allDeposits;
     }
 
     @Override
-    public void updateSystemProperty(String property, String value) {
+    public void updateSystemProperty(String property, String value) throws DbConnectorException {
         PropertyManager pm = new PropertyManagerImpl();
         pm.setProperty(property, value);
     }
 
     @Override
-    public void updateSystemProperty(String property, double value) {
+    public void updateSystemProperty(String property, double value) throws DbConnectorException {
         updateSystemProperty(property, Double.toString(value));
     }
 
     @Override
-    public void updateSystemProperty(AccountType type, String property, String value) {
+    public void updateSystemProperty(AccountType type, String property, String value) throws DbConnectorException {
         property += type.toString().toLowerCase();
         updateSystemProperty(property, value);
     }
 
     @Override
-    public void updateSystemProperty(AccountType type, String property, double value) {
+    public void updateSystemProperty(AccountType type, String property, double value) throws DbConnectorException {
         property += type.toString().toLowerCase();
         updateSystemProperty(property, Double.toString(value));
     }

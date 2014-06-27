@@ -1,6 +1,7 @@
 package main.db_access_layer.managers.impl;
 
 import config.ImportDbSettings;
+import main.exceptions.DbConnectorException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,32 +21,32 @@ public class DbConnectorManagerImpl   {
 
     protected static Properties prop = ImportDbSettings.loadDbProperties();   // load DB properties from the config file
 
-    public static void connectToDb() {
+    public static void connectToDb() throws DbConnectorException {
         String dbUrl = prop.getProperty("DB_ADDRESS") + "/" + prop.getProperty("DB_NAME");
         try {
             con = DriverManager.getConnection(dbUrl);           // init to the DB
             System.out.println("Connected successfully to " + prop.getProperty("DB_NAME"));
             stmt = con.createStatement();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
     }
 
 
-    public static void disconnect() {
+    public static void disconnect() throws DbConnectorException {
         try {
             con.close();                                                    // always remember to close the connection at the end
             System.out.println("Connection closed");
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
     }
 
-    public static void executeStatement(String statement, String logMessage) {
+    public static void executeStatement(String statement, String logMessage) throws DbConnectorException {
         try {
             stmt.executeUpdate(statement);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DbConnectorException(e);
         }
         LOGGER.log(Level.INFO, logMessage);
     }

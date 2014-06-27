@@ -5,6 +5,7 @@ import init.InitiateDB;
 import main.DepositType;
 import main.db_access_layer.managers.DepositManager;
 import main.db_access_layer.managers.impl.DepositManagerImpl;
+import main.exceptions.DbConnectorException;
 import main.model.Deposit;
 import org.junit.*;
 
@@ -18,18 +19,18 @@ public class DepositManagerTest extends AbstractTest {
     static DepositManagerImpl depositManager = null;
 
     @BeforeClass
-    public static void beforeClass(){
+    public static void beforeClass() throws DbConnectorException {
         depositManager = new DepositManagerImpl();
     }
     @Before
-    public void setUp() {
+    public void setUp() throws DbConnectorException {
         depositManager = new DepositManagerImpl();
         DropDb.dropAllTables();
         InitiateDB.createDb();
     }
 
     @Test
-    public void testCreateDeposit() {
+    public void testCreateDeposit() throws DbConnectorException {
         Deposit testDeposit = new Deposit(1, 12345, 1000.0, DepositType.SHORT, 1010, new Date(1401896199000L), new Date(1402906199000L));
         depositManager.createNewDeposit(testDeposit);
     }
@@ -44,7 +45,7 @@ public class DepositManagerTest extends AbstractTest {
 //    }
 
     @Test
-    public void testFindDepositById() {
+    public void testFindDepositById() throws DbConnectorException {
         Calendar cal = new GregorianCalendar(2014, 06, 04);
         Deposit testDeposit = new Deposit(1, 12345, 1000.0, DepositType.SHORT, 1010, new Date(2014, 06, 04), new Date(2014, 06, 14));
         depositManager.createNewDeposit(testDeposit);
@@ -53,7 +54,7 @@ public class DepositManagerTest extends AbstractTest {
     }
 
     @Test
-    public void testFindDepositByDeposit() {
+    public void testFindDepositByDeposit() throws DbConnectorException {
         Deposit testDeposit = new Deposit(1, 12345, 1000.0, DepositType.SHORT, 1010, new Date(1401896199000L), new Date(1402906199000L));
         depositManager.createNewDeposit(testDeposit);
         Deposit dbDeposit = depositManager.findDeposit(testDeposit);
@@ -61,7 +62,7 @@ public class DepositManagerTest extends AbstractTest {
     }
 
     @Test
-    public void testGetExpired(){
+    public void testGetExpired() throws DbConnectorException {
         Deposit expiredDeposit = new Deposit(1, 12345, 1000.0, DepositType.SHORT, 1010, new Date(1400896199000L), new Date(1400906199000L));
         Deposit notExpiredDeposit = new Deposit(2, 12345, 1000.0, DepositType.SHORT, 1010, new Date(1401896199000L), new Date(1403906199000L));;
         depositManager.createNewDeposit(expiredDeposit);

@@ -1,32 +1,30 @@
 package main.db_access_layer.managers;
 
+import main.exceptions.DbConnectorException;
 import main.model.Account;
-import main.model.Activity;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 
 public interface AccountManager {
-    void createAccount(long id, long clientId, double balance, double creditLimit, String comment);
-    void deleteAccount(long accountId);
+    void createAccount(long id, long clientId, double balance, double creditLimit, String comment) throws DbConnectorException;
+    void deleteAccount(long accountId) throws DbConnectorException;
 
-    void createAccount(Account account);
-    void deleteAccount(Account account);
-    void depositToAccount(long accountId, double depositdepositAmountamount);
+    void createAccount(Account account) throws DbConnectorException;
+    void deleteAccount(Account account) throws DbConnectorException;
+    void depositToAccount(long accountId, double depositAmount) throws DbConnectorException;
 
-    void deleteAllAccounts();
+    void deleteAllAccounts() throws DbConnectorException;
 
 
-    Account findAccount(long accountId) throws Exception;
-    Account findAccount(Account account) throws Exception;
+    Account findAccount(long accountId) throws DbConnectorException;
+    Account findAccount(Account account) throws DbConnectorException;
 
-    void updateAccount(Account account);
+    void updateAccount(Account account) throws DbConnectorException;
 
-    long countAllAccounts();
+    long countAllAccounts() throws DbConnectorException;
 
-    HashSet<Account> allClientsAccounts(long clientId);
+    HashSet<Account> allClientsAccounts(long clientId) throws DbConnectorException;
 
-    Account createAccountFromResult(ResultSet res);
+    Account createAccountFromResult(ResultSet res) throws DbConnectorException;
 }

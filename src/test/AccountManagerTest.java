@@ -4,6 +4,7 @@ import init.DropDb;
 import init.InitiateDB;
 import main.db_access_layer.managers.AccountManager;
 import main.db_access_layer.managers.impl.AccountManagerImpl;
+import main.exceptions.DbConnectorException;
 import main.model.Account;
 import org.junit.*;
 
@@ -19,7 +20,7 @@ public class AccountManagerTest extends AbstractTest {
 
 
     @Before
-    public void setUp() {
+    public void setUp() throws DbConnectorException {
         accountManager = new AccountManagerImpl();
         DropDb.dropAllTables();
         InitiateDB.createDb();
@@ -36,7 +37,7 @@ public class AccountManagerTest extends AbstractTest {
     }
 
     @Test
-    public void testDeleteAccount() {
+    public void testDeleteAccount() throws DbConnectorException {
         Account testAccount = new Account(1, 12345678, 1000, 100000, "Comment");
         accountManager.createAccount(testAccount);
 
@@ -66,7 +67,7 @@ public class AccountManagerTest extends AbstractTest {
     }
 
     @Test
-    public void testGetAllAccountsByClientId(){
+    public void testGetAllAccountsByClientId() throws DbConnectorException {
         long client_id = 12345678;
         HashSet<Account> testAccountsSet = new HashSet<Account>();
 

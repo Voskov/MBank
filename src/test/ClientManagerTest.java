@@ -4,6 +4,8 @@ import init.DropDb;
 import init.InitiateDB;
 import main.AccountType;
 import main.db_access_layer.managers.impl.ClientManagerImpl;
+import main.db_access_layer.managers.impl.DbConnectorManagerImpl;
+import main.exceptions.DbConnectorException;
 import main.model.Client;
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -19,12 +21,12 @@ public class ClientManagerTest {
     }
 
     @AfterClass
-    public static void tearDownClass() {
-        clientManager.disconnect();
+    public static void tearDownClass() throws DbConnectorException {
+        DbConnectorManagerImpl.disconnect();
     }
 
     @Before
-    public void setUp() {
+    public void setUp() throws DbConnectorException {
         DropDb.dropAllTables();
         clientManager = new ClientManagerImpl();
         InitiateDB.createDb();
@@ -37,12 +39,12 @@ public class ClientManagerTest {
     }
 
     @Test
-    public void testCreateNewClient() {
+    public void testCreateNewClient() throws DbConnectorException {
         clientManager.createClient(client);
     }
 
     @Test
-    public void testUpdateClient() {
+    public void testUpdateClient() throws DbConnectorException {
         clientManager.createClient(client);
         String newPassword = "newPassword";
         client.setPassword(newPassword);
@@ -52,21 +54,21 @@ public class ClientManagerTest {
     }
 
     @Test
-    public void testFindById(){
+    public void testFindById() throws DbConnectorException {
         clientManager.createClient(client);
         Client dbClient = clientManager.findClient(client.getClientId());
         assertEquals(dbClient, client);
     }
 
     @Test
-    public void testFindByUsername(){
+    public void testFindByUsername() throws DbConnectorException {
         clientManager.createClient(client);
         Client dbClient = clientManager.findClient(client.getClientName());
         assertEquals(dbClient, client);
     }
 
     @Test
-    public void testFindByClient(){
+    public void testFindByClient() throws DbConnectorException {
         clientManager.createClient(client);
         client.setClientId(1);
         Client dbClient = clientManager.findClient(client);
