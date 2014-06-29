@@ -12,10 +12,11 @@ public interface AccountManager {
 
     void createAccount(Account account) throws DbConnectorException;
     void deleteAccount(Account account) throws DbConnectorException;
-    void depositToAccount(long accountId, double depositAmount) throws DbConnectorException;
 
     void deleteAllAccounts() throws DbConnectorException;
 
+
+    void depositToAccount(long accountId, double depositdepositAmountamount) throws DbConnectorException;
 
     Account findAccount(long accountId) throws DbConnectorException;
     Account findAccount(Account account) throws DbConnectorException;
