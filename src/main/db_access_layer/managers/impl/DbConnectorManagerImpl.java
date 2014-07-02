@@ -25,14 +25,21 @@ public class DbConnectorManagerImpl implements DbConnectorManager {
     protected static Properties prop = ImportDbSettings.loadDbProperties();   // load DB properties from the config file
 
     public DbConnectorManagerImpl() throws DbConnectorException {
-        initiateConnectionPool();
-        connectionsInUse = new HashSet<Connection>();
+//        initiateConnectionPool();
     }
 
+    public int getAmountOfConncetionsReady() {
+        return connectionsPool.size();
+    }
 
-    private void initiateConnectionPool() throws DbConnectorException {
+    public int getAmountOfConncetionsInUse() {
+        return connectionsInUse.size();
+    }
+
+    public void initiateConnectionPool() throws DbConnectorException {
         int defaultConnectionsAmount = 50; //TODO - get this from somewhere
         String dbUrl = prop.getProperty("DB_ADDRESS") + "/" + prop.getProperty("DB_NAME");
+        connectionsInUse = new HashSet<Connection>();
         connectionsPool = new HashSet<Connection>();
         for (int i = 0; i < defaultConnectionsAmount; i++) {
             try {
