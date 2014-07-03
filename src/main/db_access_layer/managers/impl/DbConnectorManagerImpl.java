@@ -1,6 +1,7 @@
 package main.db_access_layer.managers.impl;
 
 import config.ImportDbSettings;
+import init.InitiateDB;
 import main.db_access_layer.managers.DbConnectorManager;
 import main.exceptions.DbConnectorException;
 
@@ -13,14 +14,14 @@ import java.util.logging.Logger;
 
 
 public class DbConnectorManagerImpl implements DbConnectorManager {
-    protected String sqlStr;
+    protected String sqlStr;    // TODO - get rid of this
     protected StringBuilder sqlStrBldr = null;
-    protected static Connection con;
-    protected static Statement stmt;
+    protected static Connection con;    // TODO - get rid of this
+    protected static Statement stmt;    // TODO - get rid of this
     protected static Logger LOGGER = Logger.getLogger(DbConnectorManagerImpl.class.getName());
 
-    public Collection<Connection> connectionsPool;
-    public Collection<Connection> connectionsInUse;
+    public static Collection<Connection> connectionsPool;
+    public static Collection<Connection> connectionsInUse;
 
     protected static Properties prop = ImportDbSettings.loadDbProperties();   // load DB properties from the config file
 
@@ -37,7 +38,7 @@ public class DbConnectorManagerImpl implements DbConnectorManager {
     }
 
     public void initiateConnectionPool() throws DbConnectorException {
-        int defaultConnectionsAmount = 50; //TODO - get this from somewhere
+        int defaultConnectionsAmount = Integer.parseInt(prop.getProperty("DEFAULT_CONNECTIONS_AMOUNT"));  //50
         String dbUrl = prop.getProperty("DB_ADDRESS") + "/" + prop.getProperty("DB_NAME");
         connectionsInUse = new HashSet<Connection>();
         connectionsPool = new HashSet<Connection>();
@@ -51,8 +52,8 @@ public class DbConnectorManagerImpl implements DbConnectorManager {
     }
 
     private void expandConnectionsPool() throws DbConnectorException {
-        int poolExtensionAmount = 10;           //TODO - get this from somewhere
-        int maximumAmountOfConections = 100;    //TODO - get this from somewhere as well
+        int poolExtensionAmount = Integer.parseInt(prop.getProperty("CONNECTIONS_AMOUNT_INTERVAL"));  //10
+        int maximumAmountOfConections = Integer.parseInt(prop.getProperty("MAXIMUM_CONNECTIONS_AMOUNT"));  //100
         if (connectionsPool.size() + poolExtensionAmount > maximumAmountOfConections) {
             String msg = "The amount of connections has exceeded the maximum amount of total connections" + maximumAmountOfConections;
             throw new DbConnectorException(msg);
@@ -106,6 +107,7 @@ public class DbConnectorManagerImpl implements DbConnectorManager {
     public void returnConnection(Connection con) {
         connectionsInUse.remove(con);
         connectionsPool.add(con);
+
     }
 
     public static void connectToDb() throws DbConnectorException {
