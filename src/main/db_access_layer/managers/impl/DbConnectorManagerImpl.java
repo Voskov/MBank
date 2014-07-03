@@ -156,6 +156,10 @@ public class DbConnectorManagerImpl implements DbConnectorManager {
         }
     }
 
+    public ResultSet executeQuery(StringBuilder sqlStrBldr) throws DbConnectorException {
+        return executeQuery(sqlStrBldr.toString());
+    }
+
     public ResultSet executeQuery(String sqlQuery) throws DbConnectorException {
         ResultSet res = null;
         Connection connection = getConnection();

@@ -18,44 +18,25 @@ public class ActivityManagerImpl extends DbConnectorManagerImpl implements Activ
 
     @Override
     public void addActivity(Activity act) throws DbConnectorException {
-        try {
-            sqlStrBldr = new StringBuilder("INSERT INTO Activity ");
-            sqlStrBldr.append("(client_id, amount, activity_date, commission, description) ");
-            sqlStrBldr.append("VALUES (");
-            sqlStrBldr.append(act.getClientId()).append(", ");
-            sqlStrBldr.append(act.getAmount()).append(", '");
-            sqlStrBldr.append(act.getActivityDate()).append("', ");
-            sqlStrBldr.append(act.getCommission()).append(", '");
-            sqlStrBldr.append(act.getDescription()).append("')");
-            stmt.executeUpdate(sqlStrBldr.toString());
-            String msg = "Activity was created on DB";
-            LOGGER.log(Level.INFO, msg);
-
-        } catch (SQLIntegrityConstraintViolationException e) {
-            String msg = "An activity with the same id already exists on DB. Activity wasn't added";
-            LOGGER.log(Level.WARNING, msg);
-            throw new DbConnectorException(msg, e);
-        } catch (SQLException e) {
-            throw new DbConnectorException(e);
-        }
-
+        sqlStrBldr = new StringBuilder("INSERT INTO Activity ");
+        sqlStrBldr.append("(client_id, amount, activity_date, commission, description) ");
+        sqlStrBldr.append("VALUES (");
+        sqlStrBldr.append(act.getClientId()).append(", ");
+        sqlStrBldr.append(act.getAmount()).append(", '");
+        sqlStrBldr.append(act.getActivityDate()).append("', ");
+        sqlStrBldr.append(act.getCommission()).append(", '");
+        sqlStrBldr.append(act.getDescription()).append("')");
+        executeUpdate(sqlStrBldr);
+        String msg = "Activity was created on DB";
+        LOGGER.log(Level.INFO, msg);
     }
 
     public void addActivity(long id, long clientId, double amount, String date, double commission, String description) throws SQLException, DbConnectorException {
-        try {
-
-            String statement = "INSERT INTO Activity VALUES(" + id + ", " + clientId + ", " + amount + ", '" + date + "', " + commission + ", '" + description + "')";
-            System.out.println(statement);
-            stmt.executeUpdate(statement);
-            String msg = "Activity" + id + " was created on DB";
-            LOGGER.log(Level.INFO, msg);
-
-        } catch (SQLIntegrityConstraintViolationException e) {
-            String msg = "Activity " + id + " already exists on DB. Activity wasn't added";
-            LOGGER.log(Level.WARNING, msg);
-            throw new DbConnectorException(msg, e);
-        } 
-
+        String statement = "INSERT INTO Activity VALUES(" + id + ", " + clientId + ", " + amount + ", '" + date + "', " + commission + ", '" + description + "')";
+        System.out.println(statement);
+        executeUpdate(statement);
+        String msg = "Activity" + id + " was created on DB";
+        LOGGER.log(Level.INFO, msg);
     }
 
     @Override
@@ -64,7 +45,7 @@ public class ActivityManagerImpl extends DbConnectorManagerImpl implements Activ
         Activity dbActivity = null;
         ResultSet res = null;
         try {
-            res = stmt.executeQuery(sqlStrBldr.toString());
+            res = executeQuery(sqlStrBldr);
             if (res.next()) {
                 dbActivity = buildActivity(res);
             }

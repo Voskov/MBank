@@ -22,7 +22,7 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
         sqlStrBldr.append(account.getBalance()).append(", ");
         sqlStrBldr.append(account.getCreditLimit()).append(", '");
         sqlStrBldr.append(account.getComment()).append("')");
-        executeUpdate(sqlStrBldr.toString());
+        executeUpdate(sqlStrBldr);
         String msg = "Account " + account.getAccountId() + " was created on DB";
         LOGGER.log(Level.INFO, msg);
     }

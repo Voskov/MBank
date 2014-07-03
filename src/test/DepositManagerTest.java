@@ -24,9 +24,10 @@ public class DepositManagerTest extends AbstractTest {
     }
     @Before
     public void setUp() throws DbConnectorException {
-        depositManager = new DepositManagerImpl();
         DropDb.dropAllTables();
         InitiateDB.createDb();
+        depositManager = new DepositManagerImpl();
+        depositManager.initiateConnectionPool();
     }
 
     @Test
