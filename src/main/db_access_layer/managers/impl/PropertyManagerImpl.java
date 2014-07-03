@@ -34,8 +34,8 @@ public class PropertyManagerImpl extends DbConnectorManagerImpl implements Prope
         }
         try {
             return Double.valueOf(value); // Yes, I COULD return a string, but the I would have to parse it everywhere
-        } catch (Exception e) { //TODO
-            throw new DbConnectorException("Can't fetch string using this");
+        } catch (Exception e) {
+            throw new DbConnectorException("Can't fetch string using this", e);
         }
     }
 

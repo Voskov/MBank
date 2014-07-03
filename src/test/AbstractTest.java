@@ -20,7 +20,7 @@ public class AbstractTest {
     @After
     public void tearDown() throws DbConnectorException {
 //        DropTables.dropAllTables();
-        DbConnectorManagerImpl.disconnect();
+//        DbConnectorManagerImpl.disconnect();
     }
 
 

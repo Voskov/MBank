@@ -50,8 +50,8 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
 
     public void deleteAccount(long accountId) throws DbConnectorException {
         sqlStrBldr = new StringBuilder("DELETE FROM Accounts WHERE account_id=").append(accountId);
-        String logMsg = "Account " + accountId + " was deleted from DB";
         executeUpdate(sqlStrBldr.toString());
+        String logMsg = "Account " + accountId + " was deleted from DB";
         LOGGER.log(Level.INFO, logMsg);
     }
 

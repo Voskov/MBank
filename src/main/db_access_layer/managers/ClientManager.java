@@ -5,7 +5,7 @@ import main.model.Account;
 import main.model.Client;
 
 public interface ClientManager {
-    void createClient(long clientId, String clientName, String password, String type, String address, String email, String phone, String comment);
+    void createClient(long clientId, String clientName, String password, String type, String address, String email, String phone, String comment) throws DbConnectorException;
 
     long createClient(Client client, Account account) throws DbConnectorException;
     void createClient(Client client) throws DbConnectorException;

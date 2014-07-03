@@ -139,6 +139,10 @@ public class DbConnectorManagerImpl implements DbConnectorManager {
         LOGGER.log(Level.INFO, logMessage);
     }
 
+    public void executeUpdate(StringBuilder sqlStrBldr) throws DbConnectorException {
+        executeUpdate(sqlStrBldr.toString());
+    }
+
     public void executeUpdate(String sqlQuery) throws DbConnectorException {
         Connection connection = getConnection();
         try {

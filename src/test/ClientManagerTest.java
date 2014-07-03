@@ -15,27 +15,19 @@ public class ClientManagerTest {
     private static Client client = null;
     private static ClientManagerImpl clientManager = null;
 
-    @BeforeClass
-    public static void setUpClass() {
-        client = new Client("Test Name", "pasword", AccountType.GOLD, "address 6", "test@email.com", "054-1234567", "comment");
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws DbConnectorException {
-        DbConnectorManagerImpl.disconnect();
-    }
-
     @Before
     public void setUp() throws DbConnectorException {
-        DropDb.dropAllTables();
+
+        InitiateDB.restartDb();
         clientManager = new ClientManagerImpl();
-        InitiateDB.createDb();
+        clientManager.initiateConnectionPool(); // I really didn't want to initiate this at every test, but apparently it's the correct way to test
+        client = new Client("Test Name", "password", AccountType.GOLD, "address 6", "test@email.com", "054-1234567", "comment");
     }
 
 //    @After
     public void tearDown() {
-        DropDb.dropAllTables();
-        InitiateDB.createDb();
+        client = null;
+        clientManager = null;
     }
 
     @Test
@@ -48,6 +40,7 @@ public class ClientManagerTest {
         clientManager.createClient(client);
         String newPassword = "newPassword";
         client.setPassword(newPassword);
+        client.setClientId(1);
         clientManager.updateClient(client);
         Client dbClient = clientManager.findClient(client.getClientId());
         assertEquals(newPassword, dbClient.getPassword());
@@ -56,6 +49,7 @@ public class ClientManagerTest {
     @Test
     public void testFindById() throws DbConnectorException {
         clientManager.createClient(client);
+        client.setClientId(1);
         Client dbClient = clientManager.findClient(client.getClientId());
         assertEquals(dbClient, client);
     }
@@ -63,6 +57,7 @@ public class ClientManagerTest {
     @Test
     public void testFindByUsername() throws DbConnectorException {
         clientManager.createClient(client);
+        client.setClientId(1);
         Client dbClient = clientManager.findClient(client.getClientName());
         assertEquals(dbClient, client);
     }
