@@ -33,7 +33,6 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
         executeUpdate(sqlStr);
         String logMessage = "Account " + account.getAccountId() + " was deleted from DB";
         LOGGER.log(Level.INFO, logMessage);
-
     }
 
     public void createAccount(long accountId, long clientId, double balance, double creditLimit, String comment) throws DbConnectorException {

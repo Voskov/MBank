@@ -121,6 +121,7 @@ public class DbConnectorManagerImpl implements DbConnectorManager {
         }
     }
 
+    @Deprecated
     public static void disconnect() throws DbConnectorException {
         try {
             con.close();                                                    // always remember to close the connection at the end
@@ -130,6 +131,7 @@ public class DbConnectorManagerImpl implements DbConnectorManager {
         }
     }
 
+    @Deprecated
     public static void executeStatement(String sqlQuery, String logMessage) throws DbConnectorException {
         try {
             stmt.executeUpdate(sqlQuery);
