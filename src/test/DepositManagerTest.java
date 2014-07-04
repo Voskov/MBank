@@ -18,16 +18,15 @@ import static org.junit.Assert.*;
 public class DepositManagerTest extends AbstractTest {
     static DepositManagerImpl depositManager = null;
 
-    @BeforeClass
-    public static void beforeClass() throws DbConnectorException {
-        depositManager = new DepositManagerImpl();
-    }
     @Before
     public void setUp() throws DbConnectorException {
-        DropDb.dropAllTables();
-        InitiateDB.createDb();
+        InitiateDB.restartDb();
         depositManager = new DepositManagerImpl();
-        depositManager.initiateConnectionPool();
+    }
+
+    @After
+    public void tearDown() {
+        depositManager = null;
     }
 
     @Test
@@ -65,7 +64,8 @@ public class DepositManagerTest extends AbstractTest {
     @Test
     public void testGetExpired() throws DbConnectorException {
         Deposit expiredDeposit = new Deposit(1, 12345, 1000.0, DepositType.SHORT, 1010, new Date(1400896199000L), new Date(1400906199000L));
-        Deposit notExpiredDeposit = new Deposit(2, 12345, 1000.0, DepositType.SHORT, 1010, new Date(1401896199000L), new Date(1403906199000L));;
+        Deposit notExpiredDeposit = new Deposit(2, 12345, 1000.0, DepositType.SHORT, 1010, new Date(1401896199000L), new Date(1403906199000L));
+        ;
         depositManager.createNewDeposit(expiredDeposit);
         depositManager.createNewDeposit(notExpiredDeposit);
         HashSet<Deposit> testSet = new HashSet<Deposit>();

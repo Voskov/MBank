@@ -2,7 +2,9 @@ package test;
 
 import init.InitiateDB;
 import main.AccountType;
+import main.db_access_layer.managers.ConnectionPool;
 import main.db_access_layer.managers.PropertyManager;
+import main.db_access_layer.managers.impl.ConnectionPoolImpl;
 import main.db_access_layer.managers.impl.PropertyManagerImpl;
 import main.exceptions.DbConnectorException;
 import org.junit.After;
@@ -21,8 +23,7 @@ public class PropertyManagerTest {
     public void setUp() throws Exception {
         InitiateDB.restartDb();
         pm = new PropertyManagerImpl();
-        PropertyManagerImpl initializer = new PropertyManagerImpl();
-        initializer.initiateConnectionPool();
+        ConnectionPool pool = new ConnectionPoolImpl();
     }
 
     @After

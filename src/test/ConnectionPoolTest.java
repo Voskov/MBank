@@ -25,7 +25,8 @@ public class ConnectionPoolTest {
 
     @After
     public void tearDown() throws Exception {
-
+        pool.drainConnectionPool();
+        pool = null;
     }
 
     @Test

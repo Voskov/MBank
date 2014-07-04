@@ -55,6 +55,7 @@ public class ConnectionPoolImpl implements ConnectionPool{
         }
     }
 
+    @Override
     public void drainConnectionPool() throws DbConnectorException {
         LOGGER.log(Level.INFO, "Closing all connections");
         for (Connection con : connectionsPool) {

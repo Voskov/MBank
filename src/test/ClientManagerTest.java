@@ -20,7 +20,6 @@ public class ClientManagerTest {
 
         InitiateDB.restartDb();
         clientManager = new ClientManagerImpl();
-        clientManager.initiateConnectionPool(); // I really didn't want to initiate this at every test, but apparently it's the correct way to test
         client = new Client("Test Name", "password", AccountType.GOLD, "address 6", "test@email.com", "054-1234567", "comment");
     }
 

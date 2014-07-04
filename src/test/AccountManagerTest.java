@@ -25,7 +25,6 @@ public class AccountManagerTest extends AbstractTest {
     public static void classSetUp() {
         try {
             dbConnectorManager = new DbConnectorManagerImpl();
-            dbConnectorManager.initiateConnectionPool();
             accountManager = new AccountManagerImpl();
         } catch (DbConnectorException e) {
             e.printStackTrace();
@@ -34,7 +33,7 @@ public class AccountManagerTest extends AbstractTest {
 
     @AfterClass
     public static void classTearDown() throws DbConnectorException {
-        dbConnectorManager.drainConnectionPool();
+
     }
 
     @Before
