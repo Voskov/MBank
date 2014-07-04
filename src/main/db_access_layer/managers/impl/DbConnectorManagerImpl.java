@@ -2,6 +2,7 @@ package main.db_access_layer.managers.impl;
 
 import config.ImportDbSettings;
 import init.InitiateDB;
+import main.db_access_layer.managers.ConnectionPool;
 import main.db_access_layer.managers.DbConnectorManager;
 import main.exceptions.DbConnectorException;
 
@@ -20,8 +21,10 @@ public class DbConnectorManagerImpl implements DbConnectorManager {
     protected static Statement stmt;    // TODO - get rid of this
     protected static Logger LOGGER = Logger.getLogger(DbConnectorManagerImpl.class.getName());
 
-    public static Collection<Connection> connectionsPool;
-    public static Collection<Connection> connectionsInUse;
+    ConnectionPool pool = new ConnectionPoolImpl();
+
+//    public static Collection<Connection> connectionsPool;
+//    public static Collection<Connection> connectionsInUse;
 
     protected static Properties prop = ImportDbSettings.loadDbProperties();   // load DB properties from the config file
 
@@ -29,86 +32,86 @@ public class DbConnectorManagerImpl implements DbConnectorManager {
 //        initiateConnectionPool();
     }
 
-    public int getAmountOfConncetionsReady() {
-        return connectionsPool.size();
-    }
+//    public int getAmountOfConncetionsReady() {
+//        return connectionsPool.size();
+//    }
 
-    public int getAmountOfConncetionsInUse() {
-        return connectionsInUse.size();
-    }
+//    public int getAmountOfConncetionsInUse() {
+//        return connectionsInUse.size();
+//    }
 
-    public void initiateConnectionPool() throws DbConnectorException {
-        int defaultConnectionsAmount = Integer.parseInt(prop.getProperty("DEFAULT_CONNECTIONS_AMOUNT"));  //50
-        String dbUrl = prop.getProperty("DB_ADDRESS") + "/" + prop.getProperty("DB_NAME");
-        connectionsInUse = new HashSet<Connection>();
-        connectionsPool = new HashSet<Connection>();
-        for (int i = 0; i < defaultConnectionsAmount; i++) {
-            try {
-                connectionsPool.add(DriverManager.getConnection(dbUrl));
-            } catch (SQLException e) {
-                throw new DbConnectorException(e);
-            }
-        }
-    }
+//    public void initiateConnectionPool() throws DbConnectorException {
+//        int defaultConnectionsAmount = Integer.parseInt(prop.getProperty("DEFAULT_CONNECTIONS_AMOUNT"));  //50
+//        String dbUrl = prop.getProperty("DB_ADDRESS") + "/" + prop.getProperty("DB_NAME");
+//        connectionsInUse = new HashSet<Connection>();
+//        connectionsPool = new HashSet<Connection>();
+//        for (int i = 0; i < defaultConnectionsAmount; i++) {
+//            try {
+//                connectionsPool.add(DriverManager.getConnection(dbUrl));
+//            } catch (SQLException e) {
+//                throw new DbConnectorException(e);
+//            }
+//        }
+//    }
 
-    private void expandConnectionsPool() throws DbConnectorException {
-        int poolExtensionAmount = Integer.parseInt(prop.getProperty("CONNECTIONS_AMOUNT_INTERVAL"));  //10
-        int maximumAmountOfConections = Integer.parseInt(prop.getProperty("MAXIMUM_CONNECTIONS_AMOUNT"));  //100
-        if (connectionsPool.size() + poolExtensionAmount > maximumAmountOfConections) {
-            String msg = "The amount of connections has exceeded the maximum amount of total connections" + maximumAmountOfConections;
-            throw new DbConnectorException(msg);
-        }
-        String dbUrl = prop.getProperty("DB_ADDRESS") + "/" + prop.getProperty("DB_NAME");
-        for (int i = 0; i < poolExtensionAmount; i++) {
-            try {
-                connectionsPool.add(DriverManager.getConnection(dbUrl));
-            } catch (SQLException e) {
-                throw new DbConnectorException(e);
-            }
-        }
-    }
+//    private void expandConnectionsPool() throws DbConnectorException {
+//        int poolExtensionAmount = Integer.parseInt(prop.getProperty("CONNECTIONS_AMOUNT_INTERVAL"));  //10
+//        int maximumAmountOfConections = Integer.parseInt(prop.getProperty("MAXIMUM_CONNECTIONS_AMOUNT"));  //100
+//        if (connectionsPool.size() + poolExtensionAmount > maximumAmountOfConections) {
+//            String msg = "The amount of connections has exceeded the maximum amount of total connections" + maximumAmountOfConections;
+//            throw new DbConnectorException(msg);
+//        }
+//        String dbUrl = prop.getProperty("DB_ADDRESS") + "/" + prop.getProperty("DB_NAME");
+//        for (int i = 0; i < poolExtensionAmount; i++) {
+//            try {
+//                connectionsPool.add(DriverManager.getConnection(dbUrl));
+//            } catch (SQLException e) {
+//                throw new DbConnectorException(e);
+//            }
+//        }
+//    }
 
-    public void drainConnectionPool() throws DbConnectorException {
-        LOGGER.log(Level.INFO, "Closing all connections");
-        for (Connection con : connectionsPool) {
-            try {
-                con.close();
-            } catch (SQLException e) {
-                String msg = "Could not close all connections";
-                throw new DbConnectorException(msg, e);
-            }
-        }
-        connectionsPool.removeAll(connectionsPool);
-        for (Connection con : connectionsInUse) {
-            try {
-                con.close();
-            } catch (SQLException e) {
-                String msg = "Could not close all connections";
-                throw new DbConnectorException(msg, e);
-            }
-        }
-        connectionsInUse.removeAll(connectionsInUse);
-    }
+//    public void drainConnectionPool() throws DbConnectorException {
+//        LOGGER.log(Level.INFO, "Closing all connections");
+//        for (Connection con : connectionsPool) {
+//            try {
+//                con.close();
+//            } catch (SQLException e) {
+//                String msg = "Could not close all connections";
+//                throw new DbConnectorException(msg, e);
+//            }
+//        }
+//        connectionsPool.removeAll(connectionsPool);
+//        for (Connection con : connectionsInUse) {
+//            try {
+//                con.close();
+//            } catch (SQLException e) {
+//                String msg = "Could not close all connections";
+//                throw new DbConnectorException(msg, e);
+//            }
+//        }
+//        connectionsInUse.removeAll(connectionsInUse);
+//    }
 
-    @Override
-    public Connection getConnection() throws DbConnectorException {
-        if (!connectionsPool.isEmpty()) {
-            Connection con = connectionsPool.iterator().next();
-            connectionsInUse.add(con);
-            connectionsPool.remove(con);
-            return con;
-        } else {
-            expandConnectionsPool();
-        }
-        return null;
-    }
-
-    @Override
-    public void returnConnection(Connection con) {
-        connectionsInUse.remove(con);
-        connectionsPool.add(con);
-
-    }
+//    @Override
+//    public Connection getConnection() throws DbConnectorException {
+//        if (!connectionsPool.isEmpty()) {
+//            Connection con = connectionsPool.iterator().next();
+//            connectionsInUse.add(con);
+//            connectionsPool.remove(con);
+//            return con;
+//        } else {
+//            expandConnectionsPool();
+//        }
+//        return null;
+//    }
+//
+//    @Override
+//    public void returnConnection(Connection con) {
+//        connectionsInUse.remove(con);
+//        connectionsPool.add(con);
+//
+//    }
 
     public static void connectToDb() throws DbConnectorException {
         String dbUrl = prop.getProperty("DB_ADDRESS") + "/" + prop.getProperty("DB_NAME");
@@ -146,14 +149,14 @@ public class DbConnectorManagerImpl implements DbConnectorManager {
     }
 
     public void executeUpdate(String sqlQuery) throws DbConnectorException {
-        Connection connection = getConnection();
+        Connection connection = pool.getConnection();
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(sqlQuery);
-            returnConnection(connection);
+            pool.returnConnection(connection);
         } catch (SQLException e) {
             String msg = "Failed making an SQL query" + sqlQuery;
-            returnConnection(connection);
+            pool.returnConnection(connection);
             throw new DbConnectorException(msg, e);
         }
     }
@@ -164,14 +167,14 @@ public class DbConnectorManagerImpl implements DbConnectorManager {
 
     public ResultSet executeQuery(String sqlQuery) throws DbConnectorException {
         ResultSet res = null;
-        Connection connection = getConnection();
+        Connection connection = pool.getConnection();
         try {
             Statement statement = connection.createStatement();
             res = statement.executeQuery(sqlQuery);
-            returnConnection(connection);
+            pool.returnConnection(connection);
         } catch (SQLException e) {
             String msg = "Failed making an SQL query - " + sqlQuery;
-            returnConnection(connection);
+            pool.returnConnection(connection);
             throw new DbConnectorException(msg, e);
         }
         return res;
