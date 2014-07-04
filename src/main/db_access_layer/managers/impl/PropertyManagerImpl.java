@@ -21,11 +21,10 @@ public class PropertyManagerImpl extends DbConnectorManagerImpl implements Prope
     @Override
     public Double getProperty(String property) throws DbConnectorException {
         String value = null;
-        sqlStrBldr = new StringBuilder("SELECT prop_value FROM properties WHERE prop_key= '");
-        sqlStrBldr.append(property);
-        sqlStrBldr.append("'");
+        sqlStrBldr = new StringBuilder("SELECT prop_value FROM properties WHERE prop_key='");
+        sqlStrBldr.append(property).append("'");
         try {
-            ResultSet res = executeQuery(String.valueOf(sqlStrBldr));
+            ResultSet res = executeQuery(sqlStrBldr);
             if (res.next()) {
                 value = res.getString(1);
             }
@@ -50,7 +49,7 @@ public class PropertyManagerImpl extends DbConnectorManagerImpl implements Prope
     public HashMap<String, String> getAdminCredentials() throws SQLException, DbConnectorException {
         sqlStrBldr = new StringBuilder("SELECT * FROM properties WHERE prop_key LIKE 'admin%'");
         HashMap adminCredentials = new HashMap();
-        ResultSet res = executeQuery(sqlStrBldr.toString());
+        ResultSet res = executeQuery(sqlStrBldr);
         while (res.next()) {
             adminCredentials.put(res.getString(1), res.getString(2));
         }

@@ -21,11 +21,13 @@ public class PropertyManagerTest {
     public void setUp() throws Exception {
         InitiateDB.restartDb();
         pm = new PropertyManagerImpl();
+        PropertyManagerImpl initializer = new PropertyManagerImpl();
+        initializer.initiateConnectionPool();
     }
 
     @After
     public void tearDown() throws Exception {
-
+        pm = null;
     }
 
     @Test

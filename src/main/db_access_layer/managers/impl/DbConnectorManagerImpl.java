@@ -174,5 +174,4 @@ public class DbConnectorManagerImpl implements DbConnectorManager {
         }
         return res;
     }
-
 }
