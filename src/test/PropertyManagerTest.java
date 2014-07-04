@@ -4,6 +4,7 @@ import init.InitiateDB;
 import main.AccountType;
 import main.db_access_layer.managers.PropertyManager;
 import main.db_access_layer.managers.impl.PropertyManagerImpl;
+import main.exceptions.DbConnectorException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,7 +51,7 @@ public class PropertyManagerTest {
     }
 
     @Test
-    public void testGetCredentials() throws SQLException {
+    public void testGetCredentials() throws SQLException, DbConnectorException {
         HashMap<String, String> dbCredentials = pm.getAdminCredentials();
         HashMap<String, String> testCredentials = new HashMap<String, String>();
         testCredentials.put("admin_username", "system");

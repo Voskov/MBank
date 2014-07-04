@@ -25,7 +25,7 @@ public class PropertyManagerImpl extends DbConnectorManagerImpl implements Prope
         sqlStrBldr.append(property);
         sqlStrBldr.append("'");
         try {
-            ResultSet res = stmt.executeQuery(String.valueOf(sqlStrBldr));
+            ResultSet res = executeQuery(String.valueOf(sqlStrBldr));
             if (res.next()) {
                 value = res.getString(1);
             }
@@ -33,7 +33,7 @@ public class PropertyManagerImpl extends DbConnectorManagerImpl implements Prope
             e.printStackTrace();
         }
         try {
-            return Double.valueOf(value); // Yes, I COULD return a string, but the I would have to parse it everywhere
+            return Double.valueOf(value); // Yes, I COULD return a string, but then I would have to parse it everywhere
         } catch (Exception e) {
             throw new DbConnectorException("Can't fetch string using this", e);
         }
@@ -47,10 +47,10 @@ public class PropertyManagerImpl extends DbConnectorManagerImpl implements Prope
     }
 
     @Override
-    public HashMap<String, String> getAdminCredentials() throws SQLException {
+    public HashMap<String, String> getAdminCredentials() throws SQLException, DbConnectorException {
         sqlStrBldr = new StringBuilder("SELECT * FROM properties WHERE prop_key LIKE 'admin%'");
         HashMap adminCredentials = new HashMap();
-        ResultSet res = stmt.executeQuery(sqlStrBldr.toString());
+        ResultSet res = executeQuery(sqlStrBldr.toString());
         while (res.next()) {
             adminCredentials.put(res.getString(1), res.getString(2));
         }
@@ -60,32 +60,22 @@ public class PropertyManagerImpl extends DbConnectorManagerImpl implements Prope
     // This method receives the property name as a string
     // And the new value as a string, ans sets the value to the property
     @Override
-    public void setProperty(String property, String value) {
+    public void setProperty(String property, String value) throws DbConnectorException {
         sqlStrBldr = new StringBuilder("UPDATE properties SET prop_value='");
         sqlStrBldr.append(value);
         sqlStrBldr.append("' WHERE prop_key='");
         sqlStrBldr.append(property).append("'");
-        try {
-            stmt.executeUpdate(sqlStrBldr.toString());
-            LOGGER.log(Level.INFO, "Property " + property + " was updated with " + value);
-        } catch (SQLException e) {
-            LOGGER.log(Level.WARNING, "Could not update property");
-            e.printStackTrace();
-        }
+        executeUpdate(sqlStrBldr);
+        LOGGER.log(Level.INFO, "Property " + property + " was updated with " + value);
     }
 
     @Override
-    public void setProperty(String property, double value) {
+    public void setProperty(String property, double value) throws DbConnectorException {
         sqlStrBldr = new StringBuilder("UPDATE properties SET prop_value=");
         sqlStrBldr.append(String.valueOf(value));
         sqlStrBldr.append("WHERE prop_key=");
         sqlStrBldr.append(property);
-        try {
-            stmt.executeUpdate(sqlStrBldr.toString());
-            LOGGER.log(Level.INFO, "Property " + property + " was updated with " + value);
-        } catch (SQLException e) {
-            LOGGER.log(Level.WARNING, "Could not update property");
-            e.printStackTrace();
-        }
+        executeUpdate(sqlStrBldr);
+        LOGGER.log(Level.INFO, "Property " + property + " was updated with " + value);
     }
 }

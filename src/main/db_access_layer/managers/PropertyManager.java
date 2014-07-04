@@ -10,8 +10,8 @@ public interface PropertyManager {
     Double getProperty(String property) throws DbConnectorException;
     double getProperty(AccountType type, String property) throws DbConnectorException;
 
-    HashMap<String, String> getAdminCredentials() throws SQLException;
+    HashMap<String, String> getAdminCredentials() throws SQLException, DbConnectorException;
 
-    void setProperty(String property, String value);
-    void setProperty(String property, double value);
+    void setProperty(String property, String value) throws DbConnectorException;
+    void setProperty(String property, double value) throws DbConnectorException;
 }
