@@ -22,6 +22,8 @@ public class ConnectionPoolImpl implements ConnectionPool{
 
     protected static Logger LOGGER = Logger.getLogger(DbConnectorManagerImpl.class.getName());
 
+
+
     public void initiateConnectionPool() throws DbConnectorException {
         int defaultConnectionsAmount = Integer.parseInt(prop.getProperty("DEFAULT_CONNECTIONS_AMOUNT"));  //50
         String dbUrl = prop.getProperty("DB_ADDRESS") + "/" + prop.getProperty("DB_NAME");
@@ -39,7 +41,7 @@ public class ConnectionPoolImpl implements ConnectionPool{
     private void expandConnectionsPool() throws DbConnectorException {
         int poolExtensionAmount = Integer.parseInt(prop.getProperty("CONNECTIONS_AMOUNT_INTERVAL"));  //10
         int maximumAmountOfConections = Integer.parseInt(prop.getProperty("MAXIMUM_CONNECTIONS_AMOUNT"));  //100
-        if (connectionsPool.size() + poolExtensionAmount > maximumAmountOfConections) {
+        if (getAmountOfConncetionsInUse() + poolExtensionAmount > maximumAmountOfConections) {
             String msg = "The amount of connections has exceeded the maximum amount of total connections" + maximumAmountOfConections;
             throw new DbConnectorException(msg);
         }
@@ -77,6 +79,9 @@ public class ConnectionPoolImpl implements ConnectionPool{
 
     @Override
     public Connection getConnection() throws DbConnectorException {
+        if (connectionsPool == null) {
+            initiateConnectionPool();
+        }
         if (!connectionsPool.isEmpty()) {
             Connection con = connectionsPool.iterator().next();
             connectionsInUse.add(con);
