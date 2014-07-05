@@ -1,30 +1,32 @@
 package main.services;
 
 import main.DepositType;
+import main.exceptions.ClientException;
 import main.exceptions.DbConnectorException;
 import main.model.Account;
 import main.model.Activity;
 import main.model.Client;
 import main.model.Deposit;
 
+import javax.security.auth.login.AccountException;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashSet;
 
 public interface ClientAction extends Action{
 
-    void withdrawFromAccount(Account account, double withdrawalAmount) throws Exception;
-    void withdrawFromAccount(long accountId, double withdrawalAmount) throws Exception;
-    void withdrawFromAccount(Client client, double withdrawalAmount) throws Exception; // Assuming that there's only one account for a client, for now
+    void withdrawFromAccount(Account account, double withdrawalAmount) throws DbConnectorException, ClientException;
+    void withdrawFromAccount(long accountId, double withdrawalAmount) throws DbConnectorException, ClientException;
+    void withdrawFromAccount(Client client, double withdrawalAmount) throws DbConnectorException, ClientException; // Assuming that there's only one account for a client, for now
 
-    void depositToAccount(Client client, double depositAmount) throws Exception;
-    void depositToAccount(Account account, double depositAmount) throws Exception;
-    void depositToAccount(long accountId, double depositAmount) throws Exception;
+    void depositToAccount(Client client, double depositAmount) throws DbConnectorException, AccountException, ClientException;
+    void depositToAccount(Account account, double depositAmount) throws DbConnectorException, AccountException;
+    void depositToAccount(long accountId, double depositAmount) throws AccountException, DbConnectorException;
 
-    void createNewDeposit(Deposit deposit) throws Exception;
-    void createNewDeposit(Deposit deposit, Client client) throws Exception;
+    void createNewDeposit(Deposit deposit) throws DbConnectorException;
+    void createNewDeposit(Deposit deposit, Client client) throws DbConnectorException;
 
-    void preOpenDeposit(long deposit_id) throws Exception;
+    void preOpenDeposit(long deposit_id) throws DbConnectorException, ClientException;
 
     void updateClientDetails(Client client) throws DbConnectorException;
 

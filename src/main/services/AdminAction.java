@@ -11,18 +11,18 @@ import java.sql.SQLException;
 
 public interface AdminAction extends Action{
 
-    void addNewClient(Client client, double initialAmount) throws Exception;
+    void addNewClient(Client client, double initialAmount) ;
 
-    void removeClient(long client_id) throws Exception;
-    void removeClient(Client client) throws Exception;
+    void removeClient(long client_id) throws DbConnectorException;
+    void removeClient(Client client) throws DbConnectorException;
 
     void createNewAccount(Account account) throws DbConnectorException;
 
-    double removeAccount(Account account) throws Exception;
+    double removeAccount(Account account) throws DbConnectorException;
 
     Client viewAllClientsDetails(long client_id) throws DbConnectorException;
 
-    Account viewAllAccountsDetails(long account_id) throws Exception;
+    Account viewAllAccountsDetails(long account_id) ;
 
     Deposit viewAllDepositsDetails(long depositId) throws DbConnectorException;
 
@@ -37,6 +37,6 @@ public interface AdminAction extends Action{
 
     void updateClientDetails(Client updatedClient) throws DbConnectorException;
 
-    double viewSystemProperty(String property) throws Exception;
-    double viewSystemProperty(AccountType type, String property) throws Exception;
+    double viewSystemProperty(String property) ;
+    double viewSystemProperty(AccountType type, String property) ;
 }

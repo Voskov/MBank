@@ -45,7 +45,7 @@ public class AccountManagerTest extends AbstractTest {
 
 
     @Test
-    public void testDeleteAccountById() throws Exception {
+    public void testDeleteAccountById()  {
         Account testAccount = new Account(1, 12345678, 1000, 100000, "Comment");
         accountManager.createAccount(testAccount);
 
@@ -63,7 +63,7 @@ public class AccountManagerTest extends AbstractTest {
     }
 
     @Test
-    public void testFindAccount() throws Exception {
+    public void testFindAccount()  {
         Account testAccount = new Account(1, 12345678, 1000, 100000, "Comment");
         accountManager.createAccount(testAccount);
 
@@ -72,7 +72,7 @@ public class AccountManagerTest extends AbstractTest {
     }
 
     @Test
-    public void testUpdateAccount() throws Exception {
+    public void testUpdateAccount()  {
         Account testAccount = new Account(1, 12345678, 1000, 100000, "Comment");
         accountManager.createAccount(testAccount);
 

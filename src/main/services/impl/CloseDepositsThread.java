@@ -5,6 +5,7 @@ import main.db_access_layer.managers.DepositManager;
 import main.db_access_layer.managers.impl.AccountManagerImpl;
 import main.db_access_layer.managers.impl.DepositManagerImpl;
 import main.exceptions.DbConnectorException;
+import main.exceptions.MaintenanceException;
 import main.model.Account;
 import main.model.Deposit;
 
@@ -39,7 +40,7 @@ public class CloseDepositsThread implements Runnable {
         // TODO - Sleep for a DAY
     }
     
-    private void closeDeposit(Deposit deposit) throws Exception {
+    private void closeDeposit(Deposit deposit) throws DbConnectorException, MaintenanceException {
         AccountManager am = new AccountManagerImpl();
         HashSet<Account> accounts = am.allClientsAccounts(deposit.getClientId());
         Iterator<Account> it = accounts.iterator();
@@ -52,7 +53,7 @@ public class CloseDepositsThread implements Runnable {
         } else {
             String msg = "Couldn't find an account for client " + deposit.getClientId();
             
-            throw new Exception(msg);
+            throw new MaintenanceException(msg);
         }
     }
 }

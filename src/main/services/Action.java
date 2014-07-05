@@ -14,8 +14,8 @@ public interface Action {
     Client viewClientDetails(Client client) throws DbConnectorException;
     Client viewClientDetails(long clientId) throws DbConnectorException;
 
-    Account viewAccountDetails(Account account) throws Exception;
-    Account viewAccountDetails(long AccountId) throws Exception;
+    Account viewAccountDetails(Account account) throws DbConnectorException;
+    Account viewAccountDetails(long AccountId) throws DbConnectorException;
 
     HashSet<Deposit> viewClientDeposits(Client client) throws DbConnectorException;
 }

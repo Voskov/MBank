@@ -14,7 +14,7 @@ public class DbConnectorManagerImplTest {
     DbConnectorManagerImpl dbCon;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp()  {
         dbCon = new DbConnectorManagerImpl();
     }
 
@@ -24,19 +24,19 @@ public class DbConnectorManagerImplTest {
     }
 
     @Test
-    public void testGetConnection() throws Exception {
+    public void testGetConnection()  {
         assertEquals(dbCon.connectionsPool.size(), 50);
         Connection con = dbCon.getConnection();
         assertEquals(dbCon.connectionsPool.size(), 49);
     }
 
     @Test
-    public void testReturnConnection() throws Exception {
+    public void testReturnConnection()  {
         Connection con = dbCon.getConnection();
     }
 
     @Test
-    public void testDrainPool() throws Exception {
+    public void testDrainPool()  {
         dbCon.drainConnectionPool();
         assertEquals(0, dbCon.connectionsPool.size());
         assertEquals(0, dbCon.connectionsInUse.size());

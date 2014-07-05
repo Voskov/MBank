@@ -17,27 +17,27 @@ public class ConnectionPoolTest {
     ConnectionPool pool = null;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp()  {
         InitiateDB.restartDb();
         pool = new ConnectionPoolImpl();
 
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown()  {
         pool.drainConnectionPool();
         pool = null;
     }
 
     @Test
-    public void testGetConnection() throws Exception {
+    public void testGetConnection()  {
         Connection con = pool.getConnection();
         assertEquals("Should be 1", 1, pool.getAmountOfConncetionsInUse());
         assertEquals("Should be 49", 49, pool.getAmountOfConncetionsReady());
     }
 
     @Test
-    public void testReturnConnection() throws Exception {
+    public void testReturnConnection()  {
         Connection con = pool.getConnection();
         pool.returnConnection(con);
         assertEquals("Should be 0", 0, pool.getAmountOfConncetionsInUse());

@@ -17,7 +17,7 @@ import java.util.HashSet;
 
 public class AdminActionImpl implements AdminAction {
     @Override
-    public void addNewClient(Client client, double initialAmount) throws Exception {
+    public void addNewClient(Client client, double initialAmount) throws DbConnectorException {
         PropertyManager pm = new PropertyManagerImpl();
         double regular_limit = pm.getProperty("regular_deposit_rate");
         double gold_limit = pm.getProperty("gold_deposit_rate");
@@ -47,14 +47,14 @@ public class AdminActionImpl implements AdminAction {
     }
 
     @Override
-    public void removeClient(long client_id) throws Exception {
+    public void removeClient(long client_id) throws DbConnectorException {
         ClientManager cm = new ClientManagerImpl();
         Client client = cm.findClient(client_id);
         removeClient(client);
     }
 
     @Override
-    public void removeClient(Client client) throws Exception {
+    public void removeClient(Client client) throws DbConnectorException {
         DepositManager dm = new DepositManagerImpl();
         HashSet<Deposit> allDeposits = dm.allClientsDeposits(client.getClientId());
         if (allDeposits != null && !allDeposits.isEmpty()) {
@@ -81,7 +81,7 @@ public class AdminActionImpl implements AdminAction {
     }
 
     @Override
-    public double removeAccount(Account account) throws Exception {
+    public double removeAccount(Account account) throws DbConnectorException {
         AccountManager am = new AccountManagerImpl();
         Account dbAccount = am.findAccount(account);
         double balance = dbAccount.getBalance();
@@ -96,7 +96,7 @@ public class AdminActionImpl implements AdminAction {
     }
 
     @Override
-    public Account viewAllAccountsDetails(long accountId) throws Exception {
+    public Account viewAllAccountsDetails(long accountId) throws DbConnectorException {
         AccountManager am = new AccountManagerImpl();
         return am.findAccount(accountId);
 
@@ -146,12 +146,12 @@ public class AdminActionImpl implements AdminAction {
     }
 
     @Override
-    public Account viewAccountDetails(Account account) throws Exception {
+    public Account viewAccountDetails(Account account) throws DbConnectorException {
         return viewAccountDetails(account.getAccountId());
     }
 
     @Override
-    public Account viewAccountDetails(long accountId) throws Exception {
+    public Account viewAccountDetails(long accountId) throws DbConnectorException {
         AccountManager am = new AccountManagerImpl();
         Account dbAccount = am.findAccount(accountId);
         return dbAccount;
@@ -188,13 +188,13 @@ public class AdminActionImpl implements AdminAction {
     }
 
     @Override
-    public double viewSystemProperty(String property) throws Exception {
+    public double viewSystemProperty(String property) throws DbConnectorException {
         PropertyManager pm = new PropertyManagerImpl();
         return pm.getProperty(property);
     }
 
     @Override
-    public double viewSystemProperty(AccountType type, String property) throws Exception {
+    public double viewSystemProperty(AccountType type, String property) throws DbConnectorException {
         PropertyManager pm = new PropertyManagerImpl();
         return pm.getProperty(type, property);
     }

@@ -15,18 +15,18 @@ public class ActivityManagerImplTest {
     Activity testActivity = new Activity(54321, 1000.0, new Date(114, 5, 23), 1.0, "Test Activity");
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp()  {
         am = new ActivityManagerImpl();
         InitiateDB.restartDb();
     }
 
     @Test
-    public void testAddActivity() throws Exception {
+    public void testAddActivity()  {
         am.addActivity(testActivity);
     }
 
     @Test
-    public void testFindActivityById() throws Exception {
+    public void testFindActivityById()  {
         am.addActivity(testActivity);
         Activity activity = am.findActivity(1);
         testActivity.setActivityId(1);
@@ -34,7 +34,7 @@ public class ActivityManagerImplTest {
     }
 
     @Test
-    public void testFindActivityByActivity() throws Exception {
+    public void testFindActivityByActivity()  {
         am.addActivity(testActivity);
         testActivity.setActivityId(1);
         Activity activity = am.findActivity(testActivity);

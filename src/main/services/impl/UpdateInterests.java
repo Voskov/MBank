@@ -48,7 +48,7 @@ public class UpdateInterests implements Runnable {
         }
     }
 
-    private void updateInterest(Deposit deposit) throws Exception {
+    private void updateInterest(Deposit deposit)  {
         DepositManager dm = new DepositManagerImpl();
         ClientManager cm = new ClientManagerImpl();
         AccountType accountType = cm.findClient(deposit.getClientId()).getAccountType();

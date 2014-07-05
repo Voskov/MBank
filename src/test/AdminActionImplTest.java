@@ -37,7 +37,7 @@ public class AdminActionImplTest {
 
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp()  {
         InitiateDB.restartDb();
         aa = new AdminActionImpl();
 
@@ -56,12 +56,12 @@ public class AdminActionImplTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown()  {
 
     }
 
     @Test
-    public void testAddNewClient() throws Exception {
+    public void testAddNewClient()  {
         aa.addNewClient(testClient, 10000);
         Client dbClient = cm.findClient(testClient);
         Account dbAccount = am.findAccount(testAccount);
@@ -74,7 +74,7 @@ public class AdminActionImplTest {
     }
 
     @Test
-    public void testRemoveClient() throws Exception {
+    public void testRemoveClient()  {
         aa.addNewClient(testClient, 10000);
         aa.removeClient(testClient);
 
@@ -86,7 +86,7 @@ public class AdminActionImplTest {
     }
 
     @Test
-    public void testRemoveClient1() throws Exception {
+    public void testRemoveClient1()  {
         aa.addNewClient(testClient, 10000);
         aa.removeClient(1);
 
@@ -99,97 +99,97 @@ public class AdminActionImplTest {
     }
 
     @Test
-    public void testCreateNewAccount() throws Exception {
+    public void testCreateNewAccount()  {
 
     }
 
     @Test
-    public void testRemoveAccount() throws Exception {
+    public void testRemoveAccount()  {
 
     }
 
     @Test
-    public void testViewAllClientsDetails() throws Exception {
+    public void testViewAllClientsDetails()  {
 
     }
 
     @Test
-    public void testViewAllAccountsDetails() throws Exception {
+    public void testViewAllAccountsDetails()  {
 
     }
 
     @Test
-    public void testViewAllDepositsDetails() throws Exception {
+    public void testViewAllDepositsDetails()  {
 
     }
 
     @Test
-    public void testViewAllActivitiesDetails() throws Exception {
+    public void testViewAllActivitiesDetails()  {
 
     }
 
     @Test
-    public void testViewAllActivitiesDetails1() throws Exception {
+    public void testViewAllActivitiesDetails1()  {
 
     }
 
     @Test
-    public void testUpdateClientDetails() throws Exception {
+    public void testUpdateClientDetails()  {
 
     }
 
     @Test
-    public void testViewClientDetails() throws Exception {
+    public void testViewClientDetails()  {
 
     }
 
     @Test
-    public void testViewClientDetails1() throws Exception {
+    public void testViewClientDetails1()  {
 
     }
 
     @Test
-    public void testViewAccountDetails() throws Exception {
+    public void testViewAccountDetails()  {
 
     }
 
     @Test
-    public void testViewAccountDetails1() throws Exception {
+    public void testViewAccountDetails1()  {
 
     }
 
     @Test
-    public void testViewClientDeposits() throws Exception {
+    public void testViewClientDeposits()  {
 
     }
 
     @Test
-    public void testUpdateSystemProperty() throws Exception {
+    public void testUpdateSystemProperty()  {
 
     }
 
     @Test
-    public void testUpdateSystemProperty1() throws Exception {
+    public void testUpdateSystemProperty1()  {
 
     }
 
     @Test
-    public void testUpdateSystemProperty2() throws Exception {
+    public void testUpdateSystemProperty2()  {
 
     }
 
     @Test
-    public void testUpdateSystemProperty3() throws Exception {
+    public void testUpdateSystemProperty3()  {
 
     }
 
     @Test
-    public void testViewSystemProperty() throws Exception {
+    public void testViewSystemProperty()  {
 
     }
 
     @Test
-    public void testViewSystemProperty1() throws Exception {
+    public void testViewSystemProperty1()  {
 
     }
 }

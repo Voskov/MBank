@@ -4,6 +4,7 @@ import main.AccountType;
 import main.DepositType;
 import main.db_access_layer.managers.*;
 import main.db_access_layer.managers.impl.*;
+import main.exceptions.ClientException;
 import main.exceptions.DbConnectorException;
 import main.model.Account;
 import main.model.Activity;
@@ -11,6 +12,7 @@ import main.model.Client;
 import main.model.Deposit;
 import main.services.ClientAction;
 
+import javax.security.auth.login.AccountException;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,13 +21,13 @@ import java.util.Iterator;
 
 public class ClientActionImpl implements ClientAction {
     @Override
-    public void withdrawFromAccount(Client client, double withdrawalAmount) throws Exception {
+    public void withdrawFromAccount(Client client, double withdrawalAmount) throws DbConnectorException, ClientException {
         AccountManager accountManager = new AccountManagerImpl();
         HashSet<Account> allAccounts = accountManager.allClientsAccounts(client.getClientId());
         if (allAccounts.size() > 1) {
-            throw new Exception("More than one account, please choose account");
+            throw new ClientException("More than one account, please choose account");
         } else if (allAccounts.size() < 1) {
-            throw new Exception("No accounts for this client");
+            throw new ClientException("No accounts for this client");
         }
         Iterator<Account> accountsIterator = allAccounts.iterator();
         Account account = accountsIterator.next();
@@ -33,42 +35,42 @@ public class ClientActionImpl implements ClientAction {
     }
 
     @Override
-    public void withdrawFromAccount(Account account, double withdrawalAmount) throws Exception {
+    public void withdrawFromAccount(Account account, double withdrawalAmount) throws DbConnectorException, ClientException {
         AccountManager accountManager = new AccountManagerImpl();
         PropertyManager propertyManager = new PropertyManagerImpl();
         double commission = propertyManager.getProperty("commission_rate");
         double balance = account.getBalance();
         if (withdrawalAmount > balance + commission) {
-            throw new Exception("Not enough money in the account");
+            throw new ClientException("Not enough money in the account");
         }
         account.setBalance(balance - withdrawalAmount - commission);
         accountManager.updateAccount(account);
     }
 
     @Override
-    public void withdrawFromAccount(long account_id, double withdrawalAmount) throws Exception {
+    public void withdrawFromAccount(long account_id, double withdrawalAmount) throws DbConnectorException, ClientException {
         AccountManager accountManager = new AccountManagerImpl();
         Account dbAccount = accountManager.findAccount(account_id);
         withdrawFromAccount(dbAccount, withdrawalAmount);
     }
 
     @Override
-    public void depositToAccount(Client client, double depositAmount) throws Exception {
+    public void depositToAccount(Client client, double depositAmount) throws DbConnectorException, AccountException, ClientException {
         AccountManager accountManager = new AccountManagerImpl();
         HashSet<Account> allAccounts = accountManager.allClientsAccounts(client.getClientId());
 
         //Not REALLY necessary
         if (allAccounts.size() > 1) {
-            throw new Exception("More than one account, please choose account");
+            throw new AccountException("More than one account, please choose account");
         } else if (allAccounts.size() < 1) {
-            throw new Exception("No accounts for this client");
+            throw new ClientException("No accounts for this client");
         }
         Account account = allAccounts.iterator().next();
         depositToAccount(account, depositAmount);
     }
 
     @Override
-    public void depositToAccount(Account account, double depositAmount) throws Exception {
+    public void depositToAccount(Account account, double depositAmount) throws DbConnectorException, AccountException {
         ClientManager cm = new ClientManagerImpl();
         Client dbClient = cm.findClient(account.getClientId());
         PropertyManager pm = new PropertyManagerImpl();
@@ -78,7 +80,7 @@ public class ClientActionImpl implements ClientAction {
         double newBalance = dbAccount.getBalance() + depositAmount - commission;
         if (newBalance < (-1 * dbAccount.getCreditLimit())) {
             // in case the client tries to deposit less than the commission
-            throw new Exception("Not enough money in the account to perform this action.");
+            throw new AccountException("Not enough money in the account to perform this action.");
         }
         dbAccount.setBalance(newBalance);
         accountManager.updateAccount(dbAccount);
@@ -93,13 +95,13 @@ public class ClientActionImpl implements ClientAction {
     }
 
     @Override
-    public void depositToAccount(long accountId, double depositAmount) throws Exception {
+    public void depositToAccount(long accountId, double depositAmount) throws AccountException, DbConnectorException {
         AccountManager am = new AccountManagerImpl();
         Account dbAccount = am.findAccount(accountId);
         depositToAccount(dbAccount, depositAmount);
     }
 
-    public void updateClientStatus(Client client) throws Exception {
+    public void updateClientStatus(Client client) throws DbConnectorException {
         AccountManager am = new AccountManagerImpl();
         HashSet<Account> allAccounts = am.allClientsAccounts(client.getClientId());
         double sum = 0;
@@ -122,21 +124,21 @@ public class ClientActionImpl implements ClientAction {
         cm.updateClient(client);
     }
 
-    public void updateClientStatus(long clientId) throws Exception {
+    public void updateClientStatus(long clientId) throws DbConnectorException {
         ClientManager cm = new ClientManagerImpl();
         Client dbClient = cm.findClient(clientId);
         updateClientStatus(dbClient);
     }
 
     @Override
-    public void createNewDeposit(Deposit deposit) throws Exception {
+    public void createNewDeposit(Deposit deposit) throws DbConnectorException {
         ClientManager cm = new ClientManagerImpl();
         Client client = cm.findClient(deposit.getClientId());
         createNewDeposit(deposit, client);
     }
 
     @Override
-    public void createNewDeposit(Deposit deposit, Client client) throws Exception {
+    public void createNewDeposit(Deposit deposit, Client client) throws DbConnectorException {
         PropertyManager pm = new PropertyManagerImpl();
 
         Date closingDate = deposit.getClosingDate();
@@ -155,7 +157,7 @@ public class ClientActionImpl implements ClientAction {
     }
 
     @Override
-    public void preOpenDeposit(long deposit_id) throws Exception {
+    public void preOpenDeposit(long deposit_id) throws DbConnectorException, ClientException {
         PropertyManager pm = new PropertyManagerImpl();
         DepositManager dm = new DepositManagerImpl();
         AccountManager am = new AccountManagerImpl();
@@ -163,12 +165,12 @@ public class ClientActionImpl implements ClientAction {
 
         Deposit dbDeposit = dm.findDeposit(deposit_id);
         if (dbDeposit.getType() != DepositType.LONG) {
-            throw new Exception("Only long deposits may be pre-opened");
+            throw new ClientException("Only long deposits may be pre-opened");
         }
         Client client = cm.findClient(dbDeposit.getClientId());
         HashSet<Account> allAccounts = am.allClientsAccounts(client.getClientId());
         if (allAccounts.isEmpty()) {
-            throw new Exception("Client doesn't have accounts");
+            throw new ClientException("Client doesn't have accounts");
         }
         Account account = allAccounts.iterator().next();
         double preOpenFee = pm.getProperty("pre_open_fee");
@@ -177,7 +179,7 @@ public class ClientActionImpl implements ClientAction {
         dm.closeDeposit(deposit_id);
     }
 
-    public void preopenDeposit(Deposit deposit) throws Exception {
+    public void preopenDeposit(Deposit deposit) throws ClientException, DbConnectorException {
         preOpenDeposit(deposit.getDepositId());
     }
 
@@ -206,12 +208,12 @@ public class ClientActionImpl implements ClientAction {
     }
 
     @Override
-    public Account viewAccountDetails(Account account) throws Exception {
+    public Account viewAccountDetails(Account account) throws DbConnectorException {
         return viewAccountDetails(account.getAccountId());
     }
 
     @Override
-    public Account viewAccountDetails(long AccountId) throws Exception {
+    public Account viewAccountDetails(long AccountId) throws DbConnectorException {
         AccountManager am = new AccountManagerImpl();
         Account dbAccount = am.findAccount(AccountId);
         return dbAccount;

@@ -30,7 +30,7 @@ public class ClientActionTest {
     AccountManager am;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp()  {
         InitiateDB.restartDb();
         testClient = new Client(1, "test Client", "qwerty", AccountType.REGULAR, "qwertyui fgh jkl", "wertyui@lkjhgfd.com", "876543", "Test client");
         testAccount = new Account(1, 1, 1000, 10000, "Test Account");
@@ -42,14 +42,14 @@ public class ClientActionTest {
     }
 
 //    @Test
-    public void testWithdrawFromAccount() throws Exception {
+    public void testWithdrawFromAccount()  {
         ca.withdrawFromAccount(testAccount, 100);
         Account dbAccount = am.findAccount(1);
         assertEquals(899.5, dbAccount.getBalance(), 0.0001);
     }
 
 //    @Test
-    public void testWithdrawFromAccount1() throws Exception {
+    public void testWithdrawFromAccount1()  {
         ca.withdrawFromAccount(1, 100);
         Account dbAccount = am.findAccount(1);
         assertEquals(899.5, dbAccount.getBalance(), 0.0001);
@@ -57,60 +57,60 @@ public class ClientActionTest {
     }
 
 //    @Test
-    public void testWithdrawFromAccount2() throws Exception {
+    public void testWithdrawFromAccount2()  {
         ca.withdrawFromAccount(testClient, 100);
         Account dbAccount = am.findAccount(1);
         assertEquals(899.5, dbAccount.getBalance(), 0.0001);
     }
 
 //    @Test
-    public void testDepositToAccount() throws Exception {
+    public void testDepositToAccount()  {
         ca.depositToAccount(testClient, 100);
         Account dbAccount = am.findAccount(1);
         assertEquals(1099.5, dbAccount.getBalance(), 0.0001);
     }
 
 //    @Test
-    public void testDepositToAccount1() throws Exception {
+    public void testDepositToAccount1()  {
         ca.depositToAccount(1, 100);
         Account dbAccount = am.findAccount(1);
         assertEquals(1099.5, dbAccount.getBalance(), 0.0001);
     }
 
 //    @Test
-    public void testDepositToAccount2() throws Exception {
+    public void testDepositToAccount2()  {
         ca.depositToAccount(testAccount, 100);
         Account dbAccount = am.findAccount(1);
         assertEquals(1099.5, dbAccount.getBalance(), 0.0001);
     }
 
 //    @Test
-    public void testCreateNewDeposit() throws Exception {
+    public void testCreateNewDeposit()  {
 
     }
 
     //@Test
-    public void testCreateNewDeposit1() throws Exception {
+    public void testCreateNewDeposit1()  {
 
     }
 
     //@Test
-    public void testPreOpenDeposit() throws Exception {
+    public void testPreOpenDeposit()  {
 
     }
 
     //@Test
-    public void testUpdateClientDetails() throws Exception {
+    public void testUpdateClientDetails()  {
 
     }
 
     //@Test
-    public void testViewClientDeposits() throws Exception {
+    public void testViewClientDeposits()  {
 
     }
 
     //@Test
-    public void testViewClientActivities() throws Exception {
+    public void testViewClientActivities()  {
 
     }
 }
