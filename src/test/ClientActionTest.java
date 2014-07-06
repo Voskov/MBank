@@ -7,6 +7,8 @@ import main.db_access_layer.managers.AccountManager;
 import main.db_access_layer.managers.ClientManager;
 import main.db_access_layer.managers.impl.AccountManagerImpl;
 import main.db_access_layer.managers.impl.ClientManagerImpl;
+import main.exceptions.ClientException;
+import main.exceptions.DbConnectorException;
 import main.model.Account;
 import main.model.Client;
 import main.model.Deposit;
@@ -17,6 +19,7 @@ import main.services.impl.ClientActionImpl;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.security.auth.login.AccountException;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
@@ -30,7 +33,7 @@ public class ClientActionTest {
     AccountManager am;
 
     @Before
-    public void setUp()  {
+    public void setUp() throws DbConnectorException {
         InitiateDB.restartDb();
         testClient = new Client(1, "test Client", "qwerty", AccountType.REGULAR, "qwertyui fgh jkl", "wertyui@lkjhgfd.com", "876543", "Test client");
         testAccount = new Account(1, 1, 1000, 10000, "Test Account");
@@ -42,14 +45,14 @@ public class ClientActionTest {
     }
 
 //    @Test
-    public void testWithdrawFromAccount()  {
+    public void testWithdrawFromAccount() throws ClientException, DbConnectorException {
         ca.withdrawFromAccount(testAccount, 100);
         Account dbAccount = am.findAccount(1);
         assertEquals(899.5, dbAccount.getBalance(), 0.0001);
     }
 
 //    @Test
-    public void testWithdrawFromAccount1()  {
+    public void testWithdrawFromAccount1() throws ClientException, DbConnectorException {
         ca.withdrawFromAccount(1, 100);
         Account dbAccount = am.findAccount(1);
         assertEquals(899.5, dbAccount.getBalance(), 0.0001);
@@ -57,28 +60,28 @@ public class ClientActionTest {
     }
 
 //    @Test
-    public void testWithdrawFromAccount2()  {
+    public void testWithdrawFromAccount2() throws ClientException, DbConnectorException {
         ca.withdrawFromAccount(testClient, 100);
         Account dbAccount = am.findAccount(1);
         assertEquals(899.5, dbAccount.getBalance(), 0.0001);
     }
 
 //    @Test
-    public void testDepositToAccount()  {
+    public void testDepositToAccount() throws DbConnectorException, ClientException, AccountException {
         ca.depositToAccount(testClient, 100);
         Account dbAccount = am.findAccount(1);
         assertEquals(1099.5, dbAccount.getBalance(), 0.0001);
     }
 
 //    @Test
-    public void testDepositToAccount1()  {
+    public void testDepositToAccount1() throws AccountException, DbConnectorException {
         ca.depositToAccount(1, 100);
         Account dbAccount = am.findAccount(1);
         assertEquals(1099.5, dbAccount.getBalance(), 0.0001);
     }
 
 //    @Test
-    public void testDepositToAccount2()  {
+    public void testDepositToAccount2() throws AccountException, DbConnectorException {
         ca.depositToAccount(testAccount, 100);
         Account dbAccount = am.findAccount(1);
         assertEquals(1099.5, dbAccount.getBalance(), 0.0001);

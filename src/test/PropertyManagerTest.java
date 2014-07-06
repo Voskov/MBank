@@ -20,7 +20,7 @@ public class PropertyManagerTest {
     PropertyManager pm = null;
 
     @Before
-    public void setUp()  {
+    public void setUp() throws DbConnectorException {
         InitiateDB.restartDb();
         pm = new PropertyManagerImpl();
         ConnectionPool pool = new ConnectionPoolImpl();
@@ -32,7 +32,7 @@ public class PropertyManagerTest {
     }
 
     @Test
-    public void testGetProperty()  {
+    public void testGetProperty() throws DbConnectorException {
         double commission = pm.getProperty("commission_rate");
         assertEquals(0.5, commission, 0.001);
         double gold_deposit_credit = pm.getProperty("gold_deposit_credit");
@@ -40,7 +40,7 @@ public class PropertyManagerTest {
     }
 
     @Test
-    public void testSetProperty()  {
+    public void testSetProperty() throws DbConnectorException {
         double newCommission = 1.5;
         pm.setProperty("commission_rate", String.valueOf(newCommission));
         double commission = pm.getProperty("commission_rate");
@@ -48,7 +48,7 @@ public class PropertyManagerTest {
     }
 
     @Test
-    public void testNewGetProp()  {
+    public void testNewGetProp() throws DbConnectorException {
         assertEquals(0.015, pm.getProperty(AccountType.REGULAR, "deposit_commission"), 0.001);
         assertEquals(1000000D, pm.getProperty(AccountType.GOLD, "deposit_credit"), 0.001);
     }

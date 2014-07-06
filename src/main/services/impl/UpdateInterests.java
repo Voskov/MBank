@@ -8,6 +8,7 @@ import main.db_access_layer.managers.impl.ClientManagerImpl;
 import main.db_access_layer.managers.impl.DepositManagerImpl;
 import main.db_access_layer.managers.impl.PropertyManagerImpl;
 import main.exceptions.DbConnectorException;
+import main.exceptions.MaintenanceException;
 import main.model.Client;
 import main.model.Deposit;
 
@@ -48,7 +49,7 @@ public class UpdateInterests implements Runnable {
         }
     }
 
-    private void updateInterest(Deposit deposit)  {
+    private void updateInterest(Deposit deposit) throws DbConnectorException, MaintenanceException {
         DepositManager dm = new DepositManagerImpl();
         ClientManager cm = new ClientManagerImpl();
         AccountType accountType = cm.findClient(deposit.getClientId()).getAccountType();
@@ -64,7 +65,7 @@ public class UpdateInterests implements Runnable {
             interest = platinum_daily_interest;
         } else {
             String msg = "Account doesn't have a type";
-            throw new Exception(msg);
+            throw new MaintenanceException(msg);
         }
         deposit.setBalance(deposit.getBalance() * interest);
         dm.updateDeposit(deposit);

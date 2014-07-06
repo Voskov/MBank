@@ -45,7 +45,7 @@ public class AccountManagerTest extends AbstractTest {
 
 
     @Test
-    public void testDeleteAccountById()  {
+    public void testDeleteAccountById() throws DbConnectorException {
         Account testAccount = new Account(1, 12345678, 1000, 100000, "Comment");
         accountManager.createAccount(testAccount);
 
@@ -63,7 +63,7 @@ public class AccountManagerTest extends AbstractTest {
     }
 
     @Test
-    public void testFindAccount()  {
+    public void testFindAccount() throws DbConnectorException {
         Account testAccount = new Account(1, 12345678, 1000, 100000, "Comment");
         accountManager.createAccount(testAccount);
 
@@ -72,7 +72,7 @@ public class AccountManagerTest extends AbstractTest {
     }
 
     @Test
-    public void testUpdateAccount()  {
+    public void testUpdateAccount() throws DbConnectorException {
         Account testAccount = new Account(1, 12345678, 1000, 100000, "Comment");
         accountManager.createAccount(testAccount);
 

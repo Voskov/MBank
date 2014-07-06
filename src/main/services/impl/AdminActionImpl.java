@@ -3,6 +3,7 @@ package main.services.impl;
 import main.AccountType;
 import main.db_access_layer.managers.*;
 import main.db_access_layer.managers.impl.*;
+import main.exceptions.ClientException;
 import main.exceptions.DbConnectorException;
 import main.model.Account;
 import main.model.Activity;
@@ -47,14 +48,14 @@ public class AdminActionImpl implements AdminAction {
     }
 
     @Override
-    public void removeClient(long client_id) throws DbConnectorException {
+    public void removeClient(long client_id) throws DbConnectorException, ClientException {
         ClientManager cm = new ClientManagerImpl();
         Client client = cm.findClient(client_id);
         removeClient(client);
     }
 
     @Override
-    public void removeClient(Client client) throws DbConnectorException {
+    public void removeClient(Client client) throws DbConnectorException, ClientException {
         DepositManager dm = new DepositManagerImpl();
         HashSet<Deposit> allDeposits = dm.allClientsDeposits(client.getClientId());
         if (allDeposits != null && !allDeposits.isEmpty()) {

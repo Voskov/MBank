@@ -24,20 +24,20 @@ public class ConnectionPoolTest {
     }
 
     @After
-    public void tearDown()  {
+    public void tearDown() throws DbConnectorException {
         pool.drainConnectionPool();
         pool = null;
     }
 
     @Test
-    public void testGetConnection()  {
+    public void testGetConnection() throws DbConnectorException {
         Connection con = pool.getConnection();
         assertEquals("Should be 1", 1, pool.getAmountOfConncetionsInUse());
         assertEquals("Should be 49", 49, pool.getAmountOfConncetionsReady());
     }
 
     @Test
-    public void testReturnConnection()  {
+    public void testReturnConnection() throws DbConnectorException {
         Connection con = pool.getConnection();
         pool.returnConnection(con);
         assertEquals("Should be 0", 0, pool.getAmountOfConncetionsInUse());

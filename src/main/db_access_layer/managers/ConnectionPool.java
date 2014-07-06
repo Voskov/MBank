@@ -14,4 +14,6 @@ public interface ConnectionPool {
     int getAmountOfConncetionsReady();
 
     int getAmountOfConncetionsInUse();
+
+    boolean isEmpty();
 }

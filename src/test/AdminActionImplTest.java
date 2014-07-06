@@ -8,6 +8,8 @@ import main.db_access_layer.managers.ClientManager;
 import main.db_access_layer.managers.impl.AccountManagerImpl;
 import main.db_access_layer.managers.impl.ActivityManagerImpl;
 import main.db_access_layer.managers.impl.ClientManagerImpl;
+import main.exceptions.ClientException;
+import main.exceptions.DbConnectorException;
 import main.model.Account;
 import main.model.Activity;
 import main.model.Client;
@@ -17,6 +19,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -37,7 +40,7 @@ public class AdminActionImplTest {
 
 
     @Before
-    public void setUp()  {
+    public void setUp() throws DbConnectorException {
         InitiateDB.restartDb();
         aa = new AdminActionImpl();
 
@@ -61,7 +64,7 @@ public class AdminActionImplTest {
     }
 
     @Test
-    public void testAddNewClient()  {
+    public void testAddNewClient() throws DbConnectorException, SQLException {
         aa.addNewClient(testClient, 10000);
         Client dbClient = cm.findClient(testClient);
         Account dbAccount = am.findAccount(testAccount);
@@ -74,7 +77,7 @@ public class AdminActionImplTest {
     }
 
     @Test
-    public void testRemoveClient()  {
+    public void testRemoveClient() throws DbConnectorException, ClientException {
         aa.addNewClient(testClient, 10000);
         aa.removeClient(testClient);
 
@@ -86,7 +89,7 @@ public class AdminActionImplTest {
     }
 
     @Test
-    public void testRemoveClient1()  {
+    public void testRemoveClient1() throws DbConnectorException, ClientException {
         aa.addNewClient(testClient, 10000);
         aa.removeClient(1);
 

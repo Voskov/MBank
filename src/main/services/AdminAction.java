@@ -1,6 +1,7 @@
 package main.services;
 
 import main.AccountType;
+import main.exceptions.ClientException;
 import main.exceptions.DbConnectorException;
 import main.model.Account;
 import main.model.Activity;
@@ -11,10 +12,10 @@ import java.sql.SQLException;
 
 public interface AdminAction extends Action{
 
-    void addNewClient(Client client, double initialAmount) ;
+    void addNewClient(Client client, double initialAmount) throws DbConnectorException;
 
-    void removeClient(long client_id) throws DbConnectorException;
-    void removeClient(Client client) throws DbConnectorException;
+    void removeClient(long client_id) throws DbConnectorException, ClientException;
+    void removeClient(Client client) throws DbConnectorException, ClientException;
 
     void createNewAccount(Account account) throws DbConnectorException;
 
@@ -22,7 +23,7 @@ public interface AdminAction extends Action{
 
     Client viewAllClientsDetails(long client_id) throws DbConnectorException;
 
-    Account viewAllAccountsDetails(long account_id) ;
+    Account viewAllAccountsDetails(long account_id) throws DbConnectorException;
 
     Deposit viewAllDepositsDetails(long depositId) throws DbConnectorException;
 
@@ -37,6 +38,6 @@ public interface AdminAction extends Action{
 
     void updateClientDetails(Client updatedClient) throws DbConnectorException;
 
-    double viewSystemProperty(String property) ;
-    double viewSystemProperty(AccountType type, String property) ;
+    double viewSystemProperty(String property) throws DbConnectorException;
+    double viewSystemProperty(AccountType type, String property) throws DbConnectorException;
 }

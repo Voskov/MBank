@@ -110,4 +110,9 @@ public class ConnectionPoolImpl implements ConnectionPool{
     public int getAmountOfConncetionsInUse() {
         return connectionsInUse.size();
     }
+
+    @Override
+    public boolean isEmpty() {
+        return connectionsPool.isEmpty();
+    }
 }

@@ -19,9 +19,13 @@ public class DbConnectorManagerImpl implements DbConnectorManager {
     protected StringBuilder sqlStrBldr = null;
     protected static Connection con;    // TODO - get rid of this
     protected static Statement stmt;    // TODO - get rid of this
+    private ConnectionPool pool = new ConnectionPoolImpl();
+
     protected static Logger LOGGER = Logger.getLogger(DbConnectorManagerImpl.class.getName());
 
-    ConnectionPool pool = new ConnectionPoolImpl();
+    public ConnectionPool getPool() {
+        return pool;
+    }
 
 //    public static Collection<Connection> connectionsPool;
 //    public static Collection<Connection> connectionsInUse;
@@ -95,7 +99,7 @@ public class DbConnectorManagerImpl implements DbConnectorManager {
 
 //    @Override
 //    public Connection getConnection() throws DbConnectorException {
-//        if (!connectionsPool.isEmpty()) {
+//        if (!pool.isEmpty()) {
 //            Connection con = connectionsPool.iterator().next();
 //            connectionsInUse.add(con);
 //            connectionsPool.remove(con);
