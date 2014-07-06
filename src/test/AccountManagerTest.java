@@ -18,31 +18,25 @@ import java.util.HashSet;
 
 public class AccountManagerTest extends AbstractTest {
 
-    public static AccountManager accountManager = null;
+    public static AccountManagerImpl accountManager = null;
     public static DbConnectorManagerImpl dbConnectorManager = null;
-
-    @BeforeClass
-    public static void classSetUp() {
-        try {
-            dbConnectorManager = new DbConnectorManagerImpl();
-            accountManager = new AccountManagerImpl();
-        } catch (DbConnectorException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @AfterClass
-    public static void classTearDown() throws DbConnectorException {
-
-    }
 
     @Before
     public void setUp() throws DbConnectorException {
-//        accountManager = new AccountManagerImpl();
-        DropDb.dropAllTables();
-        InitiateDB.createDb();
+        super.setUp();
+//        DropDb.dropAllTables();
+//        InitiateDB.createDb();
+        accountManager = new AccountManagerImpl();
+        dbConnectorManager = new DbConnectorManagerImpl();
     }
 
+    @After
+    public void tearDown() throws DbConnectorException {
+        super.tearDown();
+        accountManager.getPool().drainConnectionPool();
+        accountManager = null;
+        dbConnectorManager = null;
+    }
 
     @Test
     public void testDeleteAccountById() throws DbConnectorException {

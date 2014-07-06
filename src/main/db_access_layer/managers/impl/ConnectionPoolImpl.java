@@ -67,6 +67,7 @@ public class ConnectionPoolImpl implements ConnectionPool{
             }
         }
         connectionsPool.removeAll(connectionsPool);
+        connectionsPool = null;
         for (Connection con : connectionsInUse) {
             try {
                 con.close();
@@ -76,6 +77,7 @@ public class ConnectionPoolImpl implements ConnectionPool{
             }
         }
         connectionsInUse.removeAll(connectionsInUse);
+        connectionsInUse = null;
     }
 
     @Override

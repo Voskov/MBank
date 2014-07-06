@@ -19,8 +19,9 @@ public class AbstractTest {
 
     @After
     public void tearDown() throws DbConnectorException {
-//        DropTables.dropAllTables();
-//        DbConnectorManagerImpl.disconnect();
+        DbConnectorManagerImpl temp = new DbConnectorManagerImpl();
+        temp.getPool().drainConnectionPool();
+        temp = null;
     }
 
 

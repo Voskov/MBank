@@ -25,7 +25,8 @@ public class DepositManagerTest extends AbstractTest {
     }
 
     @After
-    public void tearDown() {
+    public void tearDown() throws DbConnectorException {
+        depositManager.getPool().drainConnectionPool();
         depositManager = null;
     }
 
