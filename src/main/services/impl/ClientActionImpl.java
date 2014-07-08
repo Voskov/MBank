@@ -4,6 +4,7 @@ import main.AccountType;
 import main.DepositType;
 import main.db_access_layer.managers.*;
 import main.db_access_layer.managers.impl.*;
+import main.exceptions.ClientActionException;
 import main.exceptions.ClientException;
 import main.exceptions.DbConnectorException;
 import main.model.Account;
@@ -130,6 +131,36 @@ public class ClientActionImpl implements ClientAction {
         updateClientStatus(dbClient);
     }
 
+    public void determineDepositType()
+
+    @Override
+    public void createNewDeposit(Client client, Date openingDate, double amount) throws DbConnectorException, ClientActionException {
+        AccountManager am = new AccountManagerImpl();
+        ClientManager cm = new ClientManagerImpl();
+        HashSet<Account> allAccounts = am.allClientsAccounts(client.getClientId());
+        Account dbAccount = null;
+        Date today = new Date();
+        try {
+            dbAccount = allAccounts.iterator().next();
+        } catch (Exception e) {
+            String msg = "Client has more that one account (CA-7263)";
+            throw new ClientActionException(msg, e);
+        }
+        if (dbAccount.getBalance() < amount) {   //TODO - Add interest if needed to the equation
+            String msg = "There is not enough money in the account to deposit";
+            throw new ClientActionException(msg);
+        }
+        Deposit newDeposit = new Deposit(client.getClientId(), amount, DepositType.LONG, openingDate, today);
+
+
+
+
+
+
+
+                dbAccount.setBalance(dbAccount.getBalance() - amount); //TODO - Subtract the interest as well
+    }
+
     @Override
     public void createNewDeposit(Deposit deposit) throws DbConnectorException {
         ClientManager cm = new ClientManagerImpl();
@@ -143,6 +174,8 @@ public class ClientActionImpl implements ClientAction {
 
         Date closingDate = deposit.getClosingDate();
         //TODO - verify date
+        int closingDateInDays = 0;
+
 
 //        if (closingDate > 40 years){
 //        String msg = "Can't open a deposit for that long";
@@ -152,8 +185,10 @@ public class ClientActionImpl implements ClientAction {
 //        throw Exception
 //    }
 
-        double interest = pm.getProperty(client.getAccountType(), "daily_interest");
+        double dayliInterest = pm.getProperty(client.getAccountType(), "daily_interest");
         //TODO - finish this
+        double estimatedInterest = deposit.getBalance() * (dayliInterest + 1) * closingDateInDays;
+        deposit.setEstimatedBalance((int)(deposit.getBalance() + estimatedInterest));
     }
 
     @Override

@@ -3,9 +3,6 @@ package main.client;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by Einstine on 04/07/2014.
- */
 public class LoginFrame extends JFrame {
 
     public LoginFrame(){

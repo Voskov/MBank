@@ -1,6 +1,7 @@
 package main.services;
 
 import main.DepositType;
+import main.exceptions.ClientActionException;
 import main.exceptions.ClientException;
 import main.exceptions.DbConnectorException;
 import main.model.Account;
@@ -22,6 +23,8 @@ public interface ClientAction extends Action{
     void depositToAccount(Client client, double depositAmount) throws DbConnectorException, AccountException, ClientException;
     void depositToAccount(Account account, double depositAmount) throws DbConnectorException, AccountException;
     void depositToAccount(long accountId, double depositAmount) throws AccountException, DbConnectorException;
+
+    void createNewDeposit(Client client, Date openingDate, double cmount) throws DbConnectorException, ClientActionException;
 
     void createNewDeposit(Deposit deposit) throws DbConnectorException;
     void createNewDeposit(Deposit deposit, Client client) throws DbConnectorException;
