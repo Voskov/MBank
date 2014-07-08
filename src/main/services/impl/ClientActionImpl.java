@@ -131,7 +131,9 @@ public class ClientActionImpl implements ClientAction {
         updateClientStatus(dbClient);
     }
 
-    public void determineDepositType()
+    public void determineDepositType(){
+
+    }
 
     @Override
     public void createNewDeposit(Client client, Date openingDate, double amount) throws DbConnectorException, ClientActionException {
