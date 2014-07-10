@@ -131,7 +131,7 @@ public class ClientActionImpl implements ClientAction {
         updateClientStatus(dbClient);
     }
 
-    public void determineDepositType(){
+    public void determineDepositType() {
 
     }
 
@@ -148,19 +148,15 @@ public class ClientActionImpl implements ClientAction {
             String msg = "Client has more that one account (CA-7263)";
             throw new ClientActionException(msg, e);
         }
-        if (dbAccount.getBalance() < amount) {   //TODO - Add interest if needed to the equation
+        if (dbAccount.getBalance() < amount) {
             String msg = "There is not enough money in the account to deposit";
             throw new ClientActionException(msg);
         }
         Deposit newDeposit = new Deposit(client.getClientId(), amount, DepositType.LONG, openingDate, today);
+//TODO - Implement
 
 
-
-
-
-
-
-                dbAccount.setBalance(dbAccount.getBalance() - amount); //TODO - Subtract the interest as well
+        dbAccount.setBalance(dbAccount.getBalance() - amount);
     }
 
     @Override
@@ -190,7 +186,11 @@ public class ClientActionImpl implements ClientAction {
         double dayliInterest = pm.getProperty(client.getAccountType(), "daily_interest");
         //TODO - finish this
         double estimatedInterest = deposit.getBalance() * (dayliInterest + 1) * closingDateInDays;
-        deposit.setEstimatedBalance((int)(deposit.getBalance() + estimatedInterest));
+        deposit.setEstimatedBalance((int) (deposit.getBalance() + estimatedInterest));
+    }
+
+    private double calculateInterest(double initialAmount, double dailyInterest, int amountOfDays) {
+        return initialAmount * (1 + dailyInterest) * amountOfDays;
     }
 
     @Override
