@@ -11,5 +11,8 @@ public class MessWithBigint {
             sum.add(new BigDecimal("0.0001"));
         }
         System.out.println(sum);
+        System.out.println("*********************");
+        int a = -1000;
+        System.out.println(Math.abs(a));
     }
 }

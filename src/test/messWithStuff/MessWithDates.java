@@ -57,5 +57,11 @@ public class MessWithDates {
         assert d1 != null;
         assert d2 != null;
         System.out.println(d2.getTime()-d1.getTime());
+        System.out.println("*********************************");
+        Date dt1 = new Date();
+        System.out.println(dt1);
+        System.out.println(dt1.getTime());
+
+        System.out.println("*********************************");
     }
 }

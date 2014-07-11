@@ -26,8 +26,8 @@ public interface ClientAction extends Action{
 
     void createNewDeposit(Client client, Date openingDate, double cmount) throws DbConnectorException, ClientActionException;
 
-    void createNewDeposit(Deposit deposit) throws DbConnectorException;
-    void createNewDeposit(Deposit deposit, Client client) throws DbConnectorException;
+    void createNewDeposit(Deposit deposit) throws DbConnectorException, ClientActionException;
+    void createNewDeposit(Deposit deposit, Client client) throws DbConnectorException, ClientActionException;
 
     void preOpenDeposit(long deposit_id) throws DbConnectorException, ClientException;
 

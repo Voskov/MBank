@@ -37,7 +37,11 @@ public class CloseDepositsThread implements Runnable {
                 e.printStackTrace();
             }
         }
-        // TODO - Sleep for a DAY
+        try {
+            Thread.sleep(1000 * 3600 * 24);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
     }
     
     private void closeDeposit(Deposit deposit) throws DbConnectorException, MaintenanceException {

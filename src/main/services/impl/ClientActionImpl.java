@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 public class ClientActionImpl implements ClientAction {
     @Override
@@ -135,6 +136,12 @@ public class ClientActionImpl implements ClientAction {
 
     }
 
+    public int differenceInDays(Date one, Date two) {
+        long diff = one.getTime() - two.getTime();
+        int diffInDays = (int) (diff / (1000 * 3600 * 24));
+        return Math.abs(diffInDays);
+    }
+
     @Override
     public void createNewDeposit(Client client, Date openingDate, double amount) throws DbConnectorException, ClientActionException {
         AccountManager am = new AccountManagerImpl();
@@ -149,7 +156,7 @@ public class ClientActionImpl implements ClientAction {
             throw new ClientActionException(msg, e);
         }
         if (dbAccount.getBalance() < amount) {
-            String msg = "There is not enough money in the account to deposit";
+            String msg = "There is not enough money in the account to deposit (CA-7264)";
             throw new ClientActionException(msg);
         }
         Deposit newDeposit = new Deposit(client.getClientId(), amount, DepositType.LONG, openingDate, today);
@@ -160,37 +167,36 @@ public class ClientActionImpl implements ClientAction {
     }
 
     @Override
-    public void createNewDeposit(Deposit deposit) throws DbConnectorException {
+    public void createNewDeposit(Deposit deposit) throws DbConnectorException, ClientActionException {
         ClientManager cm = new ClientManagerImpl();
         Client client = cm.findClient(deposit.getClientId());
         createNewDeposit(deposit, client);
     }
 
     @Override
-    public void createNewDeposit(Deposit deposit, Client client) throws DbConnectorException {
+    public void createNewDeposit(Deposit deposit, Client client) throws DbConnectorException, ClientActionException {
         PropertyManager pm = new PropertyManagerImpl();
 
         Date closingDate = deposit.getClosingDate();
-        //TODO - verify date
-        int closingDateInDays = 0;
+        Date today = new Date();
+        if (closingDate.getTime() < today.getTime()) {
+            String msg = "Closing date cannot be in the past (CA-7265)";
+            throw new ClientActionException(msg);
+        }
+        int closingDateInDays = differenceInDays(closingDate, today);
 
 
-//        if (closingDate > 40 years){
-//        String msg = "Can't open a deposit for that long";
-//        throw Exception
-//        } else if (deposit.getType() == DepositType.SHORT && closingDate > 1 year){
-//        String msg = "Can't open a SHORT deposit for that long";
-//        throw Exception
-//    }
+        if (closingDateInDays > 40 * 365) {  //TODO - work in actual years
+            String msg = "Can't open a deposit for that long";
+            throw new ClientActionException(msg);
+        } else if (deposit.getType() == DepositType.SHORT && closingDateInDays > 365) {
+            String msg = "Can't open a SHORT deposit for that long";
+            throw new ClientActionException(msg);
+        }
 
         double dayliInterest = pm.getProperty(client.getAccountType(), "daily_interest");
-        //TODO - finish this
         double estimatedInterest = deposit.getBalance() * (dayliInterest + 1) * closingDateInDays;
         deposit.setEstimatedBalance((int) (deposit.getBalance() + estimatedInterest));
-    }
-
-    private double calculateInterest(double initialAmount, double dailyInterest, int amountOfDays) {
-        return initialAmount * (1 + dailyInterest) * amountOfDays;
     }
 
     @Override
