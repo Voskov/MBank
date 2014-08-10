@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 public class InitiateDB {
     public static void main(String[] args) {
-        restartDb();
+        createDb();
     }
 
     public static void restartDb(){
