@@ -1,7 +1,5 @@
 package test.messWithStuff;
 
-import java.util.DoubleSummaryStatistics;
-
 public class ParseDoubles {
     public static void main(String[] args) {
         Double d = 1234.567;

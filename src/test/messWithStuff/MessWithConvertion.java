@@ -1,7 +1,5 @@
 package test.messWithStuff;
 
-import java.util.DoubleSummaryStatistics;
-
 public class MessWithConvertion {
     public static void main(String[] args) {
 
