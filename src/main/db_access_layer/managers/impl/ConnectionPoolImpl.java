@@ -13,7 +13,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ConnectionPoolImpl implements ConnectionPool{
+public class ConnectionPoolImpl implements ConnectionPool {
 
     private static Collection<Connection> connectionsPool;
     private static Collection<Connection> connectionsInUse;
@@ -21,7 +21,6 @@ public class ConnectionPoolImpl implements ConnectionPool{
     private static Properties prop = ImportDbSettings.loadDbProperties();   // load DB properties from the config file
 
     protected static Logger LOGGER = Logger.getLogger(DbConnectorManagerImpl.class.getName());
-
 
 
     public void initiateConnectionPool() throws DbConnectorException {
@@ -58,26 +57,30 @@ public class ConnectionPoolImpl implements ConnectionPool{
     @Override
     public void drainConnectionPool() throws DbConnectorException {
         LOGGER.log(Level.INFO, "Closing all connections");
-        for (Connection con : connectionsPool) {
-            try {
-                con.close();
-            } catch (SQLException e) {
-                String msg = "Could not close all connections";
-                throw new DbConnectorException(msg, e);
+        if (connectionsPool != null) {
+            for (Connection con : connectionsPool) {
+                try {
+                    con.close();
+                } catch (Exception e) {
+                    String msg = "Could not close a connection in the pool";
+                    throw new DbConnectorException(msg, e);
+                }
             }
+            connectionsPool.removeAll(connectionsPool);
+            connectionsPool = null;
         }
-        connectionsPool.removeAll(connectionsPool);
-        connectionsPool = null;
-        for (Connection con : connectionsInUse) {
-            try {
-                con.close();
-            } catch (SQLException e) {
-                String msg = "Could not close all connections";
-                throw new DbConnectorException(msg, e);
+        if (connectionsPool != null) {
+            for (Connection con : connectionsInUse) {
+                try {
+                    con.close();
+                } catch (Exception e) {
+                    String msg = "Could not close a connection in use";
+                    throw new DbConnectorException(msg, e);
+                }
             }
+            connectionsInUse.removeAll(connectionsInUse);
+            connectionsInUse = null;
         }
-        connectionsInUse.removeAll(connectionsInUse);
-        connectionsInUse = null;
     }
 
     @Override

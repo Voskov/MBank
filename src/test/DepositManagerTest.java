@@ -66,7 +66,6 @@ public class DepositManagerTest extends AbstractTest {
     public void testGetExpired() throws DbConnectorException {
         Deposit expiredDeposit = new Deposit(1, 12345, 1000.0, DepositType.SHORT, 1010, new Date(1400896199000L), new Date(1400906199000L));
         Deposit notExpiredDeposit = new Deposit(2, 12345, 1000.0, DepositType.SHORT, 1010, new Date(1401896199000L), new Date(1403906199000L));
-        ;
         depositManager.createNewDeposit(expiredDeposit);
         depositManager.createNewDeposit(notExpiredDeposit);
         HashSet<Deposit> testSet = new HashSet<Deposit>();
@@ -75,6 +74,7 @@ public class DepositManagerTest extends AbstractTest {
         Iterator<Deposit> it = expiredDeposits.iterator();
         Deposit dbDeposit = it.next();
         assertEquals(expiredDeposit, dbDeposit);
+        assertTrue(expiredDeposit.equals(dbDeposit));
     }
 
     @Ignore

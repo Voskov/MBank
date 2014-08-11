@@ -58,7 +58,7 @@ public class AccountManagerTest extends AbstractTest {
 
     @Test
     public void testFindAccount() throws DbConnectorException {
-        Account testAccount = new Account(1, 12345678, 1000, 100000, "Comment");
+        Account testAccount = new Account(1, 12345678, 1000.0, 100000.0, "Comment");
         accountManager.createAccount(testAccount);
 
         Account dbAccount = accountManager.findAccount(testAccount);
