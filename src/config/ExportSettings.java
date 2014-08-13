@@ -6,9 +6,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Properties;
 
-/**
- * Created by Einstine on 25/04/2014.
- */
 public class ExportSettings {
     public static void main(String[] args) {
         Properties prop = new Properties();
