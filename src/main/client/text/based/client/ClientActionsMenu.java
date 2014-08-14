@@ -2,8 +2,8 @@ package main.client.text.based.client;
 
 import static main.client.text.based.client.Input.multipleChoiceInput;
 
-public class ClientActions {
-    private static String[] INPUT_OPTIONS = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
+public class ClientActionsMenu {
+    private static String[] INPUT_OPTIONS = {"1", "2", "3", "4", "5", "6"};
 
     public static void clienActionsClient(){
         System.out.println("Client Actions");
@@ -24,6 +24,18 @@ public class ClientActions {
                 break;
             case 2:
                 System.out.println("Update client details");
+                break;
+            case 3:
+                System.out.println("View account details");
+                break;
+            case 4:
+                System.out.println("View deposits");
+                break;
+            case 5:
+                System.out.println("View activities");
+                break;
+            case 6:
+                System.out.println("View properties");
                 break;
             default:
                 System.out.println("There was a problem");

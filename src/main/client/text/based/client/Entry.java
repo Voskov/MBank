@@ -20,9 +20,10 @@ public class Entry {
         System.out.println(input);
         switch (Integer.parseInt(input)){
             case 1:
-
-                ClientActions.clienActionsClient();
+                ClientActionsMenu.clienActionsClient();
                 break;
+            case 2:
+                AdminActionsMenu.clientActionsClient();
             default:
                 System.out.println("There was a problem with the input");
         }
