@@ -7,7 +7,7 @@ public class AdminActionsMenu {
     private static final int RETRIES = 3;
     private static String[] INPUT_OPTIONS = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"};
 
-    public static void clientActionsClient() {
+    public static void adminActionsClient() {
         System.out.println("Admin Actions");
         System.out.println("-------------");
         System.out.println("Please choose one of the following:");
