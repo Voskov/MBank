@@ -1,9 +1,12 @@
 package main.client.text.based.client;
 
+import main.services.MBank;
+
 import static main.client.text.based.client.Input.multipleChoiceInput;
 
 public class Entry {
     private static String[] INPUT_OPTIONS = {"1", "2"};
+    MBank mBank = MBank.getMBank();
 
     public static void main(String[] args) {
         welcome();
@@ -20,9 +23,10 @@ public class Entry {
         System.out.println(input);
         switch (Integer.parseInt(input)){
             case 1:
-
-                ClientActions.clienActionsClient();
+                AdminActionsMenu.adminActionsClient();
                 break;
+            case 2:
+                ClientActionsMenu.clienActionsClient();
             default:
                 System.out.println("There was a problem with the input");
         }
