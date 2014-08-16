@@ -1,14 +1,12 @@
 package main.db_access_layer.managers.impl;
 
 import config.ImportDbSettings;
-import init.InitiateDB;
 import main.db_access_layer.managers.ConnectionPool;
 import main.db_access_layer.managers.DbConnectorManager;
 import main.exceptions.DbConnectorException;
+import main.services.MBank;
 
 import java.sql.*;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,7 +17,7 @@ public class DbConnectorManagerImpl implements DbConnectorManager {
     protected StringBuilder sqlStrBldr = null;
     protected static Connection con;    // TODO - get rid of this
     protected static Statement stmt;    // TODO - get rid of this
-    private ConnectionPool pool = new ConnectionPoolImpl();
+    private ConnectionPool pool = MBank.getMBank().getPool();
 
     protected static Logger LOGGER = Logger.getLogger(DbConnectorManagerImpl.class.getName());
 
@@ -170,7 +168,8 @@ public class DbConnectorManagerImpl implements DbConnectorManager {
     }
 
     public ResultSet executeQuery(String sqlQuery) throws DbConnectorException {
-        ResultSet res = null;
+        ResultSet res;
+
         Connection connection = pool.getConnection();
         try {
             Statement statement = connection.createStatement();

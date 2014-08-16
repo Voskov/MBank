@@ -16,11 +16,11 @@ public class Login {
     private static final int RETRIES = 3;
     private static boolean validate = true;
 
-    private enum userType {
+    public enum userType {
         ADMIN, CLIENT
     }
 
-    public static void login(userType userType) throws SQLException, DbConnectorException {
+    public static boolean login(userType userType) throws SQLException, DbConnectorException {
         Scanner scanner = new Scanner(System.in);
 
         int attempt = 0;
@@ -42,35 +42,45 @@ public class Login {
                 attempt++;
                 continue;
             }
-            boolean authenticate = true;
             switch (userType) {
                 case ADMIN:
-                    authenticateAdmin(username, password);
+                    if (authenticateAdmin(username, password)) {
+                        return true;
+                    }
+                    System.out.println("The credentials you've entered are wrong");
+                    System.out.println("Please try again");
                     break;
                 case CLIENT:
-                    authenticateClient(username, password);
+                    if (authenticateClient(username, password)) {
+                        return true;
+                    }
+                    System.out.println("The user name or password you've entered is incorrect.");
+                    System.out.println("Please try again (make sure your caps lock is off).");
+                    System.out.println("Forgot your password? Please contact an administrator to reset your password");
                     break;
             }
             attempt++;
         }
+
+        return false;
     }
 
     private static boolean authenticateAdmin(String username, String password) throws DbConnectorException, SQLException {
         PropertyManager pm = new PropertyManagerImpl();
         HashMap adminCredentials = pm.getAdminCredentials();
-        return ((adminCredentials.get("admin_username") == username) && (adminCredentials.get("admin_password") == password));
+        return ((adminCredentials.get("admin_username").equals(username)) && (adminCredentials.get("admin_password").equals(password)));
     }
 
     private static boolean authenticateClient(String username, String password) throws DbConnectorException, SQLException {
         ClientManager cm = new ClientManagerImpl();
         Client dbClient = cm.findClient(username);
-        if (dbClient == null){
+        if (dbClient == null) {
 
         }
         return (dbClient.getPassword().equals(password));
     }
 
     public static void main(String[] args) throws SQLException, DbConnectorException {
-        authenticateClient("admin", "admin");
+        authenticateAdmin("admin", "admin");
     }
 }

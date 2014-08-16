@@ -1,5 +1,7 @@
 package main.services;
 
+import main.db_access_layer.managers.ConnectionPool;
+import main.db_access_layer.managers.impl.ConnectionPoolImpl;
 import main.model.Client;
 
 import java.util.HashMap;
@@ -10,8 +12,13 @@ import java.util.logging.Logger;
 public class MBank {
 
     protected static Logger LOGGER = Logger.getLogger(MBank.class.getName());
-
+    private ConnectionPool pool;
     private Map<Long, Client> loggedInClients;
+
+    private MBank() {
+        this.pool = new ConnectionPoolImpl();
+        this.loggedInClients = new HashMap<Long, Client>();
+    }
 
     private static MBank mBank;
 
@@ -29,10 +36,7 @@ public class MBank {
     }
 
     public boolean checkIfClientIsLoggedIn(long clientId) {
-        if (loggedInClients != null && !loggedInClients.isEmpty() && loggedInClients.containsKey(clientId)) {
-            return true;
-        }
-        return false;
+        return loggedInClients != null && !loggedInClients.isEmpty() && loggedInClients.containsKey(clientId);
     }
 
     public void loginClient(Client client) {
@@ -46,5 +50,9 @@ public class MBank {
         if (loggedInClients != null && !loggedInClients.isEmpty()) {
             loggedInClients.remove(clientId);
         }
+    }
+
+    public ConnectionPool getPool() {
+        return pool;
     }
 }

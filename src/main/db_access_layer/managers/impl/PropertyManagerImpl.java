@@ -13,7 +13,7 @@ public class PropertyManagerImpl extends DbConnectorManagerImpl implements Prope
 
 
     public PropertyManagerImpl() throws DbConnectorException {
-        connectToDb();
+//        connectToDb();
     }
 
     // This method receives the property name as a string
