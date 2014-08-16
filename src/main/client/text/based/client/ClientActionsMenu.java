@@ -19,35 +19,28 @@ public class ClientActionsMenu {
         System.out.println("Please enter your selection");
 
         String input = multipleChoiceInput(INPUT_OPTIONS);
-        int attempt = 0;
-        boolean again = true;
-        while (again && attempt < RETRIES) {
-            again = false;
-            switch (Integer.parseInt(input)) {
-                case 1:
-                    System.out.println("View client details");
-                    break;
-                case 2:
-                    System.out.println("Update client details");
-                    break;
-                case 3:
-                    System.out.println("View account details");
-                    break;
-                case 4:
-                    System.out.println("View deposits");
-                    break;
-                case 5:
-                    System.out.println("View activities");
-                    break;
-                case 6:
-                    System.out.println("View properties");
-                    break;
-                default:
-                    System.out.println("There was a problem");
-                    attempt += 1;
-                    again = true;
-                    break;
-            }
+        switch (Integer.parseInt(input)) {
+            case 1:
+                System.out.println("View client details");
+                break;
+            case 2:
+                System.out.println("Update client details");
+                break;
+            case 3:
+                System.out.println("View account details");
+                break;
+            case 4:
+                System.out.println("View deposits");
+                break;
+            case 5:
+                System.out.println("View activities");
+                break;
+            case 6:
+                System.out.println("View properties");
+                break;
+            default:
+                System.out.println("There was a problem");
+                break;
         }
     }
 

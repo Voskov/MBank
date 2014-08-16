@@ -21,14 +21,19 @@ public class Entry {
 
         String input = multipleChoiceInput(INPUT_OPTIONS);
         System.out.println(input);
-        switch (Integer.parseInt(input)){
+        switch (Integer.parseInt(input)) {
             case 1:
                 AdminActionsMenu.adminActionsClient();
                 break;
             case 2:
                 ClientActionsMenu.clienActionsClient();
+                break;
+            case 0:
+                System.out.println("There was a problem with the input");
+                break;
             default:
                 System.out.println("There was a problem with the input");
+                break;
         }
     }
 
