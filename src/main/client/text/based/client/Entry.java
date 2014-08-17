@@ -67,7 +67,10 @@ public class Entry {
                 break;
             case 2:
                 if (Login.login(Login.userType.CLIENT)) {
+                    // TODO - add to logged in clients
+
                     ClientActionsMenu.clienActionsClient();
+                    // TODO - log client out
                 }
                 break;
             case -1:

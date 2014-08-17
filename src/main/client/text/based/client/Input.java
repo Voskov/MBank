@@ -41,7 +41,6 @@ public class Input {
         return input;
     }
 
-
     public static boolean anotherAction() {
         System.out.println("Would you like to do anything else? (y/n)");
         String input = multipleChoiceInput(ANOTHER_ACTION_OPTIONS);
@@ -52,5 +51,17 @@ public class Input {
         } else {    // I do realize I could have just return the "y".equality. perhaps I will...
             return false;
         }
+    }
+
+    public static String stringInput() {
+        Scanner scanner = new Scanner(System.in);
+        String input = "";
+        int attempt = 0;
+        while ("".equals(input) && attempt < RETRIES){
+            if (input.trim().isEmpty()){
+                System.out.println("Please, enter a valid input");
+            }
+        }
+        return input;
     }
 }

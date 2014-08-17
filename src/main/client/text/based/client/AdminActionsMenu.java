@@ -1,5 +1,9 @@
 package main.client.text.based.client;
 
+import main.model.Client;
+import main.services.AdminAction;
+import main.services.impl.AdminActionImpl;
+
 import static main.client.text.based.client.Input.anotherAction;
 import static main.client.text.based.client.Input.multipleChoiceInput;
 
@@ -33,7 +37,7 @@ public class AdminActionsMenu {
             String input = multipleChoiceInput(INPUT_OPTIONS);
             switch (Integer.parseInt(input)) {
                 case 1:
-                    System.out.println("Add a new client");
+                    addNewClient();
                     break;
                 case 2:
                     System.out.println("Update client details");
@@ -83,5 +87,17 @@ public class AdminActionsMenu {
             }
             performAnAction = anotherAction();
         }
+    }
+
+    private static void addNewClient() {
+        AdminAction aa = new AdminActionImpl();
+        System.out.println("Add a new client");
+        System.out.println("----------------");
+        System.out.println("Please, prepare a username, a password, an address, en email and a phone number");
+        System.out.println("Please enter a user name");
+        String username = Input.stringInput();
+
+        Client newClient = new Client("name", "password", "address", "email", "phone", "comment");
+
     }
 }

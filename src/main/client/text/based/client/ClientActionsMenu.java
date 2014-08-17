@@ -19,6 +19,7 @@ public class ClientActionsMenu {
             System.out.println("4 - View deposits");
             System.out.println("5 - View activities");
             System.out.println("6 - View properties");
+            System.out.println("q - quit");
             System.out.println("Please enter your selection");
 
             String input = multipleChoiceInput(INPUT_OPTIONS);
@@ -40,6 +41,9 @@ public class ClientActionsMenu {
                     break;
                 case 6:
                     System.out.println("View properties");
+                    break;
+                case -2:
+                    //uhm... nothing.
                     break;
                 default:
                     System.out.println("There was a problem");
