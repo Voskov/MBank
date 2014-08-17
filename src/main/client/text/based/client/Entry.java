@@ -27,7 +27,7 @@ public class Entry {
             Thread.sleep(700);
             System.out.println("---------------------");
             System.out.println("An error has occurred.");
-            System.out.println("Please chech that the database server is running");
+            System.out.println("Please check that the database server is running");
             System.out.println("MBank will now close");
         } catch (Exception e) {
             e.printStackTrace();
