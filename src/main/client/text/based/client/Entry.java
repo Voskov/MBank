@@ -14,6 +14,8 @@ public class Entry {
     public static void main(String[] args) throws InterruptedException {
         try {
             welcome();
+
+
         } catch (SQLException e) {
             e.printStackTrace();
             Thread.sleep(700);      //So the message won't get mixed with the stackTrace output
@@ -35,7 +37,15 @@ public class Entry {
             System.out.println("MBank will now exit");
         }
 
-        // TODO - Deal with exceptions
+        try {
+            //Finish and close connections
+            MBank mBank = MBank.getMBank();
+            mBank.getPool().drainConnectionPool();
+        } catch (DbConnectorException e) {
+            e.printStackTrace();
+        }
+        Thread.sleep(300);
+        System.out.println("Thank you and goodbye");
     }
 
     private static void welcome() throws SQLException, DbConnectorException, InterruptedException {

@@ -8,28 +8,28 @@ public class AdminActionsMenu {
     private static String[] INPUT_OPTIONS = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"};
 
     public static void adminActionsClient() {
-        System.out.println("Admin Actions");
-        System.out.println("-------------");
-        System.out.println("Please choose one of the following:");
-        System.out.println("1 - Add a new client");
-        System.out.println("2 - Update client details");
-        System.out.println("3 - Remove a client");
-        System.out.println("4 - Create a new account");
-        System.out.println("5 - Remove account");
-        System.out.println("6 - View client details");
-        System.out.println("7 - View all client details");
-        System.out.println("8 - View account details");
-        System.out.println("9 - View all accounts details");
-        System.out.println("10 - View a deposit");
-        System.out.println("11 - View all deposits");
-        System.out.println("12 - View client activities");
-        System.out.println("13 - View all activities");
-        System.out.println("14 - View a system property");
-        System.out.println("15 - Update a system property");
-        System.out.println("Please enter your selection");
-
         boolean performAnAction = true;
         while (performAnAction) {
+            System.out.println("Admin Actions");
+            System.out.println("-------------");
+            System.out.println("Please choose one of the following:");
+            System.out.println("1 - Add a new client");
+            System.out.println("2 - Update client details");
+            System.out.println("3 - Remove a client");
+            System.out.println("4 - Create a new account");
+            System.out.println("5 - Remove account");
+            System.out.println("6 - View client details");
+            System.out.println("7 - View all client details");
+            System.out.println("8 - View account details");
+            System.out.println("9 - View all accounts details");
+            System.out.println("10 - View a deposit");
+            System.out.println("11 - View all deposits");
+            System.out.println("12 - View client activities");
+            System.out.println("13 - View all activities");
+            System.out.println("14 - View a system property");
+            System.out.println("15 - Update a system property");
+            System.out.println("Please enter your selection");
+
             String input = multipleChoiceInput(INPUT_OPTIONS);
             switch (Integer.parseInt(input)) {
                 case 1:

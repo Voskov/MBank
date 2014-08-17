@@ -43,6 +43,7 @@ public class Input {
 
 
     public static boolean anotherAction() {
+        System.out.println("Would you like to do anything else? (y/n)");
         String input = multipleChoiceInput(ANOTHER_ACTION_OPTIONS);
         if ("y".equals(input)){
             return true;
