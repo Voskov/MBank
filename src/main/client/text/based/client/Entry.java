@@ -4,21 +4,43 @@ import main.exceptions.DbConnectorException;
 import main.services.MBank;
 
 import java.sql.SQLException;
+import java.sql.Time;
 
 import static main.client.text.based.client.Input.multipleChoiceInput;
 
 public class Entry {
     private static String[] INPUT_OPTIONS = {"1", "2"};
-    MBank mBank = MBank.getMBank();
 
-    public static void main(String[] args) throws SQLException, DbConnectorException {
-        welcome();
+    public static void main(String[] args) throws InterruptedException {
+        try {
+            welcome();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Thread.sleep(700);      //So the message won't get mixed with the stackTrace output
+            System.out.println("-----------------------------");
+            System.out.println("A database error has occurred.");
+            System.out.println("MBank will now close");
+        } catch (DbConnectorException e) {
+            e.printStackTrace();
+            Thread.sleep(700);
+            System.out.println("---------------------");
+            System.out.println("An error has occurred.");
+            System.out.println("Please chech that the database server is running");
+            System.out.println("MBank will now close");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Thread.sleep(700);
+            System.out.println("--------------------------------");
+            System.out.println("An unexpected error has occurred.");
+            System.out.println("MBank will now exit");
+        }
 
         // TODO - Deal with exceptions
     }
 
-    private static void welcome() throws SQLException, DbConnectorException {
+    private static void welcome() throws SQLException, DbConnectorException, InterruptedException {
         MBank mBank = MBank.getMBank();
+        Thread.sleep(400);
         System.out.println("Welcome to \"Mbank\" - By Ariel Voskov");
         System.out.println("Please login");
         System.out.println("1 - Login as an admin");
@@ -39,6 +61,9 @@ public class Entry {
                 }
                 break;
             case -1:
+                System.out.println("Goodbye");
+                break;
+            case -2:
                 System.out.println("Goodbye");
                 break;
             case 0:

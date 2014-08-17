@@ -1,5 +1,6 @@
 package main.client.text.based.client;
 
+import static main.client.text.based.client.Input.anotherAction;
 import static main.client.text.based.client.Input.multipleChoiceInput;
 
 public class AdminActionsMenu {
@@ -27,57 +28,60 @@ public class AdminActionsMenu {
         System.out.println("15 - Update a system property");
         System.out.println("Please enter your selection");
 
-        String input = multipleChoiceInput(INPUT_OPTIONS);
-        switch (Integer.parseInt(input)) {
-            case 1:
-                System.out.println("Add a new client");
-                break;
-            case 2:
-                System.out.println("Update client details");
-                break;
-            case 3:
-                System.out.println("Remove a client");
-                break;
-            case 4:
-                System.out.println("Create a new account");
-                break;
-            case 5:
-                System.out.println("Remove account");
-                break;
-            case 6:
-                System.out.println("View client details");
-                break;
-            case 7:
-                System.out.println("View all client details");
-                break;
-            case 8:
-                System.out.println("View account details");
-                break;
-            case 9:
-                System.out.println("View all accounts details");
-                break;
-            case 10:
-                System.out.println("View a deposit");
-                break;
-            case 11:
-                System.out.println("View all deposits");
-                break;
-            case 12:
-                System.out.println("View client activities");
-                break;
-            case 13:
-                System.out.println("View all activities");
-                break;
-            case 14:
-                System.out.println("View a system property");
-                break;
-            case 15:
-                System.out.println("Update a system property");
-                break;
-            default:
-                System.out.println("There was a problem");
-                break;
-
+        boolean performAnAction = true;
+        while (performAnAction) {
+            String input = multipleChoiceInput(INPUT_OPTIONS);
+            switch (Integer.parseInt(input)) {
+                case 1:
+                    System.out.println("Add a new client");
+                    break;
+                case 2:
+                    System.out.println("Update client details");
+                    break;
+                case 3:
+                    System.out.println("Remove a client");
+                    break;
+                case 4:
+                    System.out.println("Create a new account");
+                    break;
+                case 5:
+                    System.out.println("Remove account");
+                    break;
+                case 6:
+                    System.out.println("View client details");
+                    break;
+                case 7:
+                    System.out.println("View all client details");
+                    break;
+                case 8:
+                    System.out.println("View account details");
+                    break;
+                case 9:
+                    System.out.println("View all accounts details");
+                    break;
+                case 10:
+                    System.out.println("View a deposit");
+                    break;
+                case 11:
+                    System.out.println("View all deposits");
+                    break;
+                case 12:
+                    System.out.println("View client activities");
+                    break;
+                case 13:
+                    System.out.println("View all activities");
+                    break;
+                case 14:
+                    System.out.println("View a system property");
+                    break;
+                case 15:
+                    System.out.println("Update a system property");
+                    break;
+                default:
+                    System.out.println("There was a problem");
+                    break;
+            }
+            performAnAction = anotherAction();
         }
     }
 }
