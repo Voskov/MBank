@@ -96,8 +96,18 @@ public class AdminActionsMenu {
         System.out.println("Please, prepare a username, a password, an address, en email and a phone number");
         System.out.println("Please enter a user name");
         String username = Input.stringInput();
+        System.out.println("Please enter a password");
+        String password = Input.stringInput();
+        System.out.println("Please enter a address");
+        String address = Input.stringInput();
+        System.out.println("Please enter a email");
+        String email = Input.stringInput();
+        System.out.println("Please enter a phone");
+        String phone = Input.stringInput();
+        System.out.println("Please enter a comment");
+        String comment = Input.stringInput();
 
-        Client newClient = new Client("name", "password", "address", "email", "phone", "comment");
+        Client newClient = new Client(username, password, address, email, phone, comment);
 
     }
 }
