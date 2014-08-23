@@ -1,5 +1,6 @@
 package main.client.text.based.client;
 
+import main.exceptions.DbConnectorException;
 import main.model.Client;
 import main.services.AdminAction;
 import main.services.impl.AdminActionImpl;
@@ -11,7 +12,7 @@ public class AdminActionsMenu {
 
     private static String[] INPUT_OPTIONS = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"};
 
-    public static void adminActionsClient() {
+    public static void adminActionsClient() throws DbConnectorException {
         boolean performAnAction = true;
         while (performAnAction) {
             System.out.println("Admin Actions");
@@ -89,8 +90,7 @@ public class AdminActionsMenu {
         }
     }
 
-    private static void addNewClient() {
-        AdminAction aa = new AdminActionImpl();
+    private static void addNewClient() throws DbConnectorException {
         System.out.println("Add a new client");
         System.out.println("----------------");
         System.out.println("Please, prepare a username, a password, an address, en email and a phone number");
@@ -106,8 +106,11 @@ public class AdminActionsMenu {
         String phone = Input.stringInput();
         System.out.println("Please enter a comment");
         String comment = Input.stringInput();
+        System.out.println("How much money is the new client would like to deposit?");
+        Long amount = Input.longInput();
 
         Client newClient = new Client(username, password, address, email, phone, comment);
-
+        AdminAction aa = new AdminActionImpl();
+        aa.addNewClient(newClient, amount);
     }
 }
