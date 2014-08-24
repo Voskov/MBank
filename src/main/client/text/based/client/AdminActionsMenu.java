@@ -1,5 +1,7 @@
 package main.client.text.based.client;
 
+import main.db_access_layer.managers.ClientManager;
+import main.db_access_layer.managers.impl.ClientManagerImpl;
 import main.exceptions.DbConnectorException;
 import main.model.Client;
 import main.services.AdminAction;
@@ -16,6 +18,7 @@ public class AdminActionsMenu {
         adminActionsClient();
 
     }
+
     public static void adminActionsClient() throws DbConnectorException {
         boolean performAnAction = true;
         while (performAnAction) {
@@ -119,8 +122,32 @@ public class AdminActionsMenu {
         System.out.println("The new client has been created");
     }
 
-    private static void updateClientDetails() {
+    private static void updateClientDetails() throws DbConnectorException {
+        System.out.println("Update client detail");
+        System.out.println("--------------------");
+        System.out.println("Please enter the username of the client you would like to update");
+        String username = Input.stringInput();
+        ClientManager cm = new ClientManagerImpl();
+        Client db_client = cm.findClient(username);
+        System.out.println("What would you like to update?");
+        System.out.println("------------------------------");
+        System.out.println("1 - Username");
+        System.out.println("2 - Password");
+        System.out.println("3 - Address");
+        System.out.println("4 - Email");
+        System.out.println("5 - Phone");
+        System.out.println("6 - Comment");
+        System.out.println("Please enter your selection");
+        String input = Input.multipleChoiceInput(new String[]{"1", "2", "3", "4", "5", "6"});
 
+        switch (Integer.parseInt(input)) {
+            case 1:
+                System.out.println();
+                break;
+
+
+        }
+        String updateValue = Input.stringInput();
     }
 
     public static void removeClient() {
