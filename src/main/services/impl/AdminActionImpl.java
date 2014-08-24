@@ -25,14 +25,17 @@ public class AdminActionImpl implements AdminAction {
         double platinum_limit = pm.getProperty("platinum_deposit_rate");
         double limit = 0;
         if (initialAmount > regular_limit) {
-            client.setAccountType(AccountType.REGULAR);
-            limit = regular_limit;
-        } else if (initialAmount > gold_limit) {
             client.setAccountType(AccountType.GOLD);
             limit = gold_limit;
-        } else if (initialAmount > platinum_limit) {
+        } else if (initialAmount > gold_limit) {
             client.setAccountType(AccountType.PLATINUM);
             limit = platinum_limit;
+//        } else if (initialAmount > platinum_limit) {
+//            client.setAccountType(AccountType.PLATINUM);
+//            limit = platinum_limit;
+        } else {
+            client.setAccountType(AccountType.REGULAR);
+            limit = regular_limit;
         }
 
         ClientManager cm = new ClientManagerImpl();

@@ -12,6 +12,10 @@ public class AdminActionsMenu {
 
     private static String[] INPUT_OPTIONS = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"};
 
+    public static void main(String[] args) throws DbConnectorException {
+        adminActionsClient();
+
+    }
     public static void adminActionsClient() throws DbConnectorException {
         boolean performAnAction = true;
         while (performAnAction) {
@@ -112,5 +116,15 @@ public class AdminActionsMenu {
         Client newClient = new Client(username, password, address, email, phone, comment);
         AdminAction aa = new AdminActionImpl();
         aa.addNewClient(newClient, amount);
+        System.out.println("The new client has been created");
     }
+
+    private static void updateClientDetails() {
+
+    }
+
+    public static void removeClient() {
+
+    }
+
 }
