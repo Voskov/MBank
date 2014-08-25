@@ -15,12 +15,12 @@ public class AdminActionsMenu {
 
     private static String[] INPUT_OPTIONS = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"};
 
-    public static void main(String[] args) throws DbConnectorException {
+    public static void main(String[] args) throws DbConnectorException, ClientException {
         adminActionsClient();
 
     }
 
-    public static void adminActionsClient() throws DbConnectorException {
+    public static void adminActionsClient() throws DbConnectorException, ClientException {
         boolean performAnAction = true;
         while (performAnAction) {
             System.out.println("Admin Actions");
@@ -49,10 +49,10 @@ public class AdminActionsMenu {
                     addNewClient();
                     break;
                 case 2:
-                    System.out.println("Update client details");
+                    updateClientDetails();
                     break;
                 case 3:
-                    System.out.println("Remove a client");
+                    removeClient();
                     break;
                 case 4:
                     System.out.println("Create a new account");
@@ -130,6 +130,10 @@ public class AdminActionsMenu {
         String username = Input.stringInput();
         ClientManager cm = new ClientManagerImpl();
         Client db_client = cm.findClient(username);
+        if (db_client == null) {
+            System.out.println("Could not find a user named " + username);
+            return;
+        }
         System.out.println("What would you like to update?");
         System.out.println("------------------------------");
         System.out.println("1 - Username");

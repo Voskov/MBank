@@ -1,5 +1,6 @@
 package main.client.text.based.client;
 
+import main.exceptions.ClientException;
 import main.exceptions.DbConnectorException;
 import main.services.MBank;
 
@@ -48,7 +49,7 @@ public class Entry {
         System.out.println("Thank you and goodbye");
     }
 
-    private static void welcome() throws SQLException, DbConnectorException, InterruptedException {
+    private static void welcome() throws SQLException, DbConnectorException, InterruptedException, ClientException {
         MBank mBank = MBank.getMBank();
         Thread.sleep(400);
         System.out.println("Welcome to \"Mbank\" - By Ariel Voskov");
