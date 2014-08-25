@@ -55,40 +55,40 @@ public class AdminActionsMenu {
                     removeClient();
                     break;
                 case 4:
-                    System.out.println("Create a new account");
+                    createAccounr();
                     break;
                 case 5:
-                    System.out.println("Remove account");
+                    removeAccount();
                     break;
                 case 6:
-                    System.out.println("View client details");
+                    viewClientDetails();
                     break;
                 case 7:
-                    System.out.println("View all client details");
+                    viewAllClientDetails();
                     break;
                 case 8:
-                    System.out.println("View account details");
+                    viewAccountDetails();
                     break;
                 case 9:
-                    System.out.println("View all accounts details");
+                    viewAllAccountDetails();
                     break;
                 case 10:
-                    System.out.println("View a deposit");
+                    viewDeposit();
                     break;
                 case 11:
-                    System.out.println("View all deposits");
+                    viewAllDeposits();
                     break;
                 case 12:
-                    System.out.println("View client activities");
+                    viewClientActivities();
                     break;
                 case 13:
-                    System.out.println("View all activities");
+                    viewAllActivities();
                     break;
                 case 14:
-                    System.out.println("View a system property");
+                    viewSystemProperty();
                     break;
                 case 15:
-                    System.out.println("Update a system property");
+                    updsys
                     break;
                 default:
                     System.out.println("There was a problem");
@@ -190,7 +190,7 @@ public class AdminActionsMenu {
     public static void removeClient() throws DbConnectorException, ClientException {
         System.out.println("Update client detail");
         System.out.println("--------------------");
-        System.out.println("Please enter the username of the client you would like to update");
+        System.out.println("Please enter the username of the client you would like to remove");
         String username = Input.stringInput();
         ClientManager cm = new ClientManagerImpl();
         Client db_client = cm.findClient(username);
@@ -202,4 +202,51 @@ public class AdminActionsMenu {
         }
     }
 
+    public static void createAccounr(){
+
+    }
+
+    public static void removeAccount(){
+
+    }
+
+    public static void viewClientDetails(){
+
+    }
+
+    public static void viewAllClientDetails(){
+
+    }
+
+    public static void viewAccountDetails(){
+
+    }
+
+    public static void viewAllAccountDetails(){
+
+    }
+
+    public static void viewDeposit(){
+
+    }
+
+    public static void viewAllDeposits(){
+
+    }
+
+    public static void viewClientActivities(){
+
+    }
+
+    public static void viewAllActivities(){
+
+    }
+
+    public static void viewSystemProperty(){
+
+    }
+
+    public static void updateSystemProperty(){
+
+    }
 }
