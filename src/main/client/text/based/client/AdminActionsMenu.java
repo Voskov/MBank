@@ -55,7 +55,7 @@ public class AdminActionsMenu {
                     removeClient();
                     break;
                 case 4:
-                    createAccounr();
+                    createAccount();
                     break;
                 case 5:
                     removeAccount();
@@ -202,51 +202,75 @@ public class AdminActionsMenu {
         }
     }
 
-    public static void createAccounr(){
+    public static void createAccount(){
+        System.out.println("Create an account");
+        System.out.println("------------------");
 
     }
 
     public static void removeAccount(){
+        System.out.println("remove an account");
+        System.out.println("------------------");
 
     }
 
     public static void viewClientDetails(){
+        System.out.println("View clients details");
+        System.out.println("------------------");
 
     }
 
     public static void viewAllClientDetails(){
+        System.out.println("View all clients details");
+        System.out.println("------------------");
 
     }
 
     public static void viewAccountDetails(){
+        System.out.println("View accounts details");
+        System.out.println("------------------");
 
     }
 
     public static void viewAllAccountDetails(){
+        System.out.println("View all accounts details");
+        System.out.println("------------------");
 
     }
 
     public static void viewDeposit(){
+        System.out.println("View a deposit");
+        System.out.println("------------------");
 
     }
 
     public static void viewAllDeposits(){
+        System.out.println("View all deposits");
+        System.out.println("------------------");
 
     }
 
     public static void viewClientActivities(){
+        System.out.println("View clients activities");
+        System.out.println("------------------");
 
     }
 
     public static void viewAllActivities(){
+        System.out.println("View all activities");
+        System.out.println("------------------");
 
     }
 
     public static void viewSystemProperty(){
+        System.out.println("View system property");
+        System.out.println("------------------");
 
     }
 
     public static void updateSystemProperty(){
+        System.out.println("Update system property");
+        System.out.println("------------------");
 
     }
 }
