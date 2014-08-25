@@ -2,6 +2,7 @@ package main.client.text.based.client;
 
 import main.db_access_layer.managers.ClientManager;
 import main.db_access_layer.managers.impl.ClientManagerImpl;
+import main.exceptions.ClientException;
 import main.exceptions.DbConnectorException;
 import main.model.Client;
 import main.services.AdminAction;
@@ -139,19 +140,62 @@ public class AdminActionsMenu {
         System.out.println("6 - Comment");
         System.out.println("Please enter your selection");
         String input = Input.multipleChoiceInput(new String[]{"1", "2", "3", "4", "5", "6"});
-
-        switch (Integer.parseInt(input)) {
-            case 1:
-                System.out.println();
-                break;
-
-
+        String updateValue;
+        boolean updateMore = true;
+        while (updateMore) {
+            switch (Integer.parseInt(input)) {
+                case 1:
+                    System.out.println("Please enter the desired username");
+                    updateValue = Input.stringInput();
+                    db_client.setClientName(updateValue);
+                    break;
+                case 2:
+                    System.out.println("Please enter the desired password");
+                    updateValue = Input.stringInput();
+                    db_client.setPassword(updateValue);
+                    break;
+                case 3:
+                    System.out.println("Please enter the desired address");
+                    updateValue = Input.stringInput();
+                    db_client.setAddress(updateValue);
+                    break;
+                case 4:
+                    System.out.println("Please enter the desired email");
+                    updateValue = Input.stringInput();
+                    db_client.setEmail(updateValue);
+                    break;
+                case 5:
+                    System.out.println("Please enter the desired phone");
+                    updateValue = Input.stringInput();
+                    db_client.setPhone(updateValue);
+                    break;
+                case 6:
+                    System.out.println("Please enter the desired comment");
+                    updateValue = Input.stringInput();
+                    db_client.setComment(updateValue);
+                    break;
+            }
+            System.out.println("Would you like to update anything else?");
+            String more = Input.stringInput();
+            updateMore = "y".equals(more);
         }
-        String updateValue = Input.stringInput();
+        AdminAction aa = new AdminActionImpl();
+        aa.updateClientDetails(db_client);
     }
 
-    public static void removeClient() {
-
+    public static void removeClient() throws DbConnectorException, ClientException {
+        System.out.println("Update client detail");
+        System.out.println("--------------------");
+        System.out.println("Please enter the username of the client you would like to update");
+        String username = Input.stringInput();
+        ClientManager cm = new ClientManagerImpl();
+        Client db_client = cm.findClient(username);
+        System.out.println("Are you absolutely sure that you would like to remove " + db_client.getClientName() + "?");
+        String sure = Input.stringInput();
+        if ("y".equals(sure)){
+            AdminAction aa = new AdminActionImpl();
+            aa.removeClient(db_client);
+        }
     }
 
 }
