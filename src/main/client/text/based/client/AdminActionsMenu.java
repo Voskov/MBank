@@ -1,29 +1,33 @@
 package main.client.text.based.client;
 
+import main.db_access_layer.managers.AccountManager;
 import main.db_access_layer.managers.ClientManager;
+import main.db_access_layer.managers.PropertyManager;
+import main.db_access_layer.managers.impl.AccountManagerImpl;
 import main.db_access_layer.managers.impl.ClientManagerImpl;
+import main.db_access_layer.managers.impl.PropertyManagerImpl;
 import main.exceptions.ClientException;
 import main.exceptions.DbConnectorException;
+import main.model.Account;
 import main.model.Client;
 import main.services.AdminAction;
 import main.services.impl.AdminActionImpl;
 
-import java.lang.Exception;
-import java.lang.Long;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import static main.client.text.based.client.Input.anotherAction;
-import static main.client.text.based.client.Input.multipleChoiceInput;
+import static main.client.text.based.client.Input.*;
 
 public class AdminActionsMenu {
-
+    private static Logger logger = Logger.getLogger("AdminActionsMenu");
     private static String[] INPUT_OPTIONS = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"};
 
-    public static void main(String[] args) throws DbConnectorException, ClientException {
+    public static void main(String[] args) throws DbConnectorException, ClientException, InterruptedException {
         adminActionsClient();
 
     }
 
-    public static void adminActionsClient() throws DbConnectorException, ClientException {
+    public static void adminActionsClient() throws DbConnectorException, ClientException, InterruptedException {
         boolean performAnAction = true;
         while (performAnAction) {
             System.out.println("Admin Actions");
@@ -118,12 +122,12 @@ public class AdminActionsMenu {
         System.out.println("Please enter a comment");
         String comment = Input.stringInput();
         System.out.println("How much money is the new client would like to deposit?");
-        Long amount = Input.longInput();
+        Double amount = Input.doubleInput();
 
         Client newClient = new Client(username, password, address, email, phone, comment);
         AdminAction aa = new AdminActionImpl();
         aa.addNewClient(newClient, amount);
-        System.out.println("The new client has been created");
+        logger.log(Level.INFO, "The new client has been created");
     }
 
     private static void updateClientDetails() throws DbConnectorException {
@@ -188,6 +192,7 @@ public class AdminActionsMenu {
         }
         AdminAction aa = new AdminActionImpl();
         aa.updateClientDetails(dbClient);
+        logger.log(Level.INFO, "The client has been updated");
     }
 
     public static void removeClient() throws DbConnectorException, ClientException {
@@ -199,13 +204,14 @@ public class AdminActionsMenu {
         Client dbClient = cm.findClient(username);
         System.out.println("Are you absolutely sure that you would like to remove " + dbClient.getClientName() + "?");
         String sure = Input.stringInput();
-        if ("y".equals(sure)){
+        if ("y".equals(sure)) {
             AdminAction aa = new AdminActionImpl();
             aa.removeClient(dbClient);
         }
+        logger.log(Level.INFO, "The client has been removed");
     }
 
-    public static void createAccount() throws DbConnectorException {
+    public static void createAccount() throws DbConnectorException, InterruptedException {
         System.out.println("Create an account");
         System.out.println("------------------");
         System.out.println("Please enter the client ID or username");
@@ -219,81 +225,99 @@ public class AdminActionsMenu {
         }
         ClientManager cm = new ClientManagerImpl();
         try {
-        if (longInput > 0) {
-            dbClient = cm.findClient(longInput);
-        } else {
-            dbClient = cm.findClient(stringInput);
-        }
-        }
-        catch (DbConnectorException e) {
+            if (longInput > 0) {
+                dbClient = cm.findClient(longInput);
+            } else {
+                dbClient = cm.findClient(stringInput);
+            }
+        } catch (DbConnectorException e) {
             System.out.println("Could not find a user by the parameters");
             return;
         }
+        double newAmount = doubleInput();
+        PropertyManager pm = new PropertyManagerImpl();
+        long creditLimit = (long) pm.getProperty(dbClient.getAccountType(), "deposit_credit");
 
-
+        Account newAccount = new Account(dbClient.getClientId(), newAmount, creditLimit, "New account");
+        AccountManager am = new AccountManagerImpl();
+        am.createAccount(newAccount);
+        Thread.sleep(400);
+        logger.log(Level.INFO, "The account has been created");
     }
 
-    public static void removeAccount(){
+    public static void removeAccount() throws DbConnectorException, InterruptedException {
         System.out.println("remove an account");
         System.out.println("------------------");
+        System.out.println("Please enter an account number");
+        long accountNumber = Input.longInput();
+        AccountManager am = new AccountManagerImpl();
+        Account dbAccount = null;
+        try {
+            dbAccount = am.findAccount(accountNumber);
+        } catch (DbConnectorException e) {
+            System.out.println("Could not find the account");
+        }
+        AdminAction aa = new AdminActionImpl();
+        aa.removeAccount(dbAccount);
+        Thread.sleep(400);
 
     }
 
-    public static void viewClientDetails(){
+    public static void viewClientDetails() {
         System.out.println("View clients details");
         System.out.println("------------------");
 
     }
 
-    public static void viewAllClientDetails(){
+    public static void viewAllClientDetails() {
         System.out.println("View all clients details");
         System.out.println("------------------");
 
     }
 
-    public static void viewAccountDetails(){
+    public static void viewAccountDetails() {
         System.out.println("View accounts details");
         System.out.println("------------------");
 
     }
 
-    public static void viewAllAccountDetails(){
+    public static void viewAllAccountDetails() {
         System.out.println("View all accounts details");
         System.out.println("------------------");
 
     }
 
-    public static void viewDeposit(){
+    public static void viewDeposit() {
         System.out.println("View a deposit");
         System.out.println("------------------");
 
     }
 
-    public static void viewAllDeposits(){
+    public static void viewAllDeposits() {
         System.out.println("View all deposits");
         System.out.println("------------------");
 
     }
 
-    public static void viewClientActivities(){
+    public static void viewClientActivities() {
         System.out.println("View clients activities");
         System.out.println("------------------");
 
     }
 
-    public static void viewAllActivities(){
+    public static void viewAllActivities() {
         System.out.println("View all activities");
         System.out.println("------------------");
 
     }
 
-    public static void viewSystemProperty(){
+    public static void viewSystemProperty() {
         System.out.println("View system property");
         System.out.println("------------------");
 
     }
 
-    public static void updateSystemProperty(){
+    public static void updateSystemProperty() {
         System.out.println("Update system property");
         System.out.println("------------------");
 
