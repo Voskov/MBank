@@ -1,6 +1,5 @@
 package main.client.text.based.client;
 
-import com.sun.corba.se.spi.orbutil.fsm.Input;
 import main.db_access_layer.managers.ClientManager;
 import main.db_access_layer.managers.impl.ClientManagerImpl;
 import main.exceptions.ClientException;
@@ -92,7 +91,7 @@ public class AdminActionsMenu {
                     viewSystemProperty();
                     break;
                 case 15:
-                    updsys
+                    updateSystemProperty();
                     break;
                 default:
                     System.out.println("There was a problem");
@@ -206,22 +205,31 @@ public class AdminActionsMenu {
         }
     }
 
-    public static void createAccount(){
+    public static void createAccount() throws DbConnectorException {
         System.out.println("Create an account");
         System.out.println("------------------");
         System.out.println("Please enter the client ID or username");
         String stringInput = Input.stringInput();
-        long longInput;
-        Client dbClient
+        long longInput = 0;
+        Client dbClient;
         try {
-            longInput = Long.parseInt(stringInput)
+            longInput = Long.parseLong(stringInput);
         } catch (Exception e) {
             // Do nothing
         }
-
-        if (longInput > 0){
-            dbClient =
+        ClientManager cm = new ClientManagerImpl();
+        try {
+        if (longInput > 0) {
+            dbClient = cm.findClient(longInput);
+        } else {
+            dbClient = cm.findClient(stringInput);
         }
+        }
+        catch (DbConnectorException e) {
+            System.out.println("Could not find a user by the parameters");
+            return;
+        }
+
 
     }
 
