@@ -1,5 +1,6 @@
 package main.client.text.based.client;
 
+import com.sun.corba.se.spi.orbutil.fsm.Input;
 import main.db_access_layer.managers.ClientManager;
 import main.db_access_layer.managers.impl.ClientManagerImpl;
 import main.exceptions.ClientException;
@@ -7,6 +8,9 @@ import main.exceptions.DbConnectorException;
 import main.model.Client;
 import main.services.AdminAction;
 import main.services.impl.AdminActionImpl;
+
+import java.lang.Exception;
+import java.lang.Long;
 
 import static main.client.text.based.client.Input.anotherAction;
 import static main.client.text.based.client.Input.multipleChoiceInput;
@@ -129,8 +133,8 @@ public class AdminActionsMenu {
         System.out.println("Please enter the username of the client you would like to update");
         String username = Input.stringInput();
         ClientManager cm = new ClientManagerImpl();
-        Client db_client = cm.findClient(username);
-        if (db_client == null) {
+        Client dbClient = cm.findClient(username);
+        if (dbClient == null) {
             System.out.println("Could not find a user named " + username);
             return;
         }
@@ -151,32 +155,32 @@ public class AdminActionsMenu {
                 case 1:
                     System.out.println("Please enter the desired username");
                     updateValue = Input.stringInput();
-                    db_client.setClientName(updateValue);
+                    dbClient.setClientName(updateValue);
                     break;
                 case 2:
                     System.out.println("Please enter the desired password");
                     updateValue = Input.stringInput();
-                    db_client.setPassword(updateValue);
+                    dbClient.setPassword(updateValue);
                     break;
                 case 3:
                     System.out.println("Please enter the desired address");
                     updateValue = Input.stringInput();
-                    db_client.setAddress(updateValue);
+                    dbClient.setAddress(updateValue);
                     break;
                 case 4:
                     System.out.println("Please enter the desired email");
                     updateValue = Input.stringInput();
-                    db_client.setEmail(updateValue);
+                    dbClient.setEmail(updateValue);
                     break;
                 case 5:
                     System.out.println("Please enter the desired phone");
                     updateValue = Input.stringInput();
-                    db_client.setPhone(updateValue);
+                    dbClient.setPhone(updateValue);
                     break;
                 case 6:
                     System.out.println("Please enter the desired comment");
                     updateValue = Input.stringInput();
-                    db_client.setComment(updateValue);
+                    dbClient.setComment(updateValue);
                     break;
             }
             System.out.println("Would you like to update anything else?");
@@ -184,7 +188,7 @@ public class AdminActionsMenu {
             updateMore = "y".equals(more);
         }
         AdminAction aa = new AdminActionImpl();
-        aa.updateClientDetails(db_client);
+        aa.updateClientDetails(dbClient);
     }
 
     public static void removeClient() throws DbConnectorException, ClientException {
@@ -193,18 +197,31 @@ public class AdminActionsMenu {
         System.out.println("Please enter the username of the client you would like to remove");
         String username = Input.stringInput();
         ClientManager cm = new ClientManagerImpl();
-        Client db_client = cm.findClient(username);
-        System.out.println("Are you absolutely sure that you would like to remove " + db_client.getClientName() + "?");
+        Client dbClient = cm.findClient(username);
+        System.out.println("Are you absolutely sure that you would like to remove " + dbClient.getClientName() + "?");
         String sure = Input.stringInput();
         if ("y".equals(sure)){
             AdminAction aa = new AdminActionImpl();
-            aa.removeClient(db_client);
+            aa.removeClient(dbClient);
         }
     }
 
     public static void createAccount(){
         System.out.println("Create an account");
         System.out.println("------------------");
+        System.out.println("Please enter the client ID or username");
+        String stringInput = Input.stringInput();
+        long longInput;
+        Client dbClient
+        try {
+            longInput = Long.parseInt(stringInput)
+        } catch (Exception e) {
+            // Do nothing
+        }
+
+        if (longInput > 0){
+            dbClient =
+        }
 
     }
 
