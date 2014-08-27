@@ -101,6 +101,7 @@ public class AdminActionsMenu {
                     System.out.println("There was a problem");
                     break;
             }
+            System.out.println('---------------------------------------------');
             performAnAction = anotherAction();
         }
     }
@@ -214,26 +215,8 @@ public class AdminActionsMenu {
     public static void createAccount() throws DbConnectorException, InterruptedException {
         System.out.println("Create an account");
         System.out.println("------------------");
-        System.out.println("Please enter the client ID or username");
-        String stringInput = Input.stringInput();
-        long longInput = 0;
-        Client dbClient;
-        try {
-            longInput = Long.parseLong(stringInput);
-        } catch (Exception e) {
-            // Do nothing
-        }
-        ClientManager cm = new ClientManagerImpl();
-        try {
-            if (longInput > 0) {
-                dbClient = cm.findClient(longInput);
-            } else {
-                dbClient = cm.findClient(stringInput);
-            }
-        } catch (DbConnectorException e) {
-            System.out.println("Could not find a user by the parameters");
-            return;
-        }
+        Client dbClient = findClientFlow();
+        if (dbClient == null) return;   // Took care of the message within the method
         double newAmount = doubleInput();
         PropertyManager pm = new PropertyManagerImpl();
         long creditLimit = (long) pm.getProperty(dbClient.getAccountType(), "deposit_credit");
@@ -263,10 +246,14 @@ public class AdminActionsMenu {
 
     }
 
-    public static void viewClientDetails() {
+    public static void viewClientDetails() throws DbConnectorException {
         System.out.println("View clients details");
         System.out.println("------------------");
-
+        Client dbClient = findClientFlow();
+        if (dbClient == null) return;   // Took care of the message within the method
+        AdminAction aa = new AdminActionImpl();
+        Client clientDetails = aa.viewClientDetails(dbClient.getClientId()); //Yes yes, I know, it's the same action twice...
+        System.out.println(clientDetails.toString());
     }
 
     public static void viewAllClientDetails() {
@@ -321,5 +308,31 @@ public class AdminActionsMenu {
         System.out.println("Update system property");
         System.out.println("------------------");
 
+    }
+
+
+
+    public static Client findClientFlow() throws DbConnectorException {
+        System.out.println("Please enter the client ID or username");
+        String stringInput = Input.stringInput();
+        long longInput = 0;
+        Client dbClient;
+        try {
+            longInput = Long.parseLong(stringInput);
+        } catch (Exception e) {
+            // Do nothing
+        }
+        ClientManager cm = new ClientManagerImpl();
+        try {
+            if (longInput > 0) {
+                dbClient = cm.findClient(longInput);
+            } else {
+                dbClient = cm.findClient(stringInput);
+            }
+        } catch (DbConnectorException e) {
+            System.out.println("Could not find a client by the parameters");
+            return null;
+        }
+        return dbClient;
     }
 }
