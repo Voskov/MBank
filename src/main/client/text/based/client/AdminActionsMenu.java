@@ -13,6 +13,9 @@ import main.model.Client;
 import main.services.AdminAction;
 import main.services.impl.AdminActionImpl;
 
+import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,7 +30,7 @@ public class AdminActionsMenu {
 
     }
 
-    public static void adminActionsClient() throws DbConnectorException, ClientException, InterruptedException {
+    public static void adminActionsClient() throws DbConnectorException, ClientException, InterruptedException, SQLException {
         boolean performAnAction = true;
         while (performAnAction) {
             System.out.println("Admin Actions");
@@ -101,7 +104,7 @@ public class AdminActionsMenu {
                     System.out.println("There was a problem");
                     break;
             }
-            System.out.println('---------------------------------------------');
+            System.out.println("---------------------------------------------");
             performAnAction = anotherAction();
         }
     }
@@ -256,9 +259,21 @@ public class AdminActionsMenu {
         System.out.println(clientDetails.toString());
     }
 
-    public static void viewAllClientDetails() {
+    public static void viewAllClientDetails() throws DbConnectorException, SQLException {
         System.out.println("View all clients details");
-        System.out.println("------------------");
+        System.out.println("------------------------");
+        ClientManager cm = new ClientManagerImpl();
+        Set allClients = cm.getAllClients();    // I realize it would have been much easier working with a ResultSrt, but I wanted it to be more general
+        if (allClients.isEmpty()){
+            System.out.println("There are no clients in the bank");
+        } else {
+            System.out.println("-----------------------------------------------------");
+            Iterator clientsIterator = allClients.iterator();
+            while (clientsIterator.hasNext()){
+
+            }
+            System.out.println("|");
+        }
 
     }
 

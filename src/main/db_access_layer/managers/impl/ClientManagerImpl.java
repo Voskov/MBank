@@ -9,7 +9,7 @@ import main.model.Client;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.Set;
 import java.util.logging.Level;
 
 public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientManager {
@@ -204,5 +204,12 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
         executeUpdate(sqlStr);
         String logMessage = "All clients were deleted";
         LOGGER.log(Level.INFO, logMessage);
+    }
+
+    @Override
+    public Set<Client> getAllClients() throws DbConnectorException, SQLException {
+        String sqlStr = "SELECT client_id, client_name FROM clients";
+        ResultSet clients = executeQuery(sqlStr);
+        return (Set<Client>) clients;
     }
 }
