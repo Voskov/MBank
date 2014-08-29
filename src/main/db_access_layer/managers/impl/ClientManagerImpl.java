@@ -9,7 +9,6 @@ import main.model.Client;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Set;
 import java.util.logging.Level;
 
 public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientManager {
@@ -207,9 +206,9 @@ public class ClientManagerImpl extends DbConnectorManagerImpl implements ClientM
     }
 
     @Override
-    public Set<Client> getAllClients() throws DbConnectorException, SQLException {
+    public ResultSet getAllClients() throws DbConnectorException, SQLException {
         String sqlStr = "SELECT client_id, client_name FROM clients";
         ResultSet clients = executeQuery(sqlStr);
-        return (Set<Client>) clients;
+        return clients;
     }
 }

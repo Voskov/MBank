@@ -1,11 +1,12 @@
 package main.db_access_layer.managers.impl;
 
-import main.exceptions.DbConnectorException;
 import main.db_access_layer.managers.AccountManager;
+import main.exceptions.DbConnectorException;
 import main.model.Account;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.logging.Level;
 
 public class AccountManagerImpl extends DbConnectorManagerImpl implements AccountManager {
@@ -156,6 +157,21 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
         return account;
     }
 
+    @Override
+    public HashSet<Long> getAllAccountIds() throws DbConnectorException {
+        sqlStrBldr = new StringBuilder("SELECT account_id FROM accounts");
+        HashSet<Long> allAccountIds = new HashSet<Long>();
+        try {
+            ResultSet res = executeQuery(sqlStrBldr);
+            while (res.next()) {
+                allAccountIds.add(res.getLong(1));
+            }
+        } catch (SQLException e) {
+            throw new DbConnectorException(e);
+        }
+        return allAccountIds;
+    }
+
     private Account buildAccount(ResultSet resultSet) {
         Account account = null;
         try {
@@ -166,5 +182,7 @@ public class AccountManagerImpl extends DbConnectorManagerImpl implements Accoun
 
         return account;
     }
+
+
 }
 

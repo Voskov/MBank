@@ -5,7 +5,6 @@ import main.model.Account;
 import main.model.Client;
 
 import java.sql.SQLException;
-import java.util.Set;
 
 public interface ClientManager {
     void createClient(long clientId, String clientName, String password, String type, String address, String email, String phone, String comment) throws DbConnectorException;
@@ -34,5 +33,5 @@ public interface ClientManager {
 
     void deleteAllClients() throws DbConnectorException;
 
-    Set<Client> getAllClients() throws DbConnectorException, SQLException;
+    java.sql.ResultSet getAllClients() throws DbConnectorException, SQLException;
 }

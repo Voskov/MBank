@@ -13,9 +13,10 @@ import main.model.Client;
 import main.services.AdminAction;
 import main.services.impl.AdminActionImpl;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,7 +26,7 @@ public class AdminActionsMenu {
     private static Logger logger = Logger.getLogger("AdminActionsMenu");
     private static String[] INPUT_OPTIONS = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"};
 
-    public static void main(String[] args) throws DbConnectorException, ClientException, InterruptedException {
+    public static void main(String[] args) throws DbConnectorException, ClientException, InterruptedException, SQLException {
         adminActionsClient();
 
     }
@@ -260,34 +261,69 @@ public class AdminActionsMenu {
     }
 
     public static void viewAllClientDetails() throws DbConnectorException, SQLException {
+        int columnsWidth = 25;
         System.out.println("View all clients details");
         System.out.println("------------------------");
         ClientManager cm = new ClientManagerImpl();
-        Set allClients = cm.getAllClients();    // I realize it would have been much easier working with a ResultSrt, but I wanted it to be more general
-        if (allClients.isEmpty()){
-            System.out.println("There are no clients in the bank");
-        } else {
-            System.out.println("-----------------------------------------------------");
-            Iterator clientsIterator = allClients.iterator();
-            while (clientsIterator.hasNext()){
-
+        ResultSet allClients = cm.getAllClients();
+        if (allClients.next()) {
+            printClientsHeader(columnsWidth);
+            String clientId = String.valueOf(allClients.getLong(1));
+            String clientName = allClients.getString(2);
+            printClient(clientId, clientName, columnsWidth);
+            while (allClients.next()) {
+                printClient(clientId, clientName, columnsWidth);
             }
-            System.out.println("|");
+            printFooter(columnsWidth);
+        } else {
+            System.out.println("There are no clients");
         }
 
     }
 
-    public static void viewAccountDetails() {
+    public static void viewAccountDetails() throws DbConnectorException {
         System.out.println("View accounts details");
         System.out.println("------------------");
-
+        System.out.println("Please enter the account ID");
+        long accountId = Input.longInput();
+        AccountManager am = new AccountManagerImpl();
+        Account dbAccount = null;
+        try {
+            dbAccount = am.findAccount(accountId);
+        } catch (DbConnectorException e) {
+            System.out.println("Could not find an account by that ID");
+            return;
+        }
+        if (dbAccount == null) {
+            System.out.println("Could not find an account by that ID");
+            return;
+        }
+        System.out.println(dbAccount.toString());
     }
 
-    public static void viewAllAccountDetails() {
+    public static void viewAllAccountDetails() throws DbConnectorException {
+        int columnWidth = 25;
         System.out.println("View all accounts details");
         System.out.println("------------------");
-
+        AccountManager am = new AccountManagerImpl();
+        HashSet<Long> allAccounts = am.getAllAccountIds();
+        if (allAccounts == null || allAccounts.isEmpty()){
+            System.out.println("There are no accounts");
+        } else {
+            printAccountsHeader(columnWidth);
+            Iterator accountsIterator = allAccounts.iterator();
+            while (accountsIterator.hasNext()) {
+                long account_id = (long) accountsIterator.next();
+                System.out.print("|");
+                System.out.print(printMiddle(String.valueOf(account_id), columnWidth));
+                System.out.print("|");
+                System.out.println("");
+            }
+            printFooter(columnWidth);
+        }
     }
+
+
 
     public static void viewDeposit() {
         System.out.println("View a deposit");
@@ -325,8 +361,6 @@ public class AdminActionsMenu {
 
     }
 
-
-
     public static Client findClientFlow() throws DbConnectorException {
         System.out.println("Please enter the client ID or username");
         String stringInput = Input.stringInput();
@@ -349,5 +383,79 @@ public class AdminActionsMenu {
             return null;
         }
         return dbClient;
+    }
+
+    private static void printAccountsHeader(int columnWidth) {
+        System.out.print("|");
+        for (int i = 0; i < columnWidth; i++) {
+            System.out.print("-");
+        }
+        System.out.print("|");
+        System.out.println("");
+
+        System.out.print("|");
+        System.out.print(printMiddle("Client ID", columnWidth));
+        System.out.print("|");
+        System.out.println("");
+
+        for (int i = 0; i < columnWidth; i++) {
+            System.out.print("-");
+        }
+    }
+
+    private static void printFooter(int columnsWidth) {
+        System.out.print("|");
+        for (int i = 0; i < columnsWidth * 2 + 1; i++) {
+            System.out.print("-");
+        }
+        System.out.print("|");
+        System.out.println("");
+    }
+
+    private static void printClientsHeader(int columnWidth) {
+        System.out.print("|");
+        for (int i = 0; i < columnWidth * 2 + 1; i++) {
+            System.out.print("-");
+        }
+        System.out.print("|");
+        System.out.println("");
+        System.out.print("|");
+        System.out.print(printMiddle("Client ID", columnWidth));
+        System.out.print("|");
+        System.out.print(printMiddle("Client name", columnWidth));
+        System.out.print("|");
+        System.out.println("");
+        System.out.print("|");
+        for (int i = 0; i < columnWidth * 2 + 1; i++) {
+            System.out.print("-");
+        }
+        System.out.print("|");
+        System.out.println("");
+    }
+
+    private static String printMiddle(String stringToPrint, int columnWidth) {
+        int stringLength = stringToPrint.length();
+        int spacesAround = ((columnWidth - stringLength) / 2);
+        StringBuilder resultString = new StringBuilder();
+        for (int i = 0; i < spacesAround; i++) {
+            resultString.append(" ");
+        }
+        resultString.append(stringToPrint);
+        for (int i = 0; i < spacesAround; i++) {
+            resultString.append(" ");
+        }
+        if (stringLength % 2 == 0) {
+            resultString.append(" ");
+        }
+        return resultString.toString();
+    }
+
+    private static String printClient(String clientId, String clientName, int columnWidth) {
+        StringBuilder resultString = new StringBuilder("|");
+        resultString.append(printMiddle(clientId, columnWidth));
+        resultString.append("|");
+        resultString.append(printMiddle(clientName, columnWidth));
+        resultString.append("|");
+        return resultString.toString();
     }
 }
