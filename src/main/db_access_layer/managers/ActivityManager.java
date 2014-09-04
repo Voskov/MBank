@@ -12,5 +12,5 @@ public interface ActivityManager {
     Activity findActivity(long activityId) throws SQLException, DbConnectorException;
     Activity findActivity(Activity activity) throws SQLException, DbConnectorException;
 
-    HashSet<Activity> findAllClientActivities(long clientId) throws SQLException;
+    HashSet<Activity> findAllClientActivities(long clientId) throws SQLException;   // TODO - Make this return ArrayList
 }
