@@ -1,8 +1,10 @@
 package main.client.text.based.client;
 
 import main.db_access_layer.managers.ActivityManager;
+import main.db_access_layer.managers.ClientManager;
 import main.db_access_layer.managers.DepositManager;
 import main.db_access_layer.managers.impl.ActivityManagerImpl;
+import main.db_access_layer.managers.impl.ClientManagerImpl;
 import main.db_access_layer.managers.impl.DepositManagerImpl;
 import main.exceptions.DbConnectorException;
 import main.model.Activity;
@@ -13,6 +15,7 @@ import java.util.HashSet;
 
 import static main.client.text.based.client.Input.anotherAction;
 import static main.client.text.based.client.Input.multipleChoiceInput;
+import static main.client.text.based.client.Input.stringInput;
 
 public class ClientActionsMenu {
     private static final int RETRIES = 3;
@@ -170,7 +173,13 @@ public class ClientActionsMenu {
                     System.out.println("The password you've entered is incorrect");
                     return;
                 }
-
+                client.setPassword(newPassword1);
+                break;
+            case 2:
+                System.out.println("Please enter the new address");
+                String newAddress = stringInput();
+                client.setAddress(newAddress);
+                break;
         }
 
     }
