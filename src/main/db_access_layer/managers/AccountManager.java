@@ -28,4 +28,6 @@ public interface AccountManager {
     HashSet<Account> allClientsAccounts(long clientId) throws DbConnectorException;
 
     Account createAccountFromResult(ResultSet res) throws DbConnectorException;
+
+    HashSet<Long> getAllAccountIds() throws DbConnectorException;
 }

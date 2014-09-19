@@ -4,6 +4,8 @@ import main.exceptions.DbConnectorException;
 import main.model.Account;
 import main.model.Client;
 
+import java.sql.SQLException;
+
 public interface ClientManager {
     void createClient(long clientId, String clientName, String password, String type, String address, String email, String phone, String comment) throws DbConnectorException;
 
@@ -30,4 +32,6 @@ public interface ClientManager {
     Client findClient(Client client) throws DbConnectorException;
 
     void deleteAllClients() throws DbConnectorException;
+
+    java.sql.ResultSet getAllClients() throws DbConnectorException, SQLException;
 }

@@ -1,29 +1,37 @@
 package main.client.text.based.client;
 
+import main.db_access_layer.managers.AccountManager;
 import main.db_access_layer.managers.ClientManager;
+import main.db_access_layer.managers.PropertyManager;
+import main.db_access_layer.managers.impl.AccountManagerImpl;
 import main.db_access_layer.managers.impl.ClientManagerImpl;
+import main.db_access_layer.managers.impl.PropertyManagerImpl;
 import main.exceptions.ClientException;
 import main.exceptions.DbConnectorException;
+import main.model.Account;
 import main.model.Client;
 import main.services.AdminAction;
 import main.services.impl.AdminActionImpl;
 
-import java.lang.Exception;
-import java.lang.Long;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import static main.client.text.based.client.Input.anotherAction;
-import static main.client.text.based.client.Input.multipleChoiceInput;
+import static main.client.text.based.client.Input.*;
 
 public class AdminActionsMenu {
-
+    private static Logger logger = Logger.getLogger("AdminActionsMenu");
     private static String[] INPUT_OPTIONS = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"};
 
-    public static void main(String[] args) throws DbConnectorException, ClientException {
+    public static void main(String[] args) throws DbConnectorException, ClientException, InterruptedException, SQLException {
         adminActionsClient();
 
     }
 
-    public static void adminActionsClient() throws DbConnectorException, ClientException {
+    public static void adminActionsClient() throws DbConnectorException, ClientException, InterruptedException, SQLException {
         boolean performAnAction = true;
         while (performAnAction) {
             System.out.println("Admin Actions");
@@ -97,6 +105,7 @@ public class AdminActionsMenu {
                     System.out.println("There was a problem");
                     break;
             }
+            System.out.println("---------------------------------------------");
             performAnAction = anotherAction();
         }
     }
@@ -118,12 +127,12 @@ public class AdminActionsMenu {
         System.out.println("Please enter a comment");
         String comment = Input.stringInput();
         System.out.println("How much money is the new client would like to deposit?");
-        Long amount = Input.longInput();
+        Double amount = Input.doubleInput();
 
         Client newClient = new Client(username, password, address, email, phone, comment);
         AdminAction aa = new AdminActionImpl();
         aa.addNewClient(newClient, amount);
-        System.out.println("The new client has been created");
+        logger.log(Level.INFO, "The new client has been created");
     }
 
     private static void updateClientDetails() throws DbConnectorException {
@@ -188,6 +197,7 @@ public class AdminActionsMenu {
         }
         AdminAction aa = new AdminActionImpl();
         aa.updateClientDetails(dbClient);
+        logger.log(Level.INFO, "The client has been updated");
     }
 
     public static void removeClient() throws DbConnectorException, ClientException {
@@ -199,15 +209,159 @@ public class AdminActionsMenu {
         Client dbClient = cm.findClient(username);
         System.out.println("Are you absolutely sure that you would like to remove " + dbClient.getClientName() + "?");
         String sure = Input.stringInput();
-        if ("y".equals(sure)){
+        if ("y".equals(sure)) {
             AdminAction aa = new AdminActionImpl();
             aa.removeClient(dbClient);
         }
+        logger.log(Level.INFO, "The client has been removed");
     }
 
-    public static void createAccount() throws DbConnectorException {
+    public static void createAccount() throws DbConnectorException, InterruptedException {
         System.out.println("Create an account");
         System.out.println("------------------");
+        Client dbClient = findClientFlow();
+        if (dbClient == null) return;   // Took care of the message within the method
+        double newAmount = doubleInput();
+        PropertyManager pm = new PropertyManagerImpl();
+        long creditLimit = (long) pm.getProperty(dbClient.getAccountType(), "deposit_credit");
+
+        Account newAccount = new Account(dbClient.getClientId(), newAmount, creditLimit, "New account");
+        AccountManager am = new AccountManagerImpl();
+        am.createAccount(newAccount);
+        Thread.sleep(400);
+        logger.log(Level.INFO, "The account has been created");
+    }
+
+    public static void removeAccount() throws DbConnectorException, InterruptedException {
+        System.out.println("remove an account");
+        System.out.println("------------------");
+        System.out.println("Please enter an account number");
+        long accountNumber = Input.longInput();
+        AccountManager am = new AccountManagerImpl();
+        Account dbAccount = null;
+        try {
+            dbAccount = am.findAccount(accountNumber);
+        } catch (DbConnectorException e) {
+            System.out.println("Could not find the account");
+        }
+        AdminAction aa = new AdminActionImpl();
+        aa.removeAccount(dbAccount);
+        Thread.sleep(400);
+
+    }
+
+    public static void viewClientDetails() throws DbConnectorException {
+        System.out.println("View clients details");
+        System.out.println("------------------");
+        Client dbClient = findClientFlow();
+        if (dbClient == null) return;   // Took care of the message within the method
+        AdminAction aa = new AdminActionImpl();
+        Client clientDetails = aa.viewClientDetails(dbClient.getClientId()); //Yes yes, I know, it's the same action twice...
+        System.out.println(clientDetails.toString());
+    }
+
+    public static void viewAllClientDetails() throws DbConnectorException, SQLException {
+        int columnsWidth = 25;
+        System.out.println("View all clients details");
+        System.out.println("------------------------");
+        ClientManager cm = new ClientManagerImpl();
+        ResultSet allClients = cm.getAllClients();
+        if (allClients.next()) {
+            printClientsHeader(columnsWidth);
+            String clientId = String.valueOf(allClients.getLong(1));
+            String clientName = allClients.getString(2);
+            printClient(clientId, clientName, columnsWidth);
+            while (allClients.next()) {
+                printClient(clientId, clientName, columnsWidth);
+            }
+            printFooter(columnsWidth);
+        } else {
+            System.out.println("There are no clients");
+        }
+
+    }
+
+    public static void viewAccountDetails() throws DbConnectorException {
+        System.out.println("View accounts details");
+        System.out.println("------------------");
+        System.out.println("Please enter the account ID");
+        long accountId = Input.longInput();
+        AccountManager am = new AccountManagerImpl();
+        Account dbAccount = null;
+        try {
+            dbAccount = am.findAccount(accountId);
+        } catch (DbConnectorException e) {
+            System.out.println("Could not find an account by that ID");
+            return;
+        }
+        if (dbAccount == null) {
+            System.out.println("Could not find an account by that ID");
+            return;
+        }
+        System.out.println(dbAccount.toString());
+    }
+
+    public static void viewAllAccountDetails() throws DbConnectorException {
+        int columnWidth = 25;
+        System.out.println("View all accounts details");
+        System.out.println("------------------");
+        AccountManager am = new AccountManagerImpl();
+        HashSet<Long> allAccounts = am.getAllAccountIds();
+        if (allAccounts == null || allAccounts.isEmpty()){
+            System.out.println("There are no accounts");
+        } else {
+            printAccountsHeader(columnWidth);
+            Iterator accountsIterator = allAccounts.iterator();
+            while (accountsIterator.hasNext()) {
+                long account_id = (long) accountsIterator.next();
+                System.out.print("|");
+                System.out.print(printMiddle(String.valueOf(account_id), columnWidth));
+                System.out.print("|");
+                System.out.println("");
+            }
+            printFooter(columnWidth);
+        }
+    }
+
+
+
+    public static void viewDeposit() {
+        System.out.println("View a deposit");
+        System.out.println("------------------");
+
+    }
+
+    public static void viewAllDeposits() {
+        System.out.println("View all deposits");
+        System.out.println("------------------");
+
+    }
+
+    public static void viewClientActivities() {
+        System.out.println("View clients activities");
+        System.out.println("------------------");
+
+    }
+
+    public static void viewAllActivities() {
+        System.out.println("View all activities");
+        System.out.println("------------------");
+
+    }
+
+    public static void viewSystemProperty() {
+        System.out.println("View system property");
+        System.out.println("------------------");
+
+    }
+
+    public static void updateSystemProperty() {
+        System.out.println("Update system property");
+        System.out.println("------------------");
+
+    }
+
+    public static Client findClientFlow() throws DbConnectorException {
         System.out.println("Please enter the client ID or username");
         String stringInput = Input.stringInput();
         long longInput = 0;
@@ -219,83 +373,89 @@ public class AdminActionsMenu {
         }
         ClientManager cm = new ClientManagerImpl();
         try {
-        if (longInput > 0) {
-            dbClient = cm.findClient(longInput);
-        } else {
-            dbClient = cm.findClient(stringInput);
+            if (longInput > 0) {
+                dbClient = cm.findClient(longInput);
+            } else {
+                dbClient = cm.findClient(stringInput);
+            }
+        } catch (DbConnectorException e) {
+            System.out.println("Could not find a client by the parameters");
+            return null;
         }
+        return dbClient;
+    }
+
+    private static void printAccountsHeader(int columnWidth) {
+        System.out.print("|");
+        for (int i = 0; i < columnWidth; i++) {
+            System.out.print("-");
         }
-        catch (DbConnectorException e) {
-            System.out.println("Could not find a user by the parameters");
-            return;
+        System.out.print("|");
+        System.out.println("");
+
+        System.out.print("|");
+        System.out.print(printMiddle("Client ID", columnWidth));
+        System.out.print("|");
+        System.out.println("");
+
+        for (int i = 0; i < columnWidth; i++) {
+            System.out.print("-");
         }
-
-
     }
 
-    public static void removeAccount(){
-        System.out.println("remove an account");
-        System.out.println("------------------");
-
+    private static void printFooter(int columnsWidth) {
+        System.out.print("|");
+        for (int i = 0; i < columnsWidth * 2 + 1; i++) {
+            System.out.print("-");
+        }
+        System.out.print("|");
+        System.out.println("");
     }
 
-    public static void viewClientDetails(){
-        System.out.println("View clients details");
-        System.out.println("------------------");
-
+    private static void printClientsHeader(int columnWidth) {
+        System.out.print("|");
+        for (int i = 0; i < columnWidth * 2 + 1; i++) {
+            System.out.print("-");
+        }
+        System.out.print("|");
+        System.out.println("");
+        System.out.print("|");
+        System.out.print(printMiddle("Client ID", columnWidth));
+        System.out.print("|");
+        System.out.print(printMiddle("Client name", columnWidth));
+        System.out.print("|");
+        System.out.println("");
+        System.out.print("|");
+        for (int i = 0; i < columnWidth * 2 + 1; i++) {
+            System.out.print("-");
+        }
+        System.out.print("|");
+        System.out.println("");
     }
 
-    public static void viewAllClientDetails(){
-        System.out.println("View all clients details");
-        System.out.println("------------------");
-
+    private static String printMiddle(String stringToPrint, int columnWidth) {
+        int stringLength = stringToPrint.length();
+        int spacesAround = ((columnWidth - stringLength) / 2);
+        StringBuilder resultString = new StringBuilder();
+        for (int i = 0; i < spacesAround; i++) {
+            resultString.append(" ");
+        }
+        resultString.append(stringToPrint);
+        for (int i = 0; i < spacesAround; i++) {
+            resultString.append(" ");
+        }
+        if (stringLength % 2 == 0) {
+            resultString.append(" ");
+        }
+        return resultString.toString();
     }
 
-    public static void viewAccountDetails(){
-        System.out.println("View accounts details");
-        System.out.println("------------------");
-
-    }
-
-    public static void viewAllAccountDetails(){
-        System.out.println("View all accounts details");
-        System.out.println("------------------");
-
-    }
-
-    public static void viewDeposit(){
-        System.out.println("View a deposit");
-        System.out.println("------------------");
-
-    }
-
-    public static void viewAllDeposits(){
-        System.out.println("View all deposits");
-        System.out.println("------------------");
-
-    }
-
-    public static void viewClientActivities(){
-        System.out.println("View clients activities");
-        System.out.println("------------------");
-
-    }
-
-    public static void viewAllActivities(){
-        System.out.println("View all activities");
-        System.out.println("------------------");
-
-    }
-
-    public static void viewSystemProperty(){
-        System.out.println("View system property");
-        System.out.println("------------------");
-
-    }
-
-    public static void updateSystemProperty(){
-        System.out.println("Update system property");
-        System.out.println("------------------");
-
+    private static String printClient(String clientId, String clientName, int columnWidth) {
+        StringBuilder resultString = new StringBuilder("|");
+        resultString.append(printMiddle(clientId, columnWidth));
+        resultString.append("|");
+        resultString.append(printMiddle(clientName, columnWidth));
+        resultString.append("|");
+        return resultString.toString();
     }
 }

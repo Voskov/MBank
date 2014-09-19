@@ -78,4 +78,18 @@ public class Input {
         }
         return input;
     }
+
+    public static Double doubleInput() {
+        Double input = null;
+        int attempt = 0;
+        while (attempt < RETRIES) {
+            try {
+                input = scanner.nextDouble();
+                break;
+            } catch (Exception e) {
+                // I'll ignore your attempts to brake this for now
+            }
+        }
+        return input;
+    }
 }
